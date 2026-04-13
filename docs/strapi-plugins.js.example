@@ -1,0 +1,49 @@
+/**
+ * Strapi Plugin Configuration for Cloudinary Upload Provider
+ * 
+ * Location in Strapi project: config/plugins.js
+ * 
+ * This configuration tells Strapi to automatically upload media files
+ * to Cloudinary (Cloud Name: dfazfoh2l) instead of storing locally.
+ */
+
+module.exports = ({ env }) => ({
+  upload: {
+    config: {
+      provider: '@strapi/provider-upload-cloudinary',
+      providerOptions: {
+        cloud_name: env('CLOUDINARY_NAME', 'dfazfoh2l'),
+        api_key: env('CLOUDINARY_KEY'),
+        api_secret: env('CLOUDINARY_SECRET'),
+      },
+      actionOptions: {
+        upload: {},
+        delete: {},
+      },
+    },
+  },
+});
+
+/**
+ * INSTALLATION STEPS:
+ * 
+ * 1. In your Strapi project, install the provider:
+ *    npm install @strapi/provider-upload-cloudinary
+ * 
+ * 2. Create or replace config/plugins.js with this file
+ * 
+ * 3. Set environment variables in .env:
+ *    CLOUDINARY_NAME=dfazfoh2l
+ *    CLOUDINARY_KEY=your_api_key_from_cloudinary
+ *    CLOUDINARY_SECRET=your_api_secret_from_cloudinary
+ * 
+ * 4. Restart Strapi:
+ *    npm run develop
+ * 
+ * 5. Test by uploading an image in the Strapi admin panel
+ *    It should appear in your Cloudinary media library
+ * 
+ * CLOUDINARY CREDENTIALS:
+ * Get your API Key and Secret from:
+ * https://cloudinary.com/console/settings/api-keys
+ */

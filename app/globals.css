@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 10%;
+  --primary: 37 94% 50%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 220 10% 95%;
+  --muted-foreground: 220 10% 40%;
+  --border: 220 12% 85%;
+  --accent: 37 90% 55%;
+  --accent-foreground: 0 0% 10%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  font-family: "Space Grotesk", ui-sans-serif, system-ui;
+  min-height: 100vh;
+}
+
+section {
+  @apply scroll-mt-24;
+}
+
+/* Custom Scrollbar Styles */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  @apply bg-gray-200 rounded-full;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-full hover:bg-gray-500;
+}
+
+.scrollbar-track-gray-200::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+}
+
+.scrollbar-thumb-gray-400::-webkit-scrollbar-thumb {
+  @apply bg-gray-400;
+}
