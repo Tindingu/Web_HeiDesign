@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { BlogToc } from "@/components/blog/toc";
-import { MdxRenderer } from "@/components/blog/mdx-renderer";
+import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
 import {
   buildArticleJsonLd,
   buildBreadcrumbJsonLd,
@@ -84,7 +84,7 @@ export default async function BlogDetailPage({
               </h1>
               <p className="text-lg text-muted-foreground">{post.excerpt}</p>
             </header>
-            <MdxRenderer source={post.content} />
+            <MarkdownRenderer content={post.content} />
           </article>
 
           {relatedPosts.length > 0 && (

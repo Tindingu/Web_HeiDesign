@@ -209,6 +209,12 @@ export function MarkdownRenderer({
       let caption = imageMatch[1];
       const src = imageMatch[2];
 
+      const captionResult = extractCaptionFromFollowingLines(lines, i);
+      if (captionResult.caption) {
+        caption = captionResult.caption;
+        i += captionResult.consumedLines;
+      }
+
       // Extract caption text - remove "Hình X " prefix
       // Pattern: "Hình 1 text" or "Hình 123 text" => keep only "text"
       const captionTextMatch = caption.match(/^Hình\s+\d+\s+(.+)$/);
@@ -232,7 +238,8 @@ export function MarkdownRenderer({
           <img
             src={src}
             alt={caption || "Image"}
-            className="w-full rounded-lg border border-gray-200"
+            className="h-auto w-full rounded-lg border border-gray-200"
+            style={{ imageRendering: "auto" }}
             loading="lazy"
           />
           {caption && caption.trim() ? (
@@ -241,6 +248,65 @@ export function MarkdownRenderer({
             </figcaption>
           ) : null}
         </figure>,
+      );
+      continue;
+    }
+
+    // HTML image line: <img src="..." /> with optional caption in next line
+    const imageTag = parseHtmlImageTag(line);
+    if (imageTag?.src) {
+      flushList();
+      flushTable();
+
+      let caption = imageTag.alt || "";
+      const captionResult = extractCaptionFromFollowingLines(lines, i);
+      if (captionResult.caption) {
+        caption = captionResult.caption;
+        i += captionResult.consumedLines;
+      }
+
+      elements.push(
+        <figure key={`img-html-${elements.length}`} className="my-6">
+          <img
+            src={imageTag.src}
+            alt={caption || "Image"}
+            className="h-auto w-full rounded-lg border border-gray-200"
+            style={{ imageRendering: "auto" }}
+            loading="lazy"
+          />
+          {caption && caption.trim() ? (
+            <figcaption className="mt-3 text-center text-sm text-gray-600 italic">
+              {caption}
+            </figcaption>
+          ) : null}
+        </figure>,
+      );
+      continue;
+    }
+
+    // YouTube link line: render embedded video player
+    const youtubeVideoId = extractYouTubeVideoIdFromLine(line);
+    if (youtubeVideoId) {
+      flushList();
+      flushTable();
+
+      elements.push(
+        <div
+          key={`yt-${elements.length}`}
+          className="my-6 mx-auto w-full max-w-4xl overflow-hidden rounded-lg"
+        >
+          <div className="relative w-full overflow-hidden rounded-lg pb-[56.25%]">
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+              title="YouTube video player"
+              className="absolute left-0 top-0 h-full w-full"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+        </div>,
       );
       continue;
     }
@@ -271,6 +337,143 @@ export function MarkdownRenderer({
   flushTable();
 
   return <div className="prose prose-lg max-w-none">{elements}</div>;
+}
+
+function parseHtmlImageTag(line: string): { src: string; alt: string } | null {
+  const trimmed = (line || "").trim();
+  const decoded = trimmed
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&amp;/gi, "&");
+  if (!/^<img\b[^>]*\/?\s*>$/i.test(decoded)) {
+    return null;
+  }
+
+  const srcMatch = decoded.match(/\bsrc\s*=\s*["']([^"']+)["']/i);
+  const altMatch = decoded.match(/\balt\s*=\s*["']([^"']*)["']/i);
+
+  if (!srcMatch?.[1]) {
+    return null;
+  }
+
+  return {
+    src: normalizeImageSource(srcMatch[1].trim()),
+    alt: (altMatch?.[1] || "").trim(),
+  };
+}
+
+function extractYouTubeVideoIdFromLine(line: string): string | null {
+  const raw = (line || "").trim();
+  if (!raw) return null;
+
+  // Support bare URLs, <url>, and markdown links [text](url)
+  let candidate = raw;
+
+  const markdownLinkMatch = raw.match(/^\[[^\]]*\]\((https?:\/\/[^\s\)]+)\)$/i);
+  if (markdownLinkMatch?.[1]) {
+    candidate = markdownLinkMatch[1].trim();
+  }
+
+  const autoLinkMatch = candidate.match(/^<(https?:\/\/[^>]+)>$/i);
+  if (autoLinkMatch?.[1]) {
+    candidate = autoLinkMatch[1].trim();
+  }
+
+  // watch?v=VIDEO_ID
+  const watchMatch = candidate.match(
+    /^https?:\/\/(?:www\.)?(?:youtube\.com|m\.youtube\.com)\/watch\?[^\s]*v=([a-zA-Z0-9_-]{11})/i,
+  );
+  if (watchMatch?.[1]) return watchMatch[1];
+
+  // youtu.be/VIDEO_ID
+  const shortMatch = candidate.match(
+    /^https?:\/\/(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})/i,
+  );
+  if (shortMatch?.[1]) return shortMatch[1];
+
+  // youtube.com/embed/VIDEO_ID
+  const embedMatch = candidate.match(
+    /^https?:\/\/(?:www\.)?(?:youtube\.com|m\.youtube\.com)\/embed\/([a-zA-Z0-9_-]{11})/i,
+  );
+  if (embedMatch?.[1]) return embedMatch[1];
+
+  // youtube.com/shorts/VIDEO_ID
+  const shortsMatch = candidate.match(
+    /^https?:\/\/(?:www\.)?(?:youtube\.com|m\.youtube\.com)\/shorts\/([a-zA-Z0-9_-]{11})/i,
+  );
+  if (shortsMatch?.[1]) return shortsMatch[1];
+
+  return null;
+}
+
+function extractCaptionLine(rawLine?: string): string | null {
+  const line = (rawLine || "").trim();
+  if (!line) return null;
+
+  if (/^caption::/i.test(line)) {
+    return line.replace(/^caption::\s*/i, "").trim();
+  }
+
+  const withoutStars = line.replace(/^\*+|\*+$/g, "").trim();
+  if (!withoutStars) return null;
+
+  // If the original line is emphasized and placed right after an image,
+  // treat it as a caption (backward compatibility with older converted data).
+  if (/^\*.*\*$/.test(line)) {
+    return withoutStars;
+  }
+
+  // Accept both "Hình 1. ..." and "Hinh 1 ..." styles.
+  const captionMatch = withoutStars.match(
+    /^(hinh|hình|anh|ảnh|figure)\s+\d+([\.:\-)\s]+.*)$/i,
+  );
+  if (!captionMatch) return null;
+
+  return withoutStars;
+}
+
+function extractCaptionFromFollowingLines(
+  lines: string[],
+  currentIndex: number,
+): { caption: string | null; consumedLines: number } {
+  // Allow one or two empty spacer lines between image and caption.
+  for (let offset = 1; offset <= 3; offset++) {
+    const candidate = lines[currentIndex + offset];
+    if (candidate === undefined) break;
+
+    const trimmed = candidate.trim();
+    if (!trimmed) {
+      continue;
+    }
+
+    const caption = extractCaptionLine(candidate);
+    if (caption) {
+      return { caption, consumedLines: offset };
+    }
+
+    // Stop when the next non-empty line is not a caption.
+    break;
+  }
+
+  return { caption: null, consumedLines: 0 };
+}
+
+function normalizeImageSource(raw: string): string {
+  if (!raw) return "";
+  let value = raw.trim();
+
+  // Recover from malformed values like !!![](https://...)
+  const markdownWrappedUrl = value.match(/!?\[.*?\]\((https?:\/\/[^\)\s]+)\)/i);
+  if (markdownWrappedUrl?.[1]) {
+    value = markdownWrappedUrl[1].trim();
+  }
+
+  // Remove leading punctuation that can appear in corrupted input.
+  value = value.replace(/^[!\s]+/, "");
+
+  return value;
 }
 
 // Format inline markdown (bold, italic, links, images, etc.)

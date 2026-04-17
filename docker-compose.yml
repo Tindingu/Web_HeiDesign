@@ -5,6 +5,7 @@ services:
     build: .
     environment:
       - NODE_ENV=production
+      - DATABASE_URL=
       - NEXT_PUBLIC_SITE_URL=https://icepdesign.vn
       - STRAPI_URL=http://strapi:1337
       - STRAPI_TOKEN=

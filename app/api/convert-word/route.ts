@@ -107,7 +107,8 @@ export async function POST(request: NextRequest) {
       filter: "figcaption",
       replacement: (content) => {
         console.log("🏷️ Found figcaption:", content.substring(0, 50));
-        return `*${content.trim()}*\n`;
+        // Keep an explicit marker so renderer can reliably treat this as caption.
+        return `CAPTION::${content.trim()}\n`;
       },
     });
 
@@ -150,10 +151,14 @@ export async function POST(request: NextRequest) {
     // Remove raw HTML tags
     turndown.addRule("stripHtml", {
       filter: (node) => {
-        return node.nodeType === 3 && /<[^>]+>/g.test(node.nodeValue || "");
+        return (
+          node.nodeType === 3 &&
+          /<(?!\/?img\b)[^>]+>/gi.test(node.nodeValue || "")
+        );
       },
       replacement: (content) => {
-        return content.replace(/<[^>]+>/g, "");
+        // Keep <img ...> tags as-is so renderer can display external images.
+        return content.replace(/<(?!\/?img\b)[^>]+>/gi, "");
       },
     });
 
@@ -163,11 +168,24 @@ export async function POST(request: NextRequest) {
     console.log("✅ Markdown after turndown:");
     console.log("✅ First 1500 chars:", markdown.substring(0, 1500));
 
-    // Extract any Cloudinary URLs from the text and convert to markdown images
-    markdown = markdown.replace(
-      /(https?:\/\/res\.cloudinary\.com\/[^\s\)]+\.(jpg|jpeg|png|gif|webp|svg))/gi,
-      "![]($1)",
-    );
+    // Convert only standalone Cloudinary URL lines to markdown images.
+    // This avoids corrupting URLs that are already inside HTML <img src="..."> tags.
+    markdown = markdown
+      .split("\n")
+      .map((line) => {
+        const trimmed = line.trim();
+        const isStandaloneCloudinaryUrl =
+          /^https?:\/\/res\.cloudinary\.com\/[^\s]+\.(jpg|jpeg|png|gif|webp|svg)$/i.test(
+            trimmed,
+          );
+
+        if (isStandaloneCloudinaryUrl) {
+          return `![](${trimmed})`;
+        }
+
+        return line;
+      })
+      .join("\n");
 
     markdown = cleanMarkdown(markdown);
 
@@ -260,7 +278,8 @@ function cleanMarkdown(markdown: string): string {
     .replace(/\r\n/g, "\n")
     .replace(/\\([`*_{}\[\]()#+\-.!|>])/g, "$1")
     .replace(/\n{3,}/g, "\n\n")
-    .replace(/<[^>]+>/g, "") // Strip remaining HTML tags
+    // Strip remaining HTML tags but preserve <img ...> so content stays lightweight.
+    .replace(/<(?!\/?img\b)[^>]+>/gi, "")
     .trim();
 
   // Convert image links to markdown image syntax
@@ -297,6 +316,9 @@ function cleanMarkdown(markdown: string): string {
 
   // Remove standalone figcaption lines (they should be merged with image above)
   cleaned = cleaned.replace(/^\*Hình\s+\d+[^\*]*\*$/gm, "");
+
+  // Normalize caption marker format for renderer.
+  cleaned = cleaned.replace(/^CAPTION::\s*/gim, "CAPTION:: ");
 
   return cleaned;
 }
