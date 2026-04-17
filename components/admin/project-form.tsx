@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Project } from "@/lib/strapi";
 import { Button } from "@/components/ui/button";
@@ -52,6 +52,65 @@ export function ProjectForm({ project }: { project?: Project }) {
   const [wordLoading, setWordLoading] = useState(false);
   const [wordError, setWordError] = useState("");
   const [wordMessage, setWordMessage] = useState("");
+  const [categoryOptions, setCategoryOptions] = useState<string[]>([
+    "Căn hộ",
+    "Biệt thự",
+    "Nhà phố",
+    "Văn phòng",
+    "Khách sạn",
+    "Café",
+  ]);
+  const [styleOptions, setStyleOptions] = useState<string[]>([
+    "Hiện đại",
+    "Tân cổ điển",
+    "Minimalism",
+    "Japandi",
+    "Wabi Sabi",
+    "Tropical",
+    "Modern Luxury",
+  ]);
+
+  useEffect(() => {
+    const loadTaxonomies = async () => {
+      try {
+        const response = await fetch("/api/taxonomies", { cache: "no-store" });
+        const payload = await response.json();
+        if (!response.ok || !payload?.ok) return;
+        const categoryNames = (payload?.data?.projectCategories || [])
+          .map((item: { name: string }) => item.name)
+          .filter(Boolean);
+        const styleNames = (payload?.data?.projectStyles || [])
+          .map((item: { name: string }) => item.name)
+          .filter(Boolean);
+
+        if (categoryNames.length > 0) {
+          const mergedCategories = project?.category && !categoryNames.includes(project.category)
+            ? [project.category, ...categoryNames]
+            : categoryNames;
+          setCategoryOptions(mergedCategories);
+          setFormData((prev) => ({
+            ...prev,
+            category: prev.category || mergedCategories[0],
+          }));
+        }
+
+        if (styleNames.length > 0) {
+          const mergedStyles = project?.style && !styleNames.includes(project.style)
+            ? [project.style, ...styleNames]
+            : styleNames;
+          setStyleOptions(mergedStyles);
+          setFormData((prev) => ({
+            ...prev,
+            style: prev.style || mergedStyles[0],
+          }));
+        }
+      } catch {
+        // Keep fallback list.
+      }
+    };
+
+    void loadTaxonomies();
+  }, [project?.category, project?.style]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -220,13 +279,18 @@ export function ProjectForm({ project }: { project?: Project }) {
                   }
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-amber-500"
                 >
-                  <option>Căn hộ</option>
-                  <option>Biệt thự</option>
-                  <option>Nhà phố</option>
-                  <option>Văn phòng</option>
-                  <option>Khách sạn</option>
-                  <option>Café</option>
+                  {categoryOptions.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
                 </select>
+                <Link
+                  href="/admin/categories"
+                  className="mt-2 inline-block text-xs text-amber-700 hover:underline"
+                >
+                  Quản lý category/style dự án
+                </Link>
               </div>
 
               <div>
@@ -238,11 +302,11 @@ export function ProjectForm({ project }: { project?: Project }) {
                   }
                   className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-amber-500"
                 >
-                  <option>Hiện đại</option>
-                  <option>Tân cổ điển</option>
-                  <option>Minimalism</option>
-                  <option>Wabi Sabi</option>
-                  <option>Japandi</option>
+                  {styleOptions.map((style) => (
+                    <option key={style} value={style}>
+                      {style}
+                    </option>
+                  ))}
                 </select>
               </div>
 

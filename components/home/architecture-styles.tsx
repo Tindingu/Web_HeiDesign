@@ -4,90 +4,117 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import type { Project } from "@/lib/strapi";
 
-const architectureStyles = [
-  {
-    id: "modern",
-    name: "MODERN LUXURY",
-    projects: Array(4)
-      .fill(null)
-      .map((_, i) => ({
-        image: `/upload/architecture/modern-${i + 1}.jpg`,
-      })),
-  },
-  {
-    id: "contemporary",
-    name: "HIỆN ĐẠI",
-    projects: Array(4)
-      .fill(null)
-      .map((_, i) => ({
-        image: `/upload/architecture/contemporary-${i + 1}.jpg`,
-      })),
-  },
-  {
-    id: "classic",
-    name: "TÂN CỔ ĐIỂN",
-    projects: Array(4)
-      .fill(null)
-      .map((_, i) => ({
-        image: `/upload/architecture/classic-${i + 1}.jpg`,
-      })),
-  },
-  {
-    id: "wabi",
-    name: "WABI SABI",
-    projects: Array(4)
-      .fill(null)
-      .map((_, i) => ({
-        image: `/upload/architecture/wabi-${i + 1}.jpg`,
-      })),
-  },
-  {
-    id: "minimalism",
-    name: "MINIMALISM",
-    projects: Array(4)
-      .fill(null)
-      .map((_, i) => ({
-        image: `/upload/architecture/minimalism-${i + 1}.jpg`,
-      })),
-  },
-  {
-    id: "japandi",
-    name: "JAPANDI",
-    projects: Array(4)
-      .fill(null)
-      .map((_, i) => ({
-        image: `/upload/architecture/japandi-${i + 1}.jpg`,
-      })),
-  },
-  {
-    id: "tropical",
-    name: "TROPICAL",
-    projects: Array(4)
-      .fill(null)
-      .map((_, i) => ({
-        image: `/upload/architecture/tropical-${i + 1}.jpg`,
-      })),
-  },
+type ArchitectureStylesProps = {
+  projects: Project[];
+  styles?: Array<{ id: number; name: string }>;
+  initialTab?: string;
+};
+
+type StyleTab = {
+  id: string;
+  label: string;
+};
+
+type StyleImageItem = {
+  projectSlug: string;
+  projectTitle: string;
+  url: string;
+  alt: string;
+  blurDataURL?: string;
+};
+
+function normalizeText(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function slugifyText(value: string) {
+  return normalizeText(value)
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/--+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+const fallbackStyles = [
+  "Hiện đại",
+  "Tân cổ điển",
+  "Minimalism",
+  "Japandi",
+  "Wabi Sabi",
+  "Tropical",
+  "Modern Luxury",
 ];
 
-export function ArchitectureStyles() {
-  const [activeTab, setActiveTab] = useState("modern");
+export function ArchitectureStyles({
+  projects,
+  styles = [],
+  initialTab,
+}: ArchitectureStylesProps) {
+  const styleTabs = useMemo<StyleTab[]>(() => {
+    const source = styles.length > 0 ? styles : fallbackStyles.map((name, index) => ({ id: index + 1, name }));
+    return source.map((style) => ({
+      id: slugifyText(style.name),
+      label: style.name,
+    }));
+  }, [styles]);
 
-  const activeStyle = architectureStyles.find(
-    (style) => style.id === activeTab,
-  );
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (initialTab && styleTabs.some((tab) => tab.id === initialTab)) {
+      return initialTab;
+    }
+    return styleTabs[0]?.id ?? "";
+  });
+
+  const sortedProjects = useMemo(() => {
+    return [...projects].sort((a, b) => {
+      const featuredOrder =
+        Number(Boolean(b.featured)) - Number(Boolean(a.featured));
+      if (featuredOrder !== 0) return featuredOrder;
+
+      const dateA = new Date(a.updatedAt ?? a.createdAt ?? 0).getTime();
+      const dateB = new Date(b.updatedAt ?? b.createdAt ?? 0).getTime();
+      return dateB - dateA;
+    });
+  }, [projects]);
+
+  const imagesByTab = useMemo(() => {
+    return styleTabs.reduce<Record<string, StyleImageItem[]>>((acc, tab) => {
+      const matchedProjects = sortedProjects.filter((project) => {
+        const projectStyle = normalizeText(project.style || "");
+        return projectStyle === normalizeText(tab.label);
+      });
+
+      const matchedImages = matchedProjects
+        .flatMap((project) => [project.coverImage, ...(project.gallery ?? [])].map((image) => ({
+          projectSlug: project.slug,
+          projectTitle: project.title,
+          url: image.url,
+          alt: image.alt || project.title,
+          blurDataURL: image.blurDataURL,
+        })))
+        .filter((image) => Boolean(image.url));
+
+      acc[tab.id] = matchedImages;
+      return acc;
+    }, {});
+  }, [sortedProjects, styleTabs]);
+
+  const activeImages = imagesByTab[activeTab] ?? [];
 
   return (
     <section className="bg-gray-900 py-20 text-white">
       <Container className="space-y-12">
-        {/* Header */}
         <h2 className="text-5xl font-bold md:text-6xl">KIẾN TRÚC NHÀ PHỐ</h2>
 
-        {/* Tabs */}
         <div className="flex flex-wrap gap-6 border-b border-gray-700 pb-6">
-          {architectureStyles.map((style) => (
+          {styleTabs.map((style) => (
             <button
               key={style.id}
               onClick={() => setActiveTab(style.id)}
@@ -97,36 +124,48 @@ export function ArchitectureStyles() {
                   : "text-gray-400 hover:text-white"
               }`}
             >
-              {style.name}
+              {style.label}
             </button>
           ))}
         </div>
 
-        {/* Projects Grid - 4 columns */}
-        {activeStyle && (
+        {activeImages.length > 0 ? (
           <div className="grid gap-4 md:grid-cols-4">
-            {activeStyle.projects.map((project, idx) => (
-              <div
-                key={idx}
-                className="group relative h-64 overflow-hidden rounded-lg md:h-80"
+            {activeImages.map((image, index) => (
+              <Link
+                key={`${image.projectSlug}-${index}-${image.url}`}
+                href={`/du-an/${image.projectSlug}`}
+                className="group relative block overflow-hidden rounded-lg"
               >
-                <Image
-                  src={project.image}
-                  alt={`${activeStyle.name} ${idx + 1}`}
-                  fill
-                  className="object-cover transition duration-500 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, 25vw"
-                />
-                <div className="absolute inset-0 bg-black/20 transition duration-300 group-hover:bg-black/40" />
-              </div>
+                <div className="relative h-64 md:h-80">
+                  <Image
+                    src={image.url}
+                    alt={image.alt}
+                    fill
+                    className="object-cover transition duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    placeholder={image.blurDataURL ? "blur" : undefined}
+                    blurDataURL={image.blurDataURL}
+                  />
+                </div>
+                <div className="absolute inset-0 bg-black/15 transition duration-300 group-hover:bg-black/35" />
+                <div className="absolute inset-x-0 bottom-0 p-4 text-left">
+                  <p className="text-xs uppercase tracking-[0.2em] text-white/75">
+                    {image.projectTitle}
+                  </p>
+                </div>
+              </Link>
             ))}
+          </div>
+        ) : (
+          <div className="rounded-lg border border-white/10 bg-white/5 p-6 text-white/70">
+            Chưa có ảnh cho style này.
           </div>
         )}
 
-        {/* View More */}
         <div className="flex justify-end">
           <Link
-            href="/kien-truc"
+            href={`/du-an?style=${activeTab}`}
             className="inline-flex items-center gap-3 text-lg font-semibold transition hover:text-amber-400"
           >
             <span>XEM THÊM</span>

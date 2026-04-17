@@ -1,5 +1,6 @@
 import { buildMetadata } from "@/lib/seo";
 import { getProjects } from "@/lib/strapi";
+import { readProjectCategories, readProjectStyles } from "@/lib/taxonomy-storage";
 import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureShowcase } from "@/components/portfolio/architecture-showcase";
 import { readArticles } from "@/lib/article-storage";
@@ -32,8 +33,12 @@ export default async function InteriorDesignTypePage({
 }: {
   params: { type: string };
 }) {
-  const projects = await getProjects();
-  const articles = await readArticles();
+  const [projects, categories, styles, articles] = await Promise.all([
+    getProjects(),
+    readProjectCategories(),
+    readProjectStyles(),
+    readArticles(),
+  ]);
   const matchedArticles = articles
     .filter(
       (article) =>
@@ -110,6 +115,7 @@ export default async function InteriorDesignTypePage({
 
       <CompletedProjects
         projects={projects}
+        categories={categories}
         maxItemsPerTab={null}
         showViewMoreButton={false}
         initialTab={params.type}
@@ -118,6 +124,7 @@ export default async function InteriorDesignTypePage({
 
       <ArchitectureShowcase
         projects={projects}
+        styles={styles}
         initialTab={params.type}
         theme="light"
       />

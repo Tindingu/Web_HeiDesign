@@ -9,53 +9,17 @@ import type { Project } from "@/lib/strapi";
 
 type CompletedProjectsProps = {
   projects: Project[];
+  categories?: Array<{ id: number; name: string }>;
   maxItemsPerTab?: number | null;
   showViewMoreButton?: boolean;
   initialTab?: string;
   theme?: "dark" | "light";
 };
 
-const projectTabs = [
-  {
-    id: "biet-thu",
-    label: "BIỆT THỰ",
-    aliases: ["biệt thự", "biet thu", "villa"],
-  },
-  {
-    id: "nha-pho",
-    label: "NHÀ PHỐ",
-    aliases: ["nhà phố", "nha pho", "townhouse"],
-  },
-  {
-    id: "can-ho",
-    label: "CĂN HỘ",
-    aliases: ["căn hộ", "can ho", "chung cư", "chung cu", "apartment"],
-  },
-  {
-    id: "cong-trinh-dich-vu",
-    label: "CÔNG TRÌNH DỊCH VỤ",
-    aliases: [
-      "công trình dịch vụ",
-      "cong trinh dich vu",
-      "khách sạn",
-      "khach san",
-      "spa",
-      "cafe",
-      "coffee",
-      "nhà hàng",
-      "nha hang",
-      "shop",
-      "showroom",
-      "service",
-    ],
-  },
-] as const;
-
-type ProjectTabId = (typeof projectTabs)[number]["id"];
-
-function isProjectTabId(value: string): value is ProjectTabId {
-  return projectTabs.some((tab) => tab.id === value);
-}
+type ProjectTab = {
+  id: string;
+  label: string;
+};
 
 function normalizeText(value: string) {
   return value
@@ -65,16 +29,42 @@ function normalizeText(value: string) {
     .trim();
 }
 
+function slugifyText(value: string) {
+  return normalizeText(value)
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/--+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+const fallbackCategories = [
+  "Biệt thự",
+  "Nhà phố",
+  "Căn hộ",
+  "Công trình dịch vụ",
+];
+
 export function CompletedProjects({
   projects,
+  categories = [],
   maxItemsPerTab = 6,
   showViewMoreButton = true,
   initialTab,
   theme = "dark",
 }: CompletedProjectsProps) {
-  const [activeTab, setActiveTab] = useState<ProjectTabId>(() => {
-    if (initialTab && isProjectTabId(initialTab)) return initialTab;
-    return projectTabs[0].id;
+  const projectTabs = useMemo<ProjectTab[]>(() => {
+    const source = categories.length > 0 ? categories : fallbackCategories.map((name, index) => ({ id: index + 1, name }));
+    return source.map((category) => ({
+      id: slugifyText(category.name),
+      label: category.name,
+    }));
+  }, [categories]);
+
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (initialTab && projectTabs.some((tab) => tab.id === initialTab)) {
+      return initialTab;
+    }
+    return projectTabs[0]?.id ?? "";
   });
 
   const sortedProjects = useMemo(() => {
@@ -90,13 +80,11 @@ export function CompletedProjects({
   }, [projects]);
 
   const projectsByTab = useMemo(() => {
-    return projectTabs.reduce<Record<ProjectTabId, Project[]>>(
+    return projectTabs.reduce<Record<string, Project[]>>(
       (acc, tab) => {
         const matchedProjects = sortedProjects.filter((project) => {
           const category = normalizeText(project.category || "");
-          return tab.aliases.some((alias) =>
-            category.includes(normalizeText(alias)),
-          );
+          return category === normalizeText(tab.label);
         });
 
         acc[tab.id] =
@@ -105,12 +93,7 @@ export function CompletedProjects({
             : matchedProjects;
         return acc;
       },
-      {
-        "biet-thu": [],
-        "nha-pho": [],
-        "can-ho": [],
-        "cong-trinh-dich-vu": [],
-      },
+      {},
     );
   }, [sortedProjects, maxItemsPerTab]);
 
@@ -145,7 +128,7 @@ export function CompletedProjects({
                     : "text-white/60 hover:text-white"
               }`}
             >
-              {tab.label}
+                  {tab.label.toUpperCase()}
             </button>
           ))}
         </div>
@@ -198,7 +181,7 @@ export function CompletedProjects({
         {showViewMoreButton && (
           <div className="flex justify-end">
             <Link
-              href={`/du-an?type=${activeTab}`}
+              href={`/du-an?category=${activeTab}`}
               className={`inline-flex items-center gap-4 text-lg font-semibold uppercase tracking-wide transition ${
                 isLight ? "hover:text-amber-600" : "hover:text-amber-300"
               }`}

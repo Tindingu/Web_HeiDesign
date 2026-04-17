@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
@@ -66,6 +66,31 @@ export function BlogPostForm({ post }: { post?: BlogPostRecord }) {
   const [wordFile, setWordFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [categories, setCategories] = useState<string[]>(BLOG_CATEGORIES);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const response = await fetch("/api/taxonomies", { cache: "no-store" });
+        const payload = await response.json();
+        if (!response.ok || !payload?.ok) return;
+        const names = (payload?.data?.blogCategories || [])
+          .map((item: { name: string }) => item.name)
+          .filter(Boolean);
+        if (names.length > 0) {
+          setCategories(names);
+          setFormData((prev) => ({
+            ...prev,
+            category: prev.category || names[0],
+          }));
+        }
+      } catch {
+        // Keep fallback categories.
+      }
+    };
+
+    void loadCategories();
+  }, []);
 
   const handleTitleChange = (value: string) => {
     setFormData((prev) => {
@@ -224,12 +249,18 @@ export function BlogPostForm({ post }: { post?: BlogPostRecord }) {
               }
               className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-amber-500"
             >
-              {BLOG_CATEGORIES.map((category) => (
+              {categories.map((category) => (
                 <option key={category} value={category}>
                   {category}
                 </option>
               ))}
             </select>
+            <Link
+              href="/admin/categories"
+              className="mt-2 inline-block text-xs text-amber-700 hover:underline"
+            >
+              Quản lý category blog
+            </Link>
           </div>
 
           <div>

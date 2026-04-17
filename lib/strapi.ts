@@ -2,9 +2,7 @@ import { env } from "@/lib/env";
 import { defaultBlurDataURL } from "@/lib/constants";
 // @ts-ignore
 import sanitizeHtml from "sanitize-html";
-import { readProjects } from "@/lib/project-storage";
 import { toCategorySlug } from "@/lib/post-category";
-import { readBlogPosts, toPost } from "@/lib/blog-post-storage";
 
 export type ImageAsset = {
   url: string;
@@ -277,6 +275,24 @@ async function fetchStrapi<T>(path: string, query?: string): Promise<T | null> {
   }
 }
 
+async function readProjectsFromStorage() {
+  const { readProjects } = await import("@/lib/project-storage");
+  return readProjects();
+}
+
+async function readBlogPostsFromStorage() {
+  const { readBlogPosts, toPost } = await import("@/lib/blog-post-storage");
+  const records = await readBlogPosts();
+  return records.map(toPost);
+}
+
+async function getLocalPostBySlug(slug: string): Promise<Post | null> {
+  const { readBlogPosts, toPost } = await import("@/lib/blog-post-storage");
+  const records = await readBlogPosts();
+  const found = records.find((post) => post.slug === slug);
+  return found ? toPost(found) : null;
+}
+
 export async function getHomeContent() {
   const content = await fetchStrapi<{
     attributes: {
@@ -326,7 +342,7 @@ export async function getHomeContent() {
 export async function getFeaturedProjects(): Promise<Project[]> {
   // Try project storage first
   try {
-    const storageProjects = await readProjects();
+    const storageProjects = await readProjectsFromStorage();
     const featured = storageProjects.filter((p) => p.featured);
     if (featured.length > 0) return featured;
   } catch (error) {
@@ -346,7 +362,7 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 export async function getProjects(): Promise<Project[]> {
   // Try project storage first
   try {
-    const storageProjects = await readProjects();
+    const storageProjects = await readProjectsFromStorage();
     if (storageProjects.length > 0) return storageProjects;
   } catch (error) {
     console.error("Error reading from project storage:", error);
@@ -365,7 +381,7 @@ export async function getProjects(): Promise<Project[]> {
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   // Try project storage first
   try {
-    const storageProjects = await readProjects();
+    const storageProjects = await readProjectsFromStorage();
     const found = storageProjects.find((p) => p.slug === slug);
     if (found) return found;
   } catch (error) {
@@ -402,8 +418,7 @@ export async function getPortfolioFilters(): Promise<PortfolioFilters> {
 export async function getPosts(): Promise<Post[]> {
   let localPosts: Post[] = [];
   try {
-    const records = await readBlogPosts();
-    localPosts = records.map(toPost);
+    localPosts = await readBlogPostsFromStorage();
   } catch {
     localPosts = [];
   }
@@ -433,9 +448,8 @@ export async function getPosts(): Promise<Post[]> {
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   try {
-    const localRecords = await readBlogPosts();
-    const local = localRecords.find((post) => post.slug === slug);
-    if (local) return toPost(local);
+    const local = await getLocalPostBySlug(slug);
+    if (local) return local;
   } catch {
     // Ignore local read errors and continue to Strapi.
   }

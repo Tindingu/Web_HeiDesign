@@ -5,12 +5,12 @@ import Link from "next/link";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { Search, Menu, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const topCategories = [
   {
     label: "MẦU NHÀ ĐẸP",
-    src: "/upload/iconheading/nha-dep.png ",
+    src: "/upload/iconheading/nha-dep.png",
     href: "/du-an?category=nha-dep",
   },
   {
@@ -35,71 +35,75 @@ const topCategories = [
   },
 ];
 
-const menuItems = [
+const defaultInteriorSubmenu = [
+  {
+    label: "Thiết kế nội thất biệt thự",
+    href: "/thiet-ke-noi-that/biet-thu",
+  },
+  {
+    label: "Thiết kế nội thất chung cư",
+    href: "/thiet-ke-noi-that/chung-cu",
+  },
+  {
+    label: "Thiết kế nội thất nhà phố",
+    href: "/thiet-ke-noi-that/nha-pho",
+  },
+  {
+    label: "Thiết kế nội thất penthouse, duplex",
+    href: "/thiet-ke-noi-that/penthouse",
+  },
+  {
+    label: "Thiết kế nội thất văn phòng",
+    href: "/thiet-ke-noi-that/van-phong",
+  },
+  {
+    label: "Thiết kế nội thất khách sạn",
+    href: "/thiet-ke-noi-that/khach-san",
+  },
+  {
+    label: "Thiết kế nội thất nhà hàng",
+    href: "/thiet-ke-noi-that/nha-hang",
+  },
+  {
+    label: "Thiết kế nội thất quán cafe",
+    href: "/thiet-ke-noi-that/cafe",
+  },
+  {
+    label: "Thiết kế nội thất showroom",
+    href: "/thiet-ke-noi-that/showroom",
+  },
+];
+
+const defaultConstructionSubmenu = [
+  {
+    label: "Thị công nội thất biệt thự",
+    href: "/thi-cong-noi-that/biet-thu",
+  },
+  {
+    label: "Thị công nội thất chung cư",
+    href: "/thi-cong-noi-that/chung-cu",
+  },
+  {
+    label: "Thị công nội thất nhà phố",
+    href: "/thi-cong-noi-that/nha-pho",
+  },
+  {
+    label: "Thị công nội thất văn phòng",
+    href: "/thi-cong-noi-that/van-phong",
+  },
+];
+
+const baseMenuItems = [
   { label: "Trang chủ", href: "/" },
   {
     label: "Thiết Kế Nội Thất",
     href: "/thiet-ke-noi-that",
-    submenu: [
-      {
-        label: "Thiết kế nội thất biệt thự",
-        href: "/thiet-ke-noi-that/biet-thu",
-      },
-      {
-        label: "Thiết kế nội thất chung cư",
-        href: "/thiet-ke-noi-that/chung-cu",
-      },
-      {
-        label: "Thiết kế nội thất nhà phố",
-        href: "/thiet-ke-noi-that/nha-pho",
-      },
-      {
-        label: "Thiết kế nội thất penthouse, duplex",
-        href: "/thiet-ke-noi-that/penthouse",
-      },
-      {
-        label: "Thiết kế nội thất văn phòng",
-        href: "/thiet-ke-noi-that/van-phong",
-      },
-      {
-        label: "Thiết kế nội thất khách sạn",
-        href: "/thiet-ke-noi-that/khach-san",
-      },
-      {
-        label: "Thiết kế nội thất nhà hàng",
-        href: "/thiet-ke-noi-that/nha-hang",
-      },
-      {
-        label: "Thiết kế nội thất quán cafe",
-        href: "/thiet-ke-noi-that/cafe",
-      },
-      {
-        label: "Thiết kế nội thất showroom",
-        href: "/thiet-ke-noi-that/showroom",
-      },
-    ],
+    submenu: defaultInteriorSubmenu,
   },
   {
     label: "Thị Công Nội Thất",
     href: "/thi-cong-noi-that",
-    submenu: [
-      {
-        label: "Thị công nội thất biệt thự",
-        href: "/thi-cong-noi-that/biet-thu",
-      },
-      {
-        label: "Thị công nội thất chung cư",
-        href: "/thi-cong-noi-that/chung-cu",
-      },
-      {
-        label: "Thị công nội thất nhà phố",
-        href: "/thi-cong-noi-that/nha-pho",
-      },
-      {
-        label: "Thị công nội thất văn phòng",
-        href: "/thi-cong-noi-that/van-phong",
-      },
-    ],
+    submenu: defaultConstructionSubmenu,
   },
   { label: "Dự Án Thiết Kế", href: "/du-an-thiet-ke" },
   { label: "Dự Án Hoàn Thiện", href: "/du-an-hoan-thien" },
@@ -110,6 +114,58 @@ const menuItems = [
 export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [interiorSubmenu, setInteriorSubmenu] = useState(defaultInteriorSubmenu);
+  const [constructionSubmenu, setConstructionSubmenu] = useState(
+    defaultConstructionSubmenu,
+  );
+
+  useEffect(() => {
+    const loadTargets = async () => {
+      try {
+        const response = await fetch("/api/article-targets", {
+          cache: "no-store",
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload?.ok || !Array.isArray(payload.data)) {
+          return;
+        }
+
+        const sectionMap = new Map<string, Array<{ label: string; href: string }>>();
+        for (const section of payload.data) {
+          if (!section?.code || !Array.isArray(section.types)) continue;
+          sectionMap.set(
+            section.code,
+            section.types.map((type: { name: string; code: string }) => ({
+              label: type.name,
+              href: `/${section.code}/${type.code}`,
+            })),
+          );
+        }
+
+        const fromDbInterior = sectionMap.get("thiet-ke-noi-that") || [];
+        const fromDbConstruction = sectionMap.get("thi-cong-noi-that") || [];
+
+        if (fromDbInterior.length > 0) setInteriorSubmenu(fromDbInterior);
+        if (fromDbConstruction.length > 0) setConstructionSubmenu(fromDbConstruction);
+      } catch {
+        // Keep fallback menu if API is unavailable.
+      }
+    };
+
+    void loadTargets();
+  }, []);
+
+  const menuItems = useMemo(() => {
+    return baseMenuItems.map((item) => {
+      if (item.href === "/thiet-ke-noi-that") {
+        return { ...item, submenu: interiorSubmenu };
+      }
+      if (item.href === "/thi-cong-noi-that") {
+        return { ...item, submenu: constructionSubmenu };
+      }
+      return item;
+    });
+  }, [constructionSubmenu, interiorSubmenu]);
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -119,19 +175,19 @@ export function SiteHeader() {
           {/* Logo */}
           <Link href="/" className="flex min-w-fit items-center gap-2">
             <Image
-              src="/upload/logo/icep-logo.png"
+              src="/upload/logo/icep-logo.svg"
               alt="ICEP"
-              width={50}
-              height={50}
+              width={120}
+              height={120}
               priority
               className="h-12 w-auto"
             />
-            <div className="hidden flex-col md:flex">
+            {/* <div className="hidden flex-col md:flex">
               <span className="text-xl font-bold tracking-wider">
                 <span className="text-amber-600">HEI</span>
               </span>
               <span className="text-xs font-light text-gray-600">Design</span>
-            </div>
+            </div> */}
           </Link>
 
           {/* Search Bar */}

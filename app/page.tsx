@@ -9,6 +9,7 @@ import { TestimonialsCarousel } from "@/components/home/testimonials-carousel";
 import { CtaStrip } from "@/components/home/cta-strip";
 import { buildBusinessJsonLd, buildMetadata } from "@/lib/seo";
 import { getHomeContent, getProjects } from "@/lib/strapi";
+import { readProjectCategories, readProjectStyles } from "@/lib/taxonomy-storage";
 
 export const revalidate = 120;
 
@@ -21,9 +22,11 @@ export const generateMetadata = () =>
   });
 
 export default async function HomePage() {
-  const [projects, content] = await Promise.all([
+  const [projects, content, categories, styles] = await Promise.all([
     getProjects(),
     getHomeContent(),
+    readProjectCategories(),
+    readProjectStyles(),
   ]);
   const jsonLd = buildBusinessJsonLd();
 
@@ -32,8 +35,8 @@ export default async function HomePage() {
       <Hero hero={content.hero} />
       <About />
       {/* <FeaturedProjects projects={projects} /> */}
-      <CompletedProjects projects={projects} />
-      <ArchitectureStyles />
+      <CompletedProjects projects={projects} categories={categories} />
+      <ArchitectureStyles projects={projects} styles={styles} />
       <Services services={content.services} />
       <ProcessTimeline steps={content.processSteps} />
       <TestimonialsCarousel testimonials={content.testimonials} />

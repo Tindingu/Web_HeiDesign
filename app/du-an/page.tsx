@@ -1,5 +1,6 @@
 import { buildMetadata } from "@/lib/seo";
 import { getProjects } from "@/lib/strapi";
+import { readProjectCategories, readProjectStyles } from "@/lib/taxonomy-storage";
 import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureShowcase } from "@/components/portfolio/architecture-showcase";
 import { DualFileWordUploader } from "@/components/portfolio/dual-file-word-uploader";
@@ -18,24 +19,31 @@ export const generateMetadata = () =>
 export default async function PortfolioPage({
   searchParams,
 }: {
-  searchParams?: { type?: string };
+  searchParams?: { type?: string; category?: string; style?: string };
 }) {
-  const projects = await getProjects();
-  const initialTab = searchParams?.type;
+  const [projects, categories, styles] = await Promise.all([
+    getProjects(),
+    readProjectCategories(),
+    readProjectStyles(),
+  ]);
+  const initialCategory = searchParams?.category ?? searchParams?.type;
+  const initialStyle = searchParams?.style ?? searchParams?.type;
 
   return (
     <main className="bg-background">
       <CompletedProjects
         projects={projects}
+        categories={categories}
         maxItemsPerTab={null}
         showViewMoreButton={false}
-        initialTab={initialTab}
+        initialTab={initialCategory}
         theme="light"
       />
 
       <ArchitectureShowcase
         projects={projects}
-        initialTab={initialTab}
+        styles={styles}
+        initialTab={initialStyle}
         theme="light"
       />
 

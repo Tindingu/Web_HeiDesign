@@ -8,51 +8,23 @@ import type { Project } from "@/lib/strapi";
 
 type ArchitectureShowcaseProps = {
   projects: Project[];
+  styles?: Array<{ id: number; name: string }>;
   initialTab?: string;
   theme?: "dark" | "light";
 };
 
-const architectureTabs = [
-  {
-    id: "biet-thu",
-    label: "BIỆT THỰ",
-    aliases: ["biệt thự", "biet thu", "villa"],
-  },
-  {
-    id: "nha-pho",
-    label: "NHÀ PHỐ",
-    aliases: ["nhà phố", "nha pho", "townhouse"],
-  },
-  {
-    id: "can-ho",
-    label: "CĂN HỘ",
-    aliases: ["căn hộ", "can ho", "chung cư", "chung cu", "apartment"],
-  },
-  {
-    id: "cong-trinh-dich-vu",
-    label: "CÔNG TRÌNH DỊCH VỤ",
-    aliases: [
-      "công trình dịch vụ",
-      "cong trinh dich vu",
-      "khách sạn",
-      "khach san",
-      "spa",
-      "cafe",
-      "coffee",
-      "nhà hàng",
-      "nha hang",
-      "shop",
-      "showroom",
-      "service",
-    ],
-  },
-] as const;
+type StyleTab = {
+  id: string;
+  label: string;
+};
 
-type ArchitectureTabId = (typeof architectureTabs)[number]["id"];
-
-function isArchitectureTabId(value: string): value is ArchitectureTabId {
-  return architectureTabs.some((tab) => tab.id === value);
-}
+type StyleImageItem = {
+  projectSlug: string;
+  projectTitle: string;
+  url: string;
+  alt: string;
+  blurDataURL?: string;
+};
 
 function normalizeText(value: string) {
   return value
@@ -62,14 +34,43 @@ function normalizeText(value: string) {
     .trim();
 }
 
+function slugifyText(value: string) {
+  return normalizeText(value)
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/--+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+const fallbackStyles = [
+  "Hiện đại",
+  "Tân cổ điển",
+  "Minimalism",
+  "Japandi",
+  "Wabi Sabi",
+  "Tropical",
+  "Modern Luxury",
+];
+
 export function ArchitectureShowcase({
   projects,
+  styles = [],
   initialTab,
   theme = "light",
 }: ArchitectureShowcaseProps) {
-  const [activeTab, setActiveTab] = useState<ArchitectureTabId>(() => {
-    if (initialTab && isArchitectureTabId(initialTab)) return initialTab;
-    return architectureTabs[0].id;
+  const styleTabs = useMemo<StyleTab[]>(() => {
+    const source = styles.length > 0 ? styles : fallbackStyles.map((name, index) => ({ id: index + 1, name }));
+    return source.map((style) => ({
+      id: slugifyText(style.name),
+      label: style.name,
+    }));
+  }, [styles]);
+
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (initialTab && styleTabs.some((tab) => tab.id === initialTab)) {
+      return initialTab;
+    }
+    return styleTabs[0]?.id ?? "";
   });
 
   const sortedProjects = useMemo(() => {
@@ -84,29 +85,29 @@ export function ArchitectureShowcase({
     });
   }, [projects]);
 
-  const projectsByTab = useMemo(() => {
-    return architectureTabs.reduce<Record<ArchitectureTabId, Project[]>>(
-      (acc, tab) => {
-        const matchedProjects = sortedProjects.filter((project) => {
-          const category = normalizeText(project.category || "");
-          return tab.aliases.some((alias) =>
-            category.includes(normalizeText(alias)),
-          );
-        });
+  const imagesByTab = useMemo(() => {
+    return styleTabs.reduce<Record<string, StyleImageItem[]>>((acc, tab) => {
+      const matchedProjects = sortedProjects.filter((project) => {
+        const projectStyle = normalizeText(project.style || "");
+        return projectStyle === normalizeText(tab.label);
+      });
 
-        acc[tab.id] = matchedProjects;
-        return acc;
-      },
-      {
-        "biet-thu": [],
-        "nha-pho": [],
-        "can-ho": [],
-        "cong-trinh-dich-vu": [],
-      },
-    );
-  }, [sortedProjects]);
+      const matchedImages = matchedProjects
+        .flatMap((project) => [project.coverImage, ...(project.gallery ?? [])].map((image) => ({
+          projectSlug: project.slug,
+          projectTitle: project.title,
+          url: image.url,
+          alt: image.alt || project.title,
+          blurDataURL: image.blurDataURL,
+        })))
+        .filter((image) => Boolean(image.url));
 
-  const activeProjects = projectsByTab[activeTab] ?? [];
+      acc[tab.id] = matchedImages;
+      return acc;
+    }, {});
+  }, [sortedProjects, styleTabs]);
+
+  const activeImages = imagesByTab[activeTab] ?? [];
   const isLight = theme === "light";
 
   return (
@@ -125,7 +126,7 @@ export function ArchitectureShowcase({
             isLight ? "border-b border-border/60" : "border-b border-white/20"
           }`}
         >
-          {architectureTabs.map((tab) => (
+          {styleTabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -142,36 +143,31 @@ export function ArchitectureShowcase({
           ))}
         </div>
 
-        {activeProjects.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-3">
-            {activeProjects.map((project) => (
+        {activeImages.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-4">
+            {activeImages.map((image, index) => (
               <Link
-                key={project.slug}
-                href={`/du-an/${project.slug}`}
-                className="group block"
+                key={`${image.projectSlug}-${index}-${image.url}`}
+                href={`/du-an/${image.projectSlug}`}
+                className="group relative block overflow-hidden rounded-sm"
               >
-                <div
-                  className={`relative aspect-[16/10] overflow-hidden rounded-sm ${
-                    isLight ? "bg-muted/40" : "bg-white/5"
-                  }`}
-                >
+                <div className={`relative h-64 md:h-80 ${isLight ? "bg-muted/40" : "bg-white/5"}`}>
                   <Image
-                    src={project.coverImage.url}
-                    alt={project.coverImage.alt || project.title}
+                    src={image.url}
+                    alt={image.alt}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                    placeholder={image.blurDataURL ? "blur" : "empty"}
+                    blurDataURL={image.blurDataURL}
                   />
                 </div>
-                <h3
-                  className={`mt-3 line-clamp-2 text-xl font-medium leading-snug transition-colors ${
-                    isLight
-                      ? "text-foreground group-hover:text-amber-600"
-                      : "text-white group-hover:text-amber-300"
-                  }`}
-                >
-                  {project.title}
-                </h3>
+                <div className="absolute inset-0 bg-black/15 transition duration-300 group-hover:bg-black/35" />
+                <div className="absolute inset-x-0 bottom-0 p-4 text-left">
+                  <p className="text-xs uppercase tracking-[0.2em] text-white/75">
+                    {image.projectTitle}
+                  </p>
+                </div>
               </Link>
             ))}
           </div>
@@ -183,7 +179,7 @@ export function ArchitectureShowcase({
                 : "border border-white/15 bg-white/[0.03] text-white/70"
             }`}
           >
-            Chưa có dự án cho loại hình này.
+            Chưa có ảnh cho style này.
           </div>
         )}
       </Container>

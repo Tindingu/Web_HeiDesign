@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Upload, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import {
   buildTargetTypePath,
-  getTargetOptions,
+  CONSTRUCTION_TARGET_OPTIONS,
+  INTERIOR_TARGET_OPTIONS,
   type ArticleTargetSection,
   type ArticleTargetType,
 } from "@/lib/article-path";
@@ -23,6 +24,54 @@ export function DualFileWordUploader() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [error, setError] = useState<string>("");
   const [newPageUrl, setNewPageUrl] = useState<string>("");
+  const [sectionTypeMap, setSectionTypeMap] = useState<
+    Record<string, Array<{ value: string; label: string }>>
+  >({
+    "thiet-ke-noi-that": [...INTERIOR_TARGET_OPTIONS],
+    "thi-cong-noi-that": [...CONSTRUCTION_TARGET_OPTIONS],
+  });
+
+  useEffect(() => {
+    const loadTargets = async () => {
+      try {
+        const response = await fetch("/api/article-targets", { cache: "no-store" });
+        const payload = await response.json();
+        if (!response.ok || !payload?.ok || !Array.isArray(payload.data)) return;
+
+        const nextMap: Record<string, Array<{ value: string; label: string }>> = {
+          "thiet-ke-noi-that": [],
+          "thi-cong-noi-that": [],
+        };
+        for (const section of payload.data) {
+          if (!section?.code || !Array.isArray(section.types)) continue;
+          nextMap[section.code] = section.types.map((item: { code: string; name: string }) => ({
+            value: item.code,
+            label: item.name,
+          }));
+        }
+        if (nextMap["thiet-ke-noi-that"].length === 0) {
+          nextMap["thiet-ke-noi-that"] = [...INTERIOR_TARGET_OPTIONS];
+        }
+        if (nextMap["thi-cong-noi-that"].length === 0) {
+          nextMap["thi-cong-noi-that"] = [...CONSTRUCTION_TARGET_OPTIONS];
+        }
+        setSectionTypeMap(nextMap);
+      } catch {
+        // Keep fallback options.
+      }
+    };
+
+    void loadTargets();
+  }, []);
+
+  const activeOptions = useMemo(() => {
+    return (
+      sectionTypeMap[targetSection] ||
+      (targetSection === "thi-cong-noi-that"
+        ? [...CONSTRUCTION_TARGET_OPTIONS]
+        : [...INTERIOR_TARGET_OPTIONS])
+    );
+  }, [sectionTypeMap, targetSection]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -202,9 +251,12 @@ export function DualFileWordUploader() {
           onChange={(e) => {
             const section = e.target.value as ArticleTargetSection;
             setTargetSection(section);
-            setTargetType(
-              getTargetOptions(section)[0].value as ArticleTargetType,
-            );
+            const options =
+              sectionTypeMap[section] ||
+              (section === "thi-cong-noi-that"
+                ? [...CONSTRUCTION_TARGET_OPTIONS]
+                : [...INTERIOR_TARGET_OPTIONS]);
+            setTargetType((options[0]?.value as ArticleTargetType) || "biet-thu");
           }}
           className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-amber-500"
         >
@@ -223,7 +275,7 @@ export function DualFileWordUploader() {
           onChange={(e) => setTargetType(e.target.value as ArticleTargetType)}
           className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-amber-500"
         >
-          {getTargetOptions(targetSection).map((option) => (
+          {activeOptions.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

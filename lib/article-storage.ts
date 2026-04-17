@@ -1,5 +1,6 @@
-import fs from "fs/promises";
-import path from "path";
+import { ensureDbSchema } from "@/lib/db/schema";
+import { getDbPool } from "@/lib/db/neon";
+import { ensureArticleTypeByCode } from "@/lib/taxonomy-storage";
 
 export interface ProjectArticle {
   id: number;
@@ -16,59 +17,229 @@ export interface ProjectArticle {
   updatedAt: string;
 }
 
-const articlesFile = path.join(process.cwd(), "data", "articles.json");
+type ArticleRow = {
+  id: number;
+  slug: string | null;
+  target_section: "thiet-ke-noi-that" | "thi-cong-noi-that";
+  target_type: string;
+  title: string;
+  description: string;
+  cover_image_url: string;
+  intro_content: string;
+  main_content: string;
+  created_at: Date;
+  updated_at: Date;
+};
 
-async function ensureDataDir() {
-  const dir = path.dirname(articlesFile);
-  try {
-    await fs.mkdir(dir, { recursive: true });
-  } catch (error) {
-    // Directory might already exist
-  }
+function mapArticleRow(row: ArticleRow): ProjectArticle {
+  return {
+    id: Number(row.id),
+    slug: row.slug ?? undefined,
+    targetSection: row.target_section,
+    targetType: row.target_type,
+    title: row.title,
+    description: row.description,
+    category: row.target_type,
+    coverImageUrl: row.cover_image_url,
+    introContent: row.intro_content,
+    mainContent: row.main_content,
+    createdAt: new Date(row.created_at).toISOString(),
+    updatedAt: new Date(row.updated_at).toISOString(),
+  };
 }
 
 export async function readArticles(): Promise<ProjectArticle[]> {
-  await ensureDataDir();
-  try {
-    const content = await fs.readFile(articlesFile, "utf-8");
-    return JSON.parse(content);
-  } catch (error) {
-    return [];
-  }
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const result = await pool.query<ArticleRow>(
+    `
+      SELECT
+        pa.id,
+        pa.slug,
+        s.code AS target_section,
+        t.code AS target_type,
+        pa.title,
+        pa.description,
+        pa.cover_image_url,
+        pa.intro_content,
+        pa.main_content,
+        pa.created_at,
+        pa.updated_at
+      FROM project_articles pa
+      JOIN article_sections s ON s.id = pa.section_id
+      JOIN article_types t ON t.id = pa.type_id
+      ORDER BY updated_at DESC, id DESC
+    `,
+  );
+
+  return result.rows.map(mapArticleRow);
 }
 
 export async function writeArticles(articles: ProjectArticle[]): Promise<void> {
-  await ensureDataDir();
-  await fs.writeFile(articlesFile, JSON.stringify(articles, null, 2), "utf-8");
+  await ensureDbSchema();
+  const pool = getDbPool();
+
+  await pool.query("BEGIN");
+  try {
+    await pool.query("TRUNCATE TABLE project_articles RESTART IDENTITY");
+
+    for (const article of articles) {
+      const type = await ensureArticleTypeByCode(
+        article.targetSection ?? "thiet-ke-noi-that",
+        article.targetType ?? "biet-thu",
+      );
+      await pool.query(
+        `
+          INSERT INTO project_articles (
+            id,
+            slug,
+            section_id,
+            type_id,
+            title,
+            description,
+            cover_image_url,
+            intro_content,
+            main_content,
+            created_at,
+            updated_at
+          )
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        `,
+        [
+          article.id,
+          article.slug ?? null,
+          type.sectionId,
+          type.id,
+          article.title,
+          article.description,
+          article.coverImageUrl,
+          article.introContent,
+          article.mainContent,
+          article.createdAt ?? new Date().toISOString(),
+          article.updatedAt ?? new Date().toISOString(),
+        ],
+      );
+    }
+
+    await pool.query(
+      "SELECT setval(pg_get_serial_sequence('project_articles', 'id'), COALESCE(MAX(id), 1), MAX(id) IS NOT NULL) FROM project_articles",
+    );
+    await pool.query("COMMIT");
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    throw error;
+  }
 }
 
 export async function getArticleById(
   id: number,
 ): Promise<ProjectArticle | null> {
-  const articles = await readArticles();
-  return articles.find((a) => a.id === id) || null;
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const result = await pool.query<ArticleRow>(
+    `
+      SELECT
+        pa.id,
+        pa.slug,
+        s.code AS target_section,
+        t.code AS target_type,
+        pa.title,
+        pa.description,
+        pa.cover_image_url,
+        pa.intro_content,
+        pa.main_content,
+        pa.created_at,
+        pa.updated_at
+      FROM project_articles pa
+      JOIN article_sections s ON s.id = pa.section_id
+      JOIN article_types t ON t.id = pa.type_id
+      WHERE pa.id = $1
+      LIMIT 1
+    `,
+    [id],
+  );
+  return result.rows[0] ? mapArticleRow(result.rows[0]) : null;
 }
 
 export async function getArticleBySlug(
   slug: string,
 ): Promise<ProjectArticle | null> {
-  const articles = await readArticles();
-  return articles.find((a) => a.slug === slug) || null;
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const result = await pool.query<ArticleRow>(
+    `
+      SELECT
+        pa.id,
+        pa.slug,
+        s.code AS target_section,
+        t.code AS target_type,
+        pa.title,
+        pa.description,
+        pa.cover_image_url,
+        pa.intro_content,
+        pa.main_content,
+        pa.created_at,
+        pa.updated_at
+      FROM project_articles pa
+      JOIN article_sections s ON s.id = pa.section_id
+      JOIN article_types t ON t.id = pa.type_id
+      WHERE pa.slug = $1
+      LIMIT 1
+    `,
+    [slug],
+  );
+  return result.rows[0] ? mapArticleRow(result.rows[0]) : null;
 }
 
 export async function createArticle(
   article: Omit<ProjectArticle, "id" | "createdAt" | "updatedAt">,
 ): Promise<ProjectArticle> {
-  const articles = await readArticles();
-  const newArticle: ProjectArticle = {
-    ...article,
-    id: Math.max(0, ...articles.map((a) => a.id)) + 1,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  articles.push(newArticle);
-  await writeArticles(articles);
-  return newArticle;
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const type = await ensureArticleTypeByCode(
+    article.targetSection ?? "thiet-ke-noi-that",
+    article.targetType ?? "biet-thu",
+  );
+
+  const result = await pool.query<ArticleRow>(
+    `
+      INSERT INTO project_articles (
+        slug,
+        section_id,
+        type_id,
+        title,
+        description,
+        cover_image_url,
+        intro_content,
+        main_content
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING
+        id,
+        slug,
+        (SELECT code FROM article_sections WHERE id = project_articles.section_id) AS target_section,
+        (SELECT code FROM article_types WHERE id = project_articles.type_id) AS target_type,
+        title,
+        description,
+        cover_image_url,
+        intro_content,
+        main_content,
+        created_at,
+        updated_at
+    `,
+    [
+      article.slug ?? null,
+      type.sectionId,
+      type.id,
+      article.title,
+      article.description,
+      article.coverImageUrl,
+      article.introContent,
+      article.mainContent,
+    ],
+  );
+
+  return mapArticleRow(result.rows[0]);
 }
 
 export async function upsertArticleByTargetType(
@@ -79,61 +250,126 @@ export async function upsertArticleByTargetType(
     "id" | "createdAt" | "updatedAt" | "targetSection" | "targetType"
   >,
 ): Promise<ProjectArticle> {
-  const articles = await readArticles();
-  const index = articles.findIndex(
-    (a) => a.targetSection === targetSection && a.targetType === targetType,
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const type = await ensureArticleTypeByCode(targetSection, targetType);
+
+  const result = await pool.query<ArticleRow>(
+    `
+      INSERT INTO project_articles (
+        slug,
+        section_id,
+        type_id,
+        title,
+        description,
+        cover_image_url,
+        intro_content,
+        main_content
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      ON CONFLICT (section_id, type_id)
+      DO UPDATE SET
+        slug = EXCLUDED.slug,
+        title = EXCLUDED.title,
+        description = EXCLUDED.description,
+        cover_image_url = EXCLUDED.cover_image_url,
+        intro_content = EXCLUDED.intro_content,
+        main_content = EXCLUDED.main_content
+      RETURNING
+        id,
+        slug,
+        (SELECT code FROM article_sections WHERE id = project_articles.section_id) AS target_section,
+        (SELECT code FROM article_types WHERE id = project_articles.type_id) AS target_type,
+        title,
+        description,
+        cover_image_url,
+        intro_content,
+        main_content,
+        created_at,
+        updated_at
+    `,
+    [
+      article.slug ?? null,
+      type.sectionId,
+      type.id,
+      article.title,
+      article.description,
+      article.coverImageUrl,
+      article.introContent,
+      article.mainContent,
+    ],
   );
 
-  if (index !== -1) {
-    articles[index] = {
-      ...articles[index],
-      ...article,
-      targetSection,
-      targetType,
-      updatedAt: new Date().toISOString(),
-    };
-    await writeArticles(articles);
-    return articles[index];
-  }
-
-  const newArticle: ProjectArticle = {
-    ...article,
-    targetSection,
-    targetType,
-    id: Math.max(0, ...articles.map((a) => a.id)) + 1,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  articles.push(newArticle);
-  await writeArticles(articles);
-  return newArticle;
+  return mapArticleRow(result.rows[0]);
 }
 
 export async function updateArticle(
   id: number,
   updates: Partial<Omit<ProjectArticle, "id" | "createdAt">>,
 ): Promise<ProjectArticle | null> {
-  const articles = await readArticles();
-  const index = articles.findIndex((a) => a.id === id);
+  const existing = await getArticleById(id);
+  if (!existing) return null;
 
-  if (index === -1) return null;
-
-  articles[index] = {
-    ...articles[index],
+  const merged: ProjectArticle = {
+    ...existing,
     ...updates,
-    updatedAt: new Date().toISOString(),
+    id: existing.id,
+    createdAt: existing.createdAt,
   };
 
-  await writeArticles(articles);
-  return articles[index];
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const updatedType = await ensureArticleTypeByCode(
+    merged.targetSection ?? "thiet-ke-noi-that",
+    merged.targetType ?? "biet-thu",
+  );
+  const result = await pool.query<ArticleRow>(
+    `
+      UPDATE project_articles
+      SET
+        slug = $2,
+        section_id = $3,
+        type_id = $4,
+        title = $5,
+        description = $6,
+        cover_image_url = $7,
+        intro_content = $8,
+        main_content = $9
+      WHERE id = $1
+      RETURNING
+        id,
+        slug,
+        (SELECT code FROM article_sections WHERE id = project_articles.section_id) AS target_section,
+        (SELECT code FROM article_types WHERE id = project_articles.type_id) AS target_type,
+        title,
+        description,
+        cover_image_url,
+        intro_content,
+        main_content,
+        created_at,
+        updated_at
+    `,
+    [
+      id,
+      merged.slug ?? null,
+      updatedType.sectionId,
+      updatedType.id,
+      merged.title,
+      merged.description,
+      merged.coverImageUrl,
+      merged.introContent,
+      merged.mainContent,
+    ],
+  );
+
+  return result.rows[0] ? mapArticleRow(result.rows[0]) : null;
 }
 
 export async function deleteArticle(id: number): Promise<boolean> {
-  const articles = await readArticles();
-  const filtered = articles.filter((a) => a.id !== id);
-
-  if (filtered.length === articles.length) return false;
-
-  await writeArticles(filtered);
-  return true;
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const result = await pool.query("DELETE FROM project_articles WHERE id = $1", [
+    id,
+  ]);
+  return (result.rowCount ?? 0) > 0;
 }

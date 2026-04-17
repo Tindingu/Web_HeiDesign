@@ -36,6 +36,11 @@ export default function AdminLayout({
               Quản Lý Kinh Nghiệm
             </Button>
           </Link>
+          <Link href="/admin/categories">
+            <Button variant={getActive("/admin/categories")}>
+              Quản Lý Category & Style
+            </Button>
+          </Link>
         </div>
       </div>
 

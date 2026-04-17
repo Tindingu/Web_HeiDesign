@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ProjectArticle } from "@/lib/article-storage";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,8 @@ import Link from "next/link";
 import { Upload } from "lucide-react";
 import {
   buildTargetTypePath,
-  getTargetOptions,
+  CONSTRUCTION_TARGET_OPTIONS,
+  INTERIOR_TARGET_OPTIONS,
   type ArticleTargetSection,
   type ArticleTargetType,
 } from "@/lib/article-path";
@@ -37,6 +38,71 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [sectionTypeMap, setSectionTypeMap] = useState<
+    Record<string, Array<{ value: string; label: string }>>
+  >({
+    "thiet-ke-noi-that": [...INTERIOR_TARGET_OPTIONS],
+    "thi-cong-noi-that": [...CONSTRUCTION_TARGET_OPTIONS],
+  });
+
+  useEffect(() => {
+    const loadTargets = async () => {
+      try {
+        const response = await fetch("/api/article-targets", {
+          cache: "no-store",
+        });
+        const payload = await response.json();
+        if (!response.ok || !payload?.ok || !Array.isArray(payload.data)) {
+          return;
+        }
+
+        const nextMap: Record<string, Array<{ value: string; label: string }>> = {
+          "thiet-ke-noi-that": [],
+          "thi-cong-noi-that": [],
+        };
+
+        for (const section of payload.data) {
+          if (!section?.code || !Array.isArray(section.types)) continue;
+          nextMap[section.code] = section.types.map((item: { code: string; name: string }) => ({
+            value: item.code,
+            label: item.name,
+          }));
+        }
+
+        if (nextMap["thiet-ke-noi-that"].length === 0) {
+          nextMap["thiet-ke-noi-that"] = [...INTERIOR_TARGET_OPTIONS];
+        }
+        if (nextMap["thi-cong-noi-that"].length === 0) {
+          nextMap["thi-cong-noi-that"] = [...CONSTRUCTION_TARGET_OPTIONS];
+        }
+
+        setSectionTypeMap(nextMap);
+      } catch {
+        // Keep fallback options.
+      }
+    };
+
+    void loadTargets();
+  }, []);
+
+  const getSectionOptions = useCallback(
+    (section: ArticleTargetSection) => {
+      return sectionTypeMap[section] ||
+        (section === "thi-cong-noi-that"
+          ? [...CONSTRUCTION_TARGET_OPTIONS]
+          : [...INTERIOR_TARGET_OPTIONS]);
+    },
+    [sectionTypeMap],
+  );
+
+  const activeTypeOptions = useMemo(
+    () =>
+      getSectionOptions(
+        (formData.targetSection as ArticleTargetSection) ||
+          "thiet-ke-noi-that",
+      ),
+    [formData.targetSection, getSectionOptions],
+  );
 
   const handleTitleChange = (value: string) => {
     setFormData((prev) => ({
@@ -211,8 +277,9 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
               value={formData.targetSection || "thiet-ke-noi-that"}
               onChange={(e) => {
                 const targetSection = e.target.value as ArticleTargetSection;
-                const firstType = getTargetOptions(targetSection)[0]
-                  .value as ArticleTargetType;
+                const firstType =
+                  (getSectionOptions(targetSection)[0]?.value as ArticleTargetType) ||
+                  "biet-thu";
                 setFormData((prev) => ({
                   ...prev,
                   targetSection,
@@ -242,10 +309,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
               }
               className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-amber-500"
             >
-              {getTargetOptions(
-                (formData.targetSection as ArticleTargetSection) ||
-                  "thiet-ke-noi-that",
-              ).map((option) => (
+              {activeTypeOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
