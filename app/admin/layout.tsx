@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ShieldCheck } from "lucide-react";
+import { AdminNav } from "@/components/admin/admin-nav";
 
 export default function AdminLayout({
   children,
@@ -7,50 +9,34 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Admin Header */}
-      <div className="border-b border-gray-200 bg-white px-6 py-4">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Quản Lý Admin</h1>
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 via-slate-50 to-white">
+      <div className="border-b border-slate-200 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-4 text-white">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="rounded-xl border border-white/20 bg-white/10 p-2">
+              <ShieldCheck className="h-6 w-6 text-amber-300" />
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-white/70">
+                Admin Console
+              </p>
+              <h1 className="text-xl font-semibold">Icep Design Management</h1>
+            </div>
+          </div>
           <Link href="/">
-            <Button variant="outline">← Về Trang Chủ</Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Admin Navigation */}
-      <div className="border-b border-gray-200 bg-white px-6 py-3">
-        <div className="flex gap-4">
-          <Link href="/admin/projects">
-            <Button variant={getActive("/admin/projects")}>
-              Quản Lý Dự Án
-            </Button>
-          </Link>
-          <Link href="/admin/du-an">
-            <Button variant={getActive("/admin/du-an")}>
-              Quản Lý Bài Viết
-            </Button>
-          </Link>
-          <Link href="/admin/kinh-nghiem">
-            <Button variant={getActive("/admin/kinh-nghiem")}>
-              Quản Lý Kinh Nghiệm
-            </Button>
-          </Link>
-          <Link href="/admin/categories">
-            <Button variant={getActive("/admin/categories")}>
-              Quản Lý Category & Style
+            <Button
+              variant="outline"
+              className="border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+            >
+              ← Về Trang Chủ
             </Button>
           </Link>
         </div>
       </div>
 
-      {/* Content */}
-      <main>{children}</main>
+      <AdminNav />
+
+      <main className="mx-auto w-full max-w-7xl px-6 py-6">{children}</main>
     </div>
   );
-}
-
-// Helper for active state (client-side would be better)
-function getActive(path: string) {
-  return "outline";
 }

@@ -68,7 +68,7 @@ export async function readArticles(): Promise<ProjectArticle[]> {
       FROM project_articles pa
       JOIN article_sections s ON s.id = pa.section_id
       JOIN article_types t ON t.id = pa.type_id
-      ORDER BY updated_at DESC, id DESC
+      ORDER BY pa.updated_at DESC, pa.id DESC
     `,
   );
 
@@ -103,7 +103,7 @@ export async function writeArticles(articles: ProjectArticle[]): Promise<void> {
             created_at,
             updated_at
           )
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
         `,
         [
           article.id,
@@ -213,7 +213,7 @@ export async function createArticle(
         intro_content,
         main_content
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING
         id,
         slug,
@@ -253,54 +253,93 @@ export async function upsertArticleByTargetType(
   await ensureDbSchema();
   const pool = getDbPool();
   const type = await ensureArticleTypeByCode(targetSection, targetType);
+  await pool.query("BEGIN");
+  try {
+    const updated = await pool.query<ArticleRow>(
+      `
+        UPDATE project_articles
+        SET
+          slug = $3,
+          title = $4,
+          description = $5,
+          cover_image_url = $6,
+          intro_content = $7,
+          main_content = $8
+        WHERE section_id = $1 AND type_id = $2
+        RETURNING
+          id,
+          slug,
+          (SELECT code FROM article_sections WHERE id = project_articles.section_id) AS target_section,
+          (SELECT code FROM article_types WHERE id = project_articles.type_id) AS target_type,
+          title,
+          description,
+          cover_image_url,
+          intro_content,
+          main_content,
+          created_at,
+          updated_at
+      `,
+      [
+        type.sectionId,
+        type.id,
+        article.slug ?? null,
+        article.title,
+        article.description,
+        article.coverImageUrl,
+        article.introContent,
+        article.mainContent,
+      ],
+    );
 
-  const result = await pool.query<ArticleRow>(
-    `
-      INSERT INTO project_articles (
-        slug,
-        section_id,
-        type_id,
-        title,
-        description,
-        cover_image_url,
-        intro_content,
-        main_content
-      )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      ON CONFLICT (section_id, type_id)
-      DO UPDATE SET
-        slug = EXCLUDED.slug,
-        title = EXCLUDED.title,
-        description = EXCLUDED.description,
-        cover_image_url = EXCLUDED.cover_image_url,
-        intro_content = EXCLUDED.intro_content,
-        main_content = EXCLUDED.main_content
-      RETURNING
-        id,
-        slug,
-        (SELECT code FROM article_sections WHERE id = project_articles.section_id) AS target_section,
-        (SELECT code FROM article_types WHERE id = project_articles.type_id) AS target_type,
-        title,
-        description,
-        cover_image_url,
-        intro_content,
-        main_content,
-        created_at,
-        updated_at
-    `,
-    [
-      article.slug ?? null,
-      type.sectionId,
-      type.id,
-      article.title,
-      article.description,
-      article.coverImageUrl,
-      article.introContent,
-      article.mainContent,
-    ],
-  );
+    if (updated.rows[0]) {
+      await pool.query("COMMIT");
+      return mapArticleRow(updated.rows[0]);
+    }
 
-  return mapArticleRow(result.rows[0]);
+    const inserted = await pool.query<ArticleRow>(
+      `
+        INSERT INTO project_articles (
+          slug,
+          section_id,
+          type_id,
+          title,
+          description,
+          cover_image_url,
+          intro_content,
+          main_content
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING
+          id,
+          slug,
+          (SELECT code FROM article_sections WHERE id = project_articles.section_id) AS target_section,
+          (SELECT code FROM article_types WHERE id = project_articles.type_id) AS target_type,
+          title,
+          description,
+          cover_image_url,
+          intro_content,
+          main_content,
+          created_at,
+          updated_at
+      `,
+      [
+        article.slug ?? null,
+        type.sectionId,
+        type.id,
+        article.title,
+        article.description,
+        article.coverImageUrl,
+        article.introContent,
+        article.mainContent,
+      ],
+    );
+
+    await pool.query("COMMIT");
+    return mapArticleRow(inserted.rows[0]);
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    throw error;
+  }
 }
 
 export async function updateArticle(
@@ -368,8 +407,9 @@ export async function updateArticle(
 export async function deleteArticle(id: number): Promise<boolean> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query("DELETE FROM project_articles WHERE id = $1", [
-    id,
-  ]);
+  const result = await pool.query(
+    "DELETE FROM project_articles WHERE id = $1",
+    [id],
+  );
   return (result.rowCount ?? 0) > 0;
 }

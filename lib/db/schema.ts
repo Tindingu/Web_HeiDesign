@@ -172,6 +172,25 @@ async function createSchema() {
       END IF;
     END$$;
 
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name='project_articles' AND column_name='target_section'
+      ) THEN
+        EXECUTE 'ALTER TABLE project_articles ALTER COLUMN target_section DROP NOT NULL';
+      END IF;
+
+      IF EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_name='project_articles' AND column_name='target_type'
+      ) THEN
+        EXECUTE 'ALTER TABLE project_articles ALTER COLUMN target_type DROP NOT NULL';
+      END IF;
+    END$$;
+
     INSERT INTO article_sections (name, code)
     VALUES
       ('Thiết kế nội thất', 'thiet-ke-noi-that'),

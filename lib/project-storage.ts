@@ -2,7 +2,10 @@ import type { Project } from "@/lib/strapi";
 import { ensureDbSchema } from "@/lib/db/schema";
 import { getDbPool } from "@/lib/db/neon";
 import { defaultBlurDataURL } from "@/lib/constants";
-import { readProjectCategories, readProjectStyles } from "@/lib/taxonomy-storage";
+import {
+  readProjectCategories,
+  readProjectStyles,
+} from "@/lib/taxonomy-storage";
 
 type ProjectRow = {
   id: number;
@@ -55,7 +58,11 @@ type ProjectSectionRow = {
 function normalizeImageUrl(value: string | null | undefined): string {
   const text = String(value || "").trim();
   if (!text) return "";
-  if (text.startsWith("/") || text.startsWith("http://") || text.startsWith("https://")) {
+  if (
+    text.startsWith("/") ||
+    text.startsWith("http://") ||
+    text.startsWith("https://")
+  ) {
     return text;
   }
   return "";
@@ -146,12 +153,12 @@ function mapProjectRows(
           ?.attr_value || "",
       client: attributeList.find((item) => item.attr_key === "project.client")
         ?.attr_value,
-      location:
-        attributeList.find((item) => item.attr_key === "project.location")
-          ?.attr_value,
-      completedDate:
-        attributeList.find((item) => item.attr_key === "project.completedDate")
-          ?.attr_value,
+      location: attributeList.find(
+        (item) => item.attr_key === "project.location",
+      )?.attr_value,
+      completedDate: attributeList.find(
+        (item) => item.attr_key === "project.completedDate",
+      )?.attr_value,
     };
 
     const sections = (sectionsByProject.get(id) ?? [])
@@ -184,7 +191,8 @@ function mapProjectRows(
       style: row.style,
       budget: row.budget,
       coverImage: {
-        url: normalizeImageUrl(row.cover_image_url) || fallbackProjectCoverImage,
+        url:
+          normalizeImageUrl(row.cover_image_url) || fallbackProjectCoverImage,
         alt: row.cover_image_alt,
         blurDataURL: row.cover_image_blur_data_url ?? defaultBlurDataURL,
       },
@@ -212,44 +220,45 @@ async function loadProjectRelations(projectIds: number[]) {
   }
 
   const pool = getDbPool();
-  const [imagesResult, highlightsResult, attributesResult, sectionsResult] = await Promise.all([
-    pool.query(
-      `
+  const [imagesResult, highlightsResult, attributesResult, sectionsResult] =
+    await Promise.all([
+      pool.query(
+        `
         SELECT project_id, url, alt, blur_data_url, position
         FROM project_images
         WHERE project_id = ANY($1::int[])
         ORDER BY project_id ASC, position ASC, id ASC
       `,
-      [projectIds],
-    ) as Promise<{ rows: ProjectImageRow[] }>,
-    pool.query(
-      `
+        [projectIds],
+      ) as Promise<{ rows: ProjectImageRow[] }>,
+      pool.query(
+        `
         SELECT project_id, content, position
         FROM project_highlights
         WHERE project_id = ANY($1::int[])
         ORDER BY project_id ASC, position ASC, id ASC
       `,
-      [projectIds],
-    ) as Promise<{ rows: ProjectHighlightRow[] }>,
-    pool.query(
-      `
+        [projectIds],
+      ) as Promise<{ rows: ProjectHighlightRow[] }>,
+      pool.query(
+        `
         SELECT project_id, attr_key, attr_value, label
         FROM project_attributes
         WHERE project_id = ANY($1::int[])
         ORDER BY project_id ASC, id ASC
       `,
-      [projectIds],
-    ) as Promise<{ rows: ProjectAttributeRow[] }>,
-    pool.query(
-      `
+        [projectIds],
+      ) as Promise<{ rows: ProjectAttributeRow[] }>,
+      pool.query(
+        `
         SELECT project_id, title, content, image_url, image_alt, position
         FROM project_sections
         WHERE project_id = ANY($1::int[])
         ORDER BY project_id ASC, position ASC, id ASC
       `,
-      [projectIds],
-    ) as Promise<{ rows: ProjectSectionRow[] }>,
-  ]);
+        [projectIds],
+      ) as Promise<{ rows: ProjectSectionRow[] }>,
+    ]);
 
   return {
     images: imagesResult.rows,
@@ -266,10 +275,10 @@ async function resolveProjectCategoryId(name: string): Promise<number> {
   const existed = categories.find((item) => item.name === normalized);
   if (existed) return existed.id;
 
-  const inserted = await pool.query(
+  const inserted = (await pool.query(
     "INSERT INTO project_categories (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id",
     [normalized],
-  ) as { rows: { id: number }[] };
+  )) as { rows: { id: number }[] };
   return Number(inserted.rows[0].id);
 }
 
@@ -280,19 +289,27 @@ async function resolveProjectStyleId(name: string): Promise<number> {
   const existed = styles.find((item) => item.name === normalized);
   if (existed) return existed.id;
 
-  const inserted = await pool.query(
+  const inserted = (await pool.query(
     "INSERT INTO project_styles (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id",
     [normalized],
-  ) as { rows: { id: number }[] };
+  )) as { rows: { id: number }[] };
   return Number(inserted.rows[0].id);
 }
 
 async function replaceProjectRelations(projectId: number, project: Project) {
   const pool = getDbPool();
-  await pool.query("DELETE FROM project_images WHERE project_id = $1", [projectId]);
-  await pool.query("DELETE FROM project_highlights WHERE project_id = $1", [projectId]);
-  await pool.query("DELETE FROM project_attributes WHERE project_id = $1", [projectId]);
-  await pool.query("DELETE FROM project_sections WHERE project_id = $1", [projectId]);
+  await pool.query("DELETE FROM project_images WHERE project_id = $1", [
+    projectId,
+  ]);
+  await pool.query("DELETE FROM project_highlights WHERE project_id = $1", [
+    projectId,
+  ]);
+  await pool.query("DELETE FROM project_attributes WHERE project_id = $1", [
+    projectId,
+  ]);
+  await pool.query("DELETE FROM project_sections WHERE project_id = $1", [
+    projectId,
+  ]);
 
   for (const [index, image] of (project.gallery ?? []).entries()) {
     const url = normalizeImageUrl(image.url);
@@ -322,7 +339,12 @@ async function replaceProjectRelations(projectId: number, project: Project) {
         INSERT INTO project_attributes (project_id, attr_key, attr_value, label)
         VALUES ($1, $2, $3, $4)
       `,
-      [projectId, `detail:${item.label || "detail"}`, item.value || "", item.label || null],
+      [
+        projectId,
+        `detail:${item.label || "detail"}`,
+        item.value || "",
+        item.label || null,
+      ],
     );
   }
 
@@ -371,7 +393,7 @@ async function replaceProjectRelations(projectId: number, project: Project) {
 export async function readProjects(): Promise<Project[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const projectsResult = await pool.query(
+  const projectsResult = (await pool.query(
     `
       SELECT
         p.id,
@@ -394,7 +416,7 @@ export async function readProjects(): Promise<Project[]> {
       LEFT JOIN project_styles ps ON ps.id = p.style_id
       ORDER BY p.updated_at DESC, p.id DESC
     `,
-  ) as { rows: ProjectRow[] };
+  )) as { rows: ProjectRow[] };
 
   const ids = projectsResult.rows.map((row) => Number(row.id));
   const relations = await loadProjectRelations(ids);
@@ -413,13 +435,15 @@ export async function writeProjects(projects: Project[]): Promise<void> {
 
   await pool.query("BEGIN");
   try {
-    await pool.query("TRUNCATE TABLE project_images, project_highlights, project_attributes, project_sections, projects RESTART IDENTITY CASCADE");
+    await pool.query(
+      "TRUNCATE TABLE project_images, project_highlights, project_attributes, project_sections, projects RESTART IDENTITY CASCADE",
+    );
 
     for (const project of projects) {
       const categoryId = await resolveProjectCategoryId(project.category);
       const styleName = getStyleFallback(project.style);
       const styleId = await resolveProjectStyleId(styleName);
-      const inserted = await pool.query(
+      const inserted = (await pool.query(
         `
           INSERT INTO projects (
             id,
@@ -463,7 +487,7 @@ export async function writeProjects(projects: Project[]): Promise<void> {
           project.createdAt ?? new Date().toISOString(),
           project.updatedAt ?? new Date().toISOString(),
         ],
-      ) as { rows: { id: number }[] };
+      )) as { rows: { id: number }[] };
       await replaceProjectRelations(Number(inserted.rows[0].id), project);
     }
 
@@ -480,7 +504,7 @@ export async function writeProjects(projects: Project[]): Promise<void> {
 export async function getProjectById(id: number): Promise<Project | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query(
+  const result = (await pool.query(
     `
       SELECT
         p.id,
@@ -505,23 +529,25 @@ export async function getProjectById(id: number): Promise<Project | null> {
       LIMIT 1
     `,
     [id],
-  ) as { rows: ProjectRow[] };
+  )) as { rows: ProjectRow[] };
 
   if (!result.rows[0]) return null;
   const relations = await loadProjectRelations([id]);
-  return mapProjectRows(
-    [result.rows[0]],
-    relations.images,
-    relations.highlights,
-    relations.attributes,
-    relations.sections,
-  )[0] ?? null;
+  return (
+    mapProjectRows(
+      [result.rows[0]],
+      relations.images,
+      relations.highlights,
+      relations.attributes,
+      relations.sections,
+    )[0] ?? null
+  );
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query(
+  const result = (await pool.query(
     `
       SELECT
         p.id,
@@ -546,19 +572,21 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
       LIMIT 1
     `,
     [slug],
-  ) as { rows: ProjectRow[] };
+  )) as { rows: ProjectRow[] };
 
   const row = result.rows[0];
   if (!row) return null;
   const id = Number(row.id);
   const relations = await loadProjectRelations([id]);
-  return mapProjectRows(
-    [row],
-    relations.images,
-    relations.highlights,
-    relations.attributes,
-    relations.sections,
-  )[0] ?? null;
+  return (
+    mapProjectRows(
+      [row],
+      relations.images,
+      relations.highlights,
+      relations.attributes,
+      relations.sections,
+    )[0] ?? null
+  );
 }
 
 export async function createProject(
@@ -572,7 +600,7 @@ export async function createProject(
     const categoryId = await resolveProjectCategoryId(project.category);
     const styleName = getStyleFallback(project.style);
     const styleId = await resolveProjectStyleId(styleName);
-    const inserted = await pool.query(
+    const inserted = (await pool.query(
       `
         INSERT INTO projects (
           slug,
@@ -625,7 +653,7 @@ export async function createProject(
         project.wordContent ?? null,
         Boolean(project.featured),
       ],
-    ) as { rows: ProjectRow[] };
+    )) as { rows: ProjectRow[] };
 
     const row = inserted.rows[0];
     const id = Number(row.id);
@@ -668,7 +696,7 @@ export async function updateProject(
     const categoryId = await resolveProjectCategoryId(merged.category);
     const styleName = getStyleFallback(merged.style);
     const styleId = await resolveProjectStyleId(styleName);
-    const updated = await pool.query(
+    const updated = (await pool.query(
       `
         UPDATE projects
         SET
@@ -719,19 +747,21 @@ export async function updateProject(
         merged.wordContent ?? null,
         Boolean(merged.featured),
       ],
-    ) as { rows: ProjectRow[] };
+    )) as { rows: ProjectRow[] };
 
     await replaceProjectRelations(id, merged);
     await pool.query("COMMIT");
 
     const relations = await loadProjectRelations([id]);
-    return mapProjectRows(
-      updated.rows,
-      relations.images,
-      relations.highlights,
-      relations.attributes,
-      relations.sections,
-    )[0] ?? null;
+    return (
+      mapProjectRows(
+        updated.rows,
+        relations.images,
+        relations.highlights,
+        relations.attributes,
+        relations.sections,
+      )[0] ?? null
+    );
   } catch (error) {
     await pool.query("ROLLBACK");
     throw error;

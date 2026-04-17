@@ -34,20 +34,28 @@ export function DualFileWordUploader() {
   useEffect(() => {
     const loadTargets = async () => {
       try {
-        const response = await fetch("/api/article-targets", { cache: "no-store" });
+        const response = await fetch("/api/article-targets", {
+          cache: "no-store",
+        });
         const payload = await response.json();
-        if (!response.ok || !payload?.ok || !Array.isArray(payload.data)) return;
+        if (!response.ok || !payload?.ok || !Array.isArray(payload.data))
+          return;
 
-        const nextMap: Record<string, Array<{ value: string; label: string }>> = {
+        const nextMap: Record<
+          string,
+          Array<{ value: string; label: string }>
+        > = {
           "thiet-ke-noi-that": [],
           "thi-cong-noi-that": [],
         };
         for (const section of payload.data) {
           if (!section?.code || !Array.isArray(section.types)) continue;
-          nextMap[section.code] = section.types.map((item: { code: string; name: string }) => ({
-            value: item.code,
-            label: item.name,
-          }));
+          nextMap[section.code] = section.types.map(
+            (item: { code: string; name: string }) => ({
+              value: item.code,
+              label: item.name,
+            }),
+          );
         }
         if (nextMap["thiet-ke-noi-that"].length === 0) {
           nextMap["thiet-ke-noi-that"] = [...INTERIOR_TARGET_OPTIONS];
@@ -256,7 +264,9 @@ export function DualFileWordUploader() {
               (section === "thi-cong-noi-that"
                 ? [...CONSTRUCTION_TARGET_OPTIONS]
                 : [...INTERIOR_TARGET_OPTIONS]);
-            setTargetType((options[0]?.value as ArticleTargetType) || "biet-thu");
+            setTargetType(
+              (options[0]?.value as ArticleTargetType) || "biet-thu",
+            );
           }}
           className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-amber-500"
         >

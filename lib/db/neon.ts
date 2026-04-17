@@ -52,7 +52,9 @@ export function getDbPool(): any {
 export async function testDbConnection() {
   const client = await getDbPool().connect();
   try {
-    const result = await client.query("select now() as now, current_database() as db");
+    const result = await client.query(
+      "select now() as now, current_database() as db",
+    );
     return result.rows[0];
   } finally {
     client.release();

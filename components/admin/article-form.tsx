@@ -56,17 +56,22 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
           return;
         }
 
-        const nextMap: Record<string, Array<{ value: string; label: string }>> = {
+        const nextMap: Record<
+          string,
+          Array<{ value: string; label: string }>
+        > = {
           "thiet-ke-noi-that": [],
           "thi-cong-noi-that": [],
         };
 
         for (const section of payload.data) {
           if (!section?.code || !Array.isArray(section.types)) continue;
-          nextMap[section.code] = section.types.map((item: { code: string; name: string }) => ({
-            value: item.code,
-            label: item.name,
-          }));
+          nextMap[section.code] = section.types.map(
+            (item: { code: string; name: string }) => ({
+              value: item.code,
+              label: item.name,
+            }),
+          );
         }
 
         if (nextMap["thiet-ke-noi-that"].length === 0) {
@@ -87,10 +92,12 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
 
   const getSectionOptions = useCallback(
     (section: ArticleTargetSection) => {
-      return sectionTypeMap[section] ||
+      return (
+        sectionTypeMap[section] ||
         (section === "thi-cong-noi-that"
           ? [...CONSTRUCTION_TARGET_OPTIONS]
-          : [...INTERIOR_TARGET_OPTIONS]);
+          : [...INTERIOR_TARGET_OPTIONS])
+      );
     },
     [sectionTypeMap],
   );
@@ -98,8 +105,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
   const activeTypeOptions = useMemo(
     () =>
       getSectionOptions(
-        (formData.targetSection as ArticleTargetSection) ||
-          "thiet-ke-noi-that",
+        (formData.targetSection as ArticleTargetSection) || "thiet-ke-noi-that",
       ),
     [formData.targetSection, getSectionOptions],
   );
@@ -215,7 +221,8 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
         });
 
         if (!response.ok) {
-          throw new Error("Lỗi khi lưu bài viết");
+          const payload = await response.json().catch(() => null);
+          throw new Error(payload?.error || "Lỗi khi lưu bài viết");
         }
 
         setSuccessMessage(
@@ -278,8 +285,8 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
               onChange={(e) => {
                 const targetSection = e.target.value as ArticleTargetSection;
                 const firstType =
-                  (getSectionOptions(targetSection)[0]?.value as ArticleTargetType) ||
-                  "biet-thu";
+                  (getSectionOptions(targetSection)[0]
+                    ?.value as ArticleTargetType) || "biet-thu";
                 setFormData((prev) => ({
                   ...prev,
                   targetSection,

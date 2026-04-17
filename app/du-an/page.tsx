@@ -1,6 +1,9 @@
 import { buildMetadata } from "@/lib/seo";
 import { getProjects } from "@/lib/strapi";
-import { readProjectCategories, readProjectStyles } from "@/lib/taxonomy-storage";
+import {
+  readProjectCategories,
+  readProjectStyles,
+} from "@/lib/taxonomy-storage";
 import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureShowcase } from "@/components/portfolio/architecture-showcase";
 import { DualFileWordUploader } from "@/components/portfolio/dual-file-word-uploader";

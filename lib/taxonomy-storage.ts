@@ -66,7 +66,9 @@ export async function createBlogCategory(name: string): Promise<TaxonomyItem> {
   return { id: Number(row.id), name: row.name };
 }
 
-export async function createProjectCategory(name: string): Promise<TaxonomyItem> {
+export async function createProjectCategory(
+  name: string,
+): Promise<TaxonomyItem> {
   await ensureDbSchema();
   const pool = getDbPool();
   const result = await pool.query<{ id: number; name: string }>(
@@ -88,7 +90,10 @@ export async function createProjectStyle(name: string): Promise<TaxonomyItem> {
   return { id: Number(row.id), name: row.name };
 }
 
-export async function updateBlogCategory(id: number, name: string): Promise<TaxonomyItem | null> {
+export async function updateBlogCategory(
+  id: number,
+  name: string,
+): Promise<TaxonomyItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
   const result = await pool.query<{ id: number; name: string }>(
@@ -99,7 +104,10 @@ export async function updateBlogCategory(id: number, name: string): Promise<Taxo
   return { id: Number(result.rows[0].id), name: result.rows[0].name };
 }
 
-export async function updateProjectCategory(id: number, name: string): Promise<TaxonomyItem | null> {
+export async function updateProjectCategory(
+  id: number,
+  name: string,
+): Promise<TaxonomyItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
   const result = await pool.query<{ id: number; name: string }>(
@@ -110,7 +118,10 @@ export async function updateProjectCategory(id: number, name: string): Promise<T
   return { id: Number(result.rows[0].id), name: result.rows[0].name };
 }
 
-export async function updateProjectStyle(id: number, name: string): Promise<TaxonomyItem | null> {
+export async function updateProjectStyle(
+  id: number,
+  name: string,
+): Promise<TaxonomyItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
   const result = await pool.query<{ id: number; name: string }>(
@@ -131,7 +142,9 @@ export async function deleteBlogCategory(id: number): Promise<boolean> {
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa category đang được bài viết sử dụng");
   }
-  const result = await pool.query("DELETE FROM blog_categories WHERE id = $1", [id]);
+  const result = await pool.query("DELETE FROM blog_categories WHERE id = $1", [
+    id,
+  ]);
   return (result.rowCount ?? 0) > 0;
 }
 
@@ -145,7 +158,10 @@ export async function deleteProjectCategory(id: number): Promise<boolean> {
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa category đang được dự án sử dụng");
   }
-  const result = await pool.query("DELETE FROM project_categories WHERE id = $1", [id]);
+  const result = await pool.query(
+    "DELETE FROM project_categories WHERE id = $1",
+    [id],
+  );
   return (result.rowCount ?? 0) > 0;
 }
 
@@ -159,16 +175,20 @@ export async function deleteProjectStyle(id: number): Promise<boolean> {
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa style đang được dự án sử dụng");
   }
-  const result = await pool.query("DELETE FROM project_styles WHERE id = $1", [id]);
+  const result = await pool.query("DELETE FROM project_styles WHERE id = $1", [
+    id,
+  ]);
   return (result.rowCount ?? 0) > 0;
 }
 
 export async function readArticleSections(): Promise<TaxonomyItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string; code: string | null }>(
-    "SELECT id, name, code FROM article_sections ORDER BY id ASC",
-  );
+  const result = await pool.query<{
+    id: number;
+    name: string;
+    code: string | null;
+  }>("SELECT id, name, code FROM article_sections ORDER BY id ASC");
   return result.rows.map((row) => ({
     id: Number(row.id),
     name: row.name,
@@ -296,11 +316,16 @@ export async function deleteArticleType(id: number): Promise<boolean> {
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa loại bài viết đang được sử dụng");
   }
-  const result = await pool.query("DELETE FROM article_types WHERE id = $1", [id]);
+  const result = await pool.query("DELETE FROM article_types WHERE id = $1", [
+    id,
+  ]);
   return (result.rowCount ?? 0) > 0;
 }
 
-export async function getArticleTypeByCode(sectionCode: string, typeCode: string): Promise<ArticleTypeItem | null> {
+export async function getArticleTypeByCode(
+  sectionCode: string,
+  typeCode: string,
+): Promise<ArticleTypeItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
   const result = await pool.query<{
@@ -333,7 +358,10 @@ export async function getArticleTypeByCode(sectionCode: string, typeCode: string
   };
 }
 
-export async function ensureArticleTypeByCode(sectionCode: string, typeCode: string): Promise<ArticleTypeItem> {
+export async function ensureArticleTypeByCode(
+  sectionCode: string,
+  typeCode: string,
+): Promise<ArticleTypeItem> {
   const existing = await getArticleTypeByCode(sectionCode, typeCode);
   if (existing) return existing;
 

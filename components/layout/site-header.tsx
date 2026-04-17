@@ -114,7 +114,9 @@ const baseMenuItems = [
 export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-  const [interiorSubmenu, setInteriorSubmenu] = useState(defaultInteriorSubmenu);
+  const [interiorSubmenu, setInteriorSubmenu] = useState(
+    defaultInteriorSubmenu,
+  );
   const [constructionSubmenu, setConstructionSubmenu] = useState(
     defaultConstructionSubmenu,
   );
@@ -130,7 +132,10 @@ export function SiteHeader() {
           return;
         }
 
-        const sectionMap = new Map<string, Array<{ label: string; href: string }>>();
+        const sectionMap = new Map<
+          string,
+          Array<{ label: string; href: string }>
+        >();
         for (const section of payload.data) {
           if (!section?.code || !Array.isArray(section.types)) continue;
           sectionMap.set(
@@ -146,7 +151,8 @@ export function SiteHeader() {
         const fromDbConstruction = sectionMap.get("thi-cong-noi-that") || [];
 
         if (fromDbInterior.length > 0) setInteriorSubmenu(fromDbInterior);
-        if (fromDbConstruction.length > 0) setConstructionSubmenu(fromDbConstruction);
+        if (fromDbConstruction.length > 0)
+          setConstructionSubmenu(fromDbConstruction);
       } catch {
         // Keep fallback menu if API is unavailable.
       }

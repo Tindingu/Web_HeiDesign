@@ -59,7 +59,10 @@ export function ArchitectureShowcase({
   theme = "light",
 }: ArchitectureShowcaseProps) {
   const styleTabs = useMemo<StyleTab[]>(() => {
-    const source = styles.length > 0 ? styles : fallbackStyles.map((name, index) => ({ id: index + 1, name }));
+    const source =
+      styles.length > 0
+        ? styles
+        : fallbackStyles.map((name, index) => ({ id: index + 1, name }));
     return source.map((style) => ({
       id: slugifyText(style.name),
       label: style.name,
@@ -93,13 +96,15 @@ export function ArchitectureShowcase({
       });
 
       const matchedImages = matchedProjects
-        .flatMap((project) => [project.coverImage, ...(project.gallery ?? [])].map((image) => ({
-          projectSlug: project.slug,
-          projectTitle: project.title,
-          url: image.url,
-          alt: image.alt || project.title,
-          blurDataURL: image.blurDataURL,
-        })))
+        .flatMap((project) =>
+          [project.coverImage, ...(project.gallery ?? [])].map((image) => ({
+            projectSlug: project.slug,
+            projectTitle: project.title,
+            url: image.url,
+            alt: image.alt || project.title,
+            blurDataURL: image.blurDataURL,
+          })),
+        )
         .filter((image) => Boolean(image.url));
 
       acc[tab.id] = matchedImages;
@@ -151,7 +156,9 @@ export function ArchitectureShowcase({
                 href={`/du-an/${image.projectSlug}`}
                 className="group relative block overflow-hidden rounded-sm"
               >
-                <div className={`relative h-64 md:h-80 ${isLight ? "bg-muted/40" : "bg-white/5"}`}>
+                <div
+                  className={`relative h-64 md:h-80 ${isLight ? "bg-muted/40" : "bg-white/5"}`}
+                >
                   <Image
                     src={image.url}
                     alt={image.alt}

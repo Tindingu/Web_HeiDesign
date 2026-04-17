@@ -84,9 +84,10 @@ export function ProjectForm({ project }: { project?: Project }) {
           .filter(Boolean);
 
         if (categoryNames.length > 0) {
-          const mergedCategories = project?.category && !categoryNames.includes(project.category)
-            ? [project.category, ...categoryNames]
-            : categoryNames;
+          const mergedCategories =
+            project?.category && !categoryNames.includes(project.category)
+              ? [project.category, ...categoryNames]
+              : categoryNames;
           setCategoryOptions(mergedCategories);
           setFormData((prev) => ({
             ...prev,
@@ -95,9 +96,10 @@ export function ProjectForm({ project }: { project?: Project }) {
         }
 
         if (styleNames.length > 0) {
-          const mergedStyles = project?.style && !styleNames.includes(project.style)
-            ? [project.style, ...styleNames]
-            : styleNames;
+          const mergedStyles =
+            project?.style && !styleNames.includes(project.style)
+              ? [project.style, ...styleNames]
+              : styleNames;
           setStyleOptions(mergedStyles);
           setFormData((prev) => ({
             ...prev,
@@ -591,8 +593,6 @@ export function ProjectForm({ project }: { project?: Project }) {
               + Thêm Phòng/Khu Vực Mới
             </button>
           </fieldset>
-
-          
 
           {/* Highlights - Điểm Nổi Bật */}
           <fieldset className="space-y-4">

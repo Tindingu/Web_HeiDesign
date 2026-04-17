@@ -9,7 +9,10 @@ import { TestimonialsCarousel } from "@/components/home/testimonials-carousel";
 import { CtaStrip } from "@/components/home/cta-strip";
 import { buildBusinessJsonLd, buildMetadata } from "@/lib/seo";
 import { getHomeContent, getProjects } from "@/lib/strapi";
-import { readProjectCategories, readProjectStyles } from "@/lib/taxonomy-storage";
+import {
+  readProjectCategories,
+  readProjectStyles,
+} from "@/lib/taxonomy-storage";
 
 export const revalidate = 120;
 

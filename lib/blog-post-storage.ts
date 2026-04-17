@@ -185,7 +185,9 @@ export async function createBlogPost(
   await ensureDbSchema();
   const pool = getDbPool();
   const categories = await readBlogCategories();
-  const matchedCategory = categories.find((item) => item.name === post.category);
+  const matchedCategory = categories.find(
+    (item) => item.name === post.category,
+  );
   const categoryId =
     matchedCategory?.id ??
     (
@@ -249,7 +251,9 @@ export async function updateBlogPost(
   await ensureDbSchema();
   const pool = getDbPool();
   const categories = await readBlogCategories();
-  const matchedCategory = categories.find((item) => item.name === merged.category);
+  const matchedCategory = categories.find(
+    (item) => item.name === merged.category,
+  );
   const categoryId =
     matchedCategory?.id ??
     (

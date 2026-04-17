@@ -43,10 +43,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(newArticle, { status: 200 });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to create article" },
-      { status: 500 },
-    );
+    console.error("POST /api/articles error", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to create article";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -78,10 +78,10 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json(updated);
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to update article" },
-      { status: 500 },
-    );
+    console.error("PUT /api/articles error", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to update article";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -102,9 +102,9 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to delete article" },
-      { status: 500 },
-    );
+    console.error("DELETE /api/articles error", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to delete article";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

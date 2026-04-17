@@ -53,7 +53,10 @@ export function CompletedProjects({
   theme = "dark",
 }: CompletedProjectsProps) {
   const projectTabs = useMemo<ProjectTab[]>(() => {
-    const source = categories.length > 0 ? categories : fallbackCategories.map((name, index) => ({ id: index + 1, name }));
+    const source =
+      categories.length > 0
+        ? categories
+        : fallbackCategories.map((name, index) => ({ id: index + 1, name }));
     return source.map((category) => ({
       id: slugifyText(category.name),
       label: category.name,
@@ -80,21 +83,18 @@ export function CompletedProjects({
   }, [projects]);
 
   const projectsByTab = useMemo(() => {
-    return projectTabs.reduce<Record<string, Project[]>>(
-      (acc, tab) => {
-        const matchedProjects = sortedProjects.filter((project) => {
-          const category = normalizeText(project.category || "");
-          return category === normalizeText(tab.label);
-        });
+    return projectTabs.reduce<Record<string, Project[]>>((acc, tab) => {
+      const matchedProjects = sortedProjects.filter((project) => {
+        const category = normalizeText(project.category || "");
+        return category === normalizeText(tab.label);
+      });
 
-        acc[tab.id] =
-          typeof maxItemsPerTab === "number"
-            ? matchedProjects.slice(0, maxItemsPerTab)
-            : matchedProjects;
-        return acc;
-      },
-      {},
-    );
+      acc[tab.id] =
+        typeof maxItemsPerTab === "number"
+          ? matchedProjects.slice(0, maxItemsPerTab)
+          : matchedProjects;
+      return acc;
+    }, {});
   }, [sortedProjects, maxItemsPerTab]);
 
   const activeProjects = projectsByTab[activeTab] ?? [];
@@ -128,7 +128,7 @@ export function CompletedProjects({
                     : "text-white/60 hover:text-white"
               }`}
             >
-                  {tab.label.toUpperCase()}
+              {tab.label.toUpperCase()}
             </button>
           ))}
         </div>

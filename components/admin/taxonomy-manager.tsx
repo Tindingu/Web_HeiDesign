@@ -41,15 +41,38 @@ type TabKey =
   | "project-style"
   | "article-type";
 
+const tabMeta: Record<TabKey, { label: string; hint: string }> = {
+  "project-category": {
+    label: "Category dự án",
+    hint: "Nhóm công trình cho phần dự án hoàn thiện",
+  },
+  "project-style": {
+    label: "Style dự án",
+    hint: "Phong cách cho phần kiến trúc",
+  },
+  "blog-category": {
+    label: "Category blog",
+    hint: "Phân loại nội dung cho Kinh nghiệm hay",
+  },
+  "article-type": {
+    label: "Mục bài viết",
+    hint: "Danh mục hiển thị cho thiết kế/thi công",
+  },
+};
+
 export function TaxonomyManager() {
   const [tab, setTab] = useState<TabKey>("project-category");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const [blogCategories, setBlogCategories] = useState<CategoryItem[]>([]);
-  const [projectCategories, setProjectCategories] = useState<CategoryItem[]>([]);
+  const [projectCategories, setProjectCategories] = useState<CategoryItem[]>(
+    [],
+  );
   const [projectStyles, setProjectStyles] = useState<CategoryItem[]>([]);
-  const [articleSections, setArticleSections] = useState<ArticleSectionItem[]>([]);
+  const [articleSections, setArticleSections] = useState<ArticleSectionItem[]>(
+    [],
+  );
   const [articleTypes, setArticleTypes] = useState<ArticleTypeItem[]>([]);
 
   const [newName, setNewName] = useState("");
@@ -203,8 +226,13 @@ export function TaxonomyManager() {
           variant={tab === "article-type" ? "default" : "outline"}
           onClick={() => setTab("article-type")}
         >
-          Heading Thiết Kế / Thi Công
+          Mục Bài Viết
         </Button>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+        <p className="text-sm font-medium text-slate-700">{tabMeta[tab].label}</p>
+        <p className="text-xs text-slate-500">{tabMeta[tab].hint}</p>
       </div>
 
       {error && (
@@ -213,7 +241,7 @@ export function TaxonomyManager() {
         </div>
       )}
 
-      <div className="rounded-lg border border-gray-200 p-4 space-y-3">
+      <div className="space-y-3 rounded-xl border border-slate-200 p-4">
         <h3 className="text-lg font-semibold">Thêm mới</h3>
         <div className="grid gap-3 md:grid-cols-3">
           <input
@@ -249,7 +277,7 @@ export function TaxonomyManager() {
         <Button onClick={handleCreate}>Thêm</Button>
       </div>
 
-      <div className="rounded-lg border border-gray-200 p-4">
+      <div className="rounded-xl border border-slate-200 p-4">
         <h3 className="mb-3 text-lg font-semibold">Danh sách</h3>
         {loading ? (
           <p className="text-sm text-gray-600">Đang tải...</p>
@@ -262,7 +290,7 @@ export function TaxonomyManager() {
               return (
                 <div
                   key={item.id}
-                  className="rounded-lg border border-gray-200 p-3 flex flex-col gap-3"
+                  className="flex flex-col gap-3 rounded-lg border border-slate-200 p-3"
                 >
                   {isEditing ? (
                     <>
@@ -317,7 +345,6 @@ export function TaxonomyManager() {
                         {item.code && (
                           <p className="text-gray-500">
                             code: {item.code}
-                            {item.sectionName ? ` | section: ${item.sectionName}` : ""}
                           </p>
                         )}
                         {tab === "project-style" && !item.code && (
@@ -339,7 +366,8 @@ export function TaxonomyManager() {
                         </Button>
                         <Button
                           size="sm"
-                          variant="destructive"
+                          variant="outline"
+                          className="border-red-200 text-red-600 hover:bg-red-50"
                           onClick={() => void handleDelete(item.id)}
                         >
                           Xóa
