@@ -5,11 +5,21 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { useMemo, useState } from "react";
+import Masonry from "react-masonry-css";
 import type { Project } from "@/lib/strapi";
 
 type ArchitectureStylesProps = {
   projects: Project[];
   styles?: Array<{ id: number; name: string }>;
+  curatedItems?: Array<{
+    styleSlug: string;
+    projectSlug: string;
+    projectTitle: string;
+    slotIndex: number;
+    orientation: "landscape" | "portrait" | "square";
+    imageUrl: string;
+    imageAlt: string;
+  }>;
   initialTab?: string;
 };
 
@@ -23,8 +33,22 @@ type StyleImageItem = {
   projectTitle: string;
   url: string;
   alt: string;
+  slotIndex?: number;
+  orientation?: "landscape" | "portrait" | "square";
   blurDataURL?: string;
 };
+
+const masonryHeights = [
+  "h-56 md:h-64",
+  "h-80 md:h-[22rem]",
+  "h-64 md:h-72",
+  "h-72 md:h-80",
+  "h-52 md:h-60",
+];
+
+function getMasonryHeight(index: number) {
+  return masonryHeights[index % masonryHeights.length];
+}
 
 function normalizeText(value: string) {
   return value
@@ -52,9 +76,12 @@ const fallbackStyles = [
   "Modern Luxury",
 ];
 
+const CURATED_SLOT_COUNT = 12;
+
 export function ArchitectureStyles({
   projects,
   styles = [],
+  curatedItems = [],
   initialTab,
 }: ArchitectureStylesProps) {
   const styleTabs = useMemo<StyleTab[]>(() => {
@@ -111,7 +138,40 @@ export function ArchitectureStyles({
     }, {});
   }, [sortedProjects, styleTabs]);
 
-  const activeImages = imagesByTab[activeTab] ?? [];
+  const curatedByTab = useMemo(() => {
+    return curatedItems.reduce<Record<string, StyleImageItem[]>>(
+      (acc, item) => {
+        const key = item.styleSlug;
+        if (!acc[key]) acc[key] = [];
+        acc[key].push({
+          projectSlug: item.projectSlug,
+          projectTitle: item.projectTitle,
+          url: item.imageUrl,
+          alt: item.imageAlt || item.projectTitle,
+          slotIndex: item.slotIndex,
+          orientation: item.orientation,
+        });
+        return acc;
+      },
+      {},
+    );
+  }, [curatedItems]);
+
+  const curatedActive = (curatedByTab[activeTab] ?? [])
+    .slice()
+    .sort((a, b) => (a.slotIndex ?? 0) - (b.slotIndex ?? 0));
+
+  const activeImages =
+    curatedActive.length >= CURATED_SLOT_COUNT
+      ? curatedActive
+      : (imagesByTab[activeTab] ?? []);
+
+  const breakpointColumnsObj = {
+    default: 4,
+    1280: 3,
+    1024: 2,
+    640: 1,
+  };
 
   return (
     <section className="bg-gray-900 py-20 text-white">
@@ -135,14 +195,28 @@ export function ArchitectureStyles({
         </div>
 
         {activeImages.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-4">
+          <Masonry
+            breakpointCols={breakpointColumnsObj}
+            className="-ml-4 flex w-auto"
+            columnClassName="space-y-4 pl-4 bg-clip-padding"
+          >
             {activeImages.map((image, index) => (
               <Link
                 key={`${image.projectSlug}-${index}-${image.url}`}
                 href={`/du-an/${image.projectSlug}`}
-                className="group relative block overflow-hidden rounded-lg"
+                className="group relative block overflow-hidden"
               >
-                <div className="relative h-64 md:h-80">
+                <div
+                  className={`relative ${
+                    image.orientation
+                      ? image.orientation === "landscape"
+                        ? "aspect-[4/3]"
+                        : image.orientation === "portrait"
+                          ? "aspect-[3/4]"
+                          : "aspect-square"
+                      : getMasonryHeight(index)
+                  }`}
+                >
                   <Image
                     src={image.url}
                     alt={image.alt}
@@ -161,7 +235,7 @@ export function ArchitectureStyles({
                 </div>
               </Link>
             ))}
-          </div>
+          </Masonry>
         ) : (
           <div className="rounded-lg border border-white/10 bg-white/5 p-6 text-white/70">
             Chưa có ảnh cho style này.

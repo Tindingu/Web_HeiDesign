@@ -10,6 +10,7 @@ import { Upload } from "lucide-react";
 import {
   buildTargetTypePath,
   CONSTRUCTION_TARGET_OPTIONS,
+  DU_AN_TARGET_OPTIONS,
   INTERIOR_TARGET_OPTIONS,
   type ArticleTargetSection,
   type ArticleTargetType,
@@ -43,6 +44,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
   >({
     "thiet-ke-noi-that": [...INTERIOR_TARGET_OPTIONS],
     "thi-cong-noi-that": [...CONSTRUCTION_TARGET_OPTIONS],
+    "du-an": [...DU_AN_TARGET_OPTIONS],
   });
 
   useEffect(() => {
@@ -62,6 +64,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
         > = {
           "thiet-ke-noi-that": [],
           "thi-cong-noi-that": [],
+          "du-an": [],
         };
 
         for (const section of payload.data) {
@@ -80,6 +83,9 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
         if (nextMap["thi-cong-noi-that"].length === 0) {
           nextMap["thi-cong-noi-that"] = [...CONSTRUCTION_TARGET_OPTIONS];
         }
+        if (nextMap["du-an"].length === 0) {
+          nextMap["du-an"] = [...DU_AN_TARGET_OPTIONS];
+        }
 
         setSectionTypeMap(nextMap);
       } catch {
@@ -96,7 +102,9 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
         sectionTypeMap[section] ||
         (section === "thi-cong-noi-that"
           ? [...CONSTRUCTION_TARGET_OPTIONS]
-          : [...INTERIOR_TARGET_OPTIONS])
+          : section === "du-an"
+            ? [...DU_AN_TARGET_OPTIONS]
+            : [...INTERIOR_TARGET_OPTIONS])
       );
     },
     [sectionTypeMap],
@@ -160,7 +168,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
       }
 
       if (!formData.targetType?.trim()) {
-        setError("Vui lòng chọn mục thiết kế nội thất");
+        setError("Vui lòng chọn danh mục bài viết");
         setLoading(false);
         return;
       }
@@ -298,6 +306,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
             >
               <option value="thiet-ke-noi-that">Thiết kế nội thất</option>
               <option value="thi-cong-noi-that">Thi công nội thất</option>
+              <option value="du-an">Dự án</option>
             </select>
           </div>
 

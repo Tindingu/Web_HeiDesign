@@ -10,7 +10,8 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const targetSection = String(data.targetSection || "").trim() as
       | "thiet-ke-noi-that"
-      | "thi-cong-noi-that";
+      | "thi-cong-noi-that"
+      | "du-an";
     const targetType = String(data.targetType || "").trim();
 
     if (!targetSection) {

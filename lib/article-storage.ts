@@ -5,7 +5,7 @@ import { ensureArticleTypeByCode } from "@/lib/taxonomy-storage";
 export interface ProjectArticle {
   id: number;
   slug?: string;
-  targetSection?: "thiet-ke-noi-that" | "thi-cong-noi-that";
+  targetSection?: "thiet-ke-noi-that" | "thi-cong-noi-that" | "du-an";
   targetType?: string;
   title: string;
   description: string;
@@ -20,7 +20,7 @@ export interface ProjectArticle {
 type ArticleRow = {
   id: number;
   slug: string | null;
-  target_section: "thiet-ke-noi-that" | "thi-cong-noi-that";
+  target_section: "thiet-ke-noi-that" | "thi-cong-noi-that" | "du-an";
   target_type: string;
   title: string;
   description: string;
@@ -51,7 +51,7 @@ function mapArticleRow(row: ArticleRow): ProjectArticle {
 export async function readArticles(): Promise<ProjectArticle[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<ArticleRow>(
+  const result = (await pool.query(
     `
       SELECT
         pa.id,
@@ -70,7 +70,7 @@ export async function readArticles(): Promise<ProjectArticle[]> {
       JOIN article_types t ON t.id = pa.type_id
       ORDER BY pa.updated_at DESC, pa.id DESC
     `,
-  );
+  )) as { rows: ArticleRow[] };
 
   return result.rows.map(mapArticleRow);
 }
@@ -136,7 +136,7 @@ export async function getArticleById(
 ): Promise<ProjectArticle | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<ArticleRow>(
+  const result = (await pool.query(
     `
       SELECT
         pa.id,
@@ -157,7 +157,7 @@ export async function getArticleById(
       LIMIT 1
     `,
     [id],
-  );
+  )) as { rows: ArticleRow[] };
   return result.rows[0] ? mapArticleRow(result.rows[0]) : null;
 }
 
@@ -166,7 +166,7 @@ export async function getArticleBySlug(
 ): Promise<ProjectArticle | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<ArticleRow>(
+  const result = (await pool.query(
     `
       SELECT
         pa.id,
@@ -187,7 +187,7 @@ export async function getArticleBySlug(
       LIMIT 1
     `,
     [slug],
-  );
+  )) as { rows: ArticleRow[] };
   return result.rows[0] ? mapArticleRow(result.rows[0]) : null;
 }
 
@@ -201,7 +201,7 @@ export async function createArticle(
     article.targetType ?? "biet-thu",
   );
 
-  const result = await pool.query<ArticleRow>(
+  const result = (await pool.query(
     `
       INSERT INTO project_articles (
         slug,
@@ -237,13 +237,13 @@ export async function createArticle(
       article.introContent,
       article.mainContent,
     ],
-  );
+  )) as { rows: ArticleRow[] };
 
   return mapArticleRow(result.rows[0]);
 }
 
 export async function upsertArticleByTargetType(
-  targetSection: "thiet-ke-noi-that" | "thi-cong-noi-that",
+  targetSection: "thiet-ke-noi-that" | "thi-cong-noi-that" | "du-an",
   targetType: string,
   article: Omit<
     ProjectArticle,
@@ -255,7 +255,7 @@ export async function upsertArticleByTargetType(
   const type = await ensureArticleTypeByCode(targetSection, targetType);
   await pool.query("BEGIN");
   try {
-    const updated = await pool.query<ArticleRow>(
+    const updated = (await pool.query(
       `
         UPDATE project_articles
         SET
@@ -289,14 +289,14 @@ export async function upsertArticleByTargetType(
         article.introContent,
         article.mainContent,
       ],
-    );
+    )) as { rows: ArticleRow[] };
 
     if (updated.rows[0]) {
       await pool.query("COMMIT");
       return mapArticleRow(updated.rows[0]);
     }
 
-    const inserted = await pool.query<ArticleRow>(
+    const inserted = (await pool.query(
       `
         INSERT INTO project_articles (
           slug,
@@ -332,7 +332,7 @@ export async function upsertArticleByTargetType(
         article.introContent,
         article.mainContent,
       ],
-    );
+    )) as { rows: ArticleRow[] };
 
     await pool.query("COMMIT");
     return mapArticleRow(inserted.rows[0]);
@@ -362,7 +362,7 @@ export async function updateArticle(
     merged.targetSection ?? "thiet-ke-noi-that",
     merged.targetType ?? "biet-thu",
   );
-  const result = await pool.query<ArticleRow>(
+  const result = (await pool.query(
     `
       UPDATE project_articles
       SET
@@ -399,7 +399,7 @@ export async function updateArticle(
       merged.introContent,
       merged.mainContent,
     ],
-  );
+  )) as { rows: ArticleRow[] };
 
   return result.rows[0] ? mapArticleRow(result.rows[0]) : null;
 }

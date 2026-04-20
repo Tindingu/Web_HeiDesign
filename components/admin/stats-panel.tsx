@@ -34,7 +34,8 @@ export function StatsPanel({
   emptyText = "Chưa có dữ liệu để hiển thị biểu đồ",
 }: StatsPanelProps) {
   const safeData = data.filter((item) => item.value > 0);
-  const maxValue = safeData.reduce((max, item) => Math.max(max, item.value), 0) || 1;
+  const maxValue =
+    safeData.reduce((max, item) => Math.max(max, item.value), 0) || 1;
 
   return (
     <section className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
@@ -70,17 +71,27 @@ export function StatsPanel({
         ) : (
           <div className="mt-4 space-y-3">
             {safeData.map((item) => {
-              const width = Math.max(8, Math.round((item.value / maxValue) * 100));
+              const width = Math.max(
+                8,
+                Math.round((item.value / maxValue) * 100),
+              );
               return (
-                <div key={item.label} className="grid grid-cols-[minmax(120px,220px)_1fr_auto] items-center gap-3">
-                  <span className="truncate text-sm text-slate-600">{item.label}</span>
+                <div
+                  key={item.label}
+                  className="grid grid-cols-[minmax(120px,220px)_1fr_auto] items-center gap-3"
+                >
+                  <span className="truncate text-sm text-slate-600">
+                    {item.label}
+                  </span>
                   <div className="h-2 overflow-hidden rounded-full bg-slate-200">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-amber-500 to-orange-500"
                       style={{ width: `${width}%` }}
                     />
                   </div>
-                  <span className="text-xs font-semibold text-slate-600">{item.value}</span>
+                  <span className="text-xs font-semibold text-slate-600">
+                    {item.value}
+                  </span>
                 </div>
               );
             })}

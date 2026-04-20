@@ -117,7 +117,8 @@ export function BlogPostForm({ post }: { post?: BlogPostRecord }) {
     });
 
     if (!response.ok) {
-      throw new Error("Không thể chuyển đổi file Word");
+      const payload = await response.json().catch(() => ({}));
+      throw new Error(payload.error || "Không thể chuyển đổi file Word");
     }
 
     const data = await response.json();

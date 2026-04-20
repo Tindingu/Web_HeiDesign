@@ -33,8 +33,12 @@ export default async function AdminBlogPostsPage() {
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Blog Management</p>
-            <h2 className="text-2xl font-semibold text-slate-900">Quản lý bài viết kinh nghiệm</h2>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              Blog Management
+            </p>
+            <h2 className="text-2xl font-semibold text-slate-900">
+              Quản lý bài viết kinh nghiệm
+            </h2>
           </div>
           <Link href="/admin/kinh-nghiem/new">
             <Button className="bg-amber-600 hover:bg-amber-700">
@@ -49,7 +53,11 @@ export default async function AdminBlogPostsPage() {
         subtitle="Theo dõi số bài theo chuyên mục và số bài trong tháng"
         summaries={[
           { label: "Tổng bài viết", value: posts.length, tone: "slate" },
-          { label: "Bài viết tháng này", value: thisMonthCount, tone: "emerald" },
+          {
+            label: "Bài viết tháng này",
+            value: thisMonthCount,
+            tone: "emerald",
+          },
           { label: "Số chuyên mục", value: categoryData.length, tone: "sky" },
         ]}
         chartTitle="Biểu đồ bài viết theo chuyên mục"
@@ -90,7 +98,9 @@ export default async function AdminBlogPostsPage() {
                     {post.title}
                   </h3>
                   <p className="text-sm text-slate-600">{post.category}</p>
-                  <p className="truncate text-xs text-slate-500">/blog/{post.slug}</p>
+                  <p className="truncate text-xs text-slate-500">
+                    /blog/{post.slug}
+                  </p>
                 </div>
               </div>
 

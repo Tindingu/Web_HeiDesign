@@ -38,11 +38,11 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json(newPost, { status: 201 });
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to create blog post" },
-      { status: 500 },
-    );
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to create blog post";
+    console.error("POST /api/blog-posts error", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -76,11 +76,11 @@ export async function PUT(request: NextRequest) {
     }
 
     return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to update blog post" },
-      { status: 500 },
-    );
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to update blog post";
+    console.error("PUT /api/blog-posts error", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -100,10 +100,10 @@ export async function DELETE(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json(
-      { error: "Failed to delete blog post" },
-      { status: 500 },
-    );
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to delete blog post";
+    console.error("DELETE /api/blog-posts error", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

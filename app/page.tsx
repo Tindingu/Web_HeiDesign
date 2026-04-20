@@ -13,6 +13,7 @@ import {
   readProjectCategories,
   readProjectStyles,
 } from "@/lib/taxonomy-storage";
+import { readArchitectureGallery } from "@/lib/architecture-gallery-storage";
 
 export const revalidate = 120;
 
@@ -25,12 +26,14 @@ export const generateMetadata = () =>
   });
 
 export default async function HomePage() {
-  const [projects, content, categories, styles] = await Promise.all([
-    getProjects(),
-    getHomeContent(),
-    readProjectCategories(),
-    readProjectStyles(),
-  ]);
+  const [projects, content, categories, styles, architectureGallery] =
+    await Promise.all([
+      getProjects(),
+      getHomeContent(),
+      readProjectCategories(),
+      readProjectStyles(),
+      readArchitectureGallery(),
+    ]);
   const jsonLd = buildBusinessJsonLd();
 
   return (
@@ -39,7 +42,19 @@ export default async function HomePage() {
       <About />
       {/* <FeaturedProjects projects={projects} /> */}
       <CompletedProjects projects={projects} categories={categories} />
-      <ArchitectureStyles projects={projects} styles={styles} />
+      <ArchitectureStyles
+        projects={projects}
+        styles={styles}
+        curatedItems={architectureGallery.map((item) => ({
+          styleSlug: item.styleSlug,
+          projectSlug: item.projectSlug,
+          projectTitle: item.projectTitle,
+          slotIndex: item.slotIndex,
+          orientation: item.orientation,
+          imageUrl: item.imageUrl,
+          imageAlt: item.imageAlt,
+        }))}
+      />
       <Services services={content.services} />
       <ProcessTimeline steps={content.processSteps} />
       <TestimonialsCarousel testimonials={content.testimonials} />

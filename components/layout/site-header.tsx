@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { Search, Menu, ChevronDown } from "lucide-react";
@@ -9,29 +10,29 @@ import { useEffect, useMemo, useState } from "react";
 
 const topCategories = [
   {
-    label: "MẦU NHÀ ĐẸP",
+    label: "MẪU NHÀ ĐẸP",
     src: "/upload/iconheading/nha-dep.png",
-    href: "/du-an?category=nha-dep",
+    href: "/khong-gian/mau-nha-dep",
   },
   {
     label: "PHÒNG KHÁCH",
     src: "/upload/iconheading/phong-khach.png",
-    href: "/du-an?category=phong-khach",
+    href: "/khong-gian/phong-khach",
   },
   {
     label: "PHÒNG BẾP",
     src: "/upload/iconheading/phong-bep.png",
-    href: "/du-an?category=phong-bep",
+    href: "/khong-gian/phong-bep",
   },
   {
     label: "PHÒNG NGỦ",
     src: "/upload/iconheading/phong-ngu.png",
-    href: "/du-an?category=phong-ngu",
+    href: "/khong-gian/phong-ngu",
   },
   {
     label: "PHÒNG TẮM",
     src: "/upload/iconheading/phong-tam.png",
-    href: "/du-an?category=phong-tam",
+    href: "/khong-gian/phong-tam",
   },
 ];
 
@@ -105,21 +106,39 @@ const baseMenuItems = [
     href: "/thi-cong-noi-that",
     submenu: defaultConstructionSubmenu,
   },
-  { label: "Dự Án Thiết Kế", href: "/du-an-thiet-ke" },
-  { label: "Dự Án Hoàn Thiện", href: "/du-an-hoan-thien" },
+  { label: "Dự án", href: "/du-an" },
+
   { label: "Kinh Nghiệm Hay", href: "/blog" },
+  { label: "Liên hệ", href: "/lien-he" },
   { label: "Giới thiệu", href: "/gioi-thieu" },
 ];
 
 export function SiteHeader() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [interiorSubmenu, setInteriorSubmenu] = useState(
     defaultInteriorSubmenu,
   );
   const [constructionSubmenu, setConstructionSubmenu] = useState(
     defaultConstructionSubmenu,
   );
+
+  useEffect(() => {
+    setSearchKeyword(searchParams.get("s") || "");
+  }, [searchParams]);
+
+  const handleSearchSubmit = (event?: React.FormEvent) => {
+    event?.preventDefault();
+    const keyword = searchKeyword.trim();
+    if (!keyword) {
+      router.push("/tim-kiem");
+      return;
+    }
+    router.push(`/tim-kiem?s=${encodeURIComponent(keyword)}`);
+  };
 
   useEffect(() => {
     const loadTargets = async () => {
@@ -198,16 +217,21 @@ export function SiteHeader() {
 
           {/* Search Bar */}
           <div className="hidden flex-1 max-w-sm md:block lg:max-w-md">
-            <div className="relative">
+            <form className="relative" onSubmit={handleSearchSubmit}>
               <input
                 type="text"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
                 placeholder="Bạn đang tìm gì?"
                 className="w-full rounded-full border border-gray-300 py-2 pl-4 pr-10 text-sm outline-none transition-colors focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
               />
-              <button className="absolute right-2 top-1/2 -translate-y-1/2">
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2"
+              >
                 <Search className="h-4 w-4 text-gray-400" />
               </button>
-            </div>
+            </form>
           </div>
 
           {/* Category Icons - Horizontal */}
@@ -237,7 +261,10 @@ export function SiteHeader() {
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2">
             {/* Mobile Search */}
-            <button className="rounded-full p-2 hover:bg-gray-100 md:hidden">
+            <button
+              onClick={() => handleSearchSubmit()}
+              className="rounded-full p-2 hover:bg-gray-100 md:hidden"
+            >
               <Search className="h-5 w-5 text-gray-600" />
             </button>
 

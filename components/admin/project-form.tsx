@@ -9,12 +9,20 @@ import Link from "next/link";
 
 type FormData = Omit<Project, "id" | "createdAt" | "updatedAt">;
 
+const defaultProjectCategories = [
+  "Mẫu nhà đẹp",
+  "Phòng khách",
+  "Phòng bếp",
+  "Phòng ngủ",
+  "Phòng tắm",
+];
+
 const initialFormData: FormData = {
   slug: "",
   title: "",
   summary: "",
   description: "",
-  category: "Căn hộ",
+  category: "Mẫu nhà đẹp",
   style: "Hiện đại",
   budget: "3-5 tỷ",
   coverImage: { url: "", alt: "", blurDataURL: "" },
@@ -53,12 +61,7 @@ export function ProjectForm({ project }: { project?: Project }) {
   const [wordError, setWordError] = useState("");
   const [wordMessage, setWordMessage] = useState("");
   const [categoryOptions, setCategoryOptions] = useState<string[]>([
-    "Căn hộ",
-    "Biệt thự",
-    "Nhà phố",
-    "Văn phòng",
-    "Khách sạn",
-    "Café",
+    ...defaultProjectCategories,
   ]);
   const [styleOptions, setStyleOptions] = useState<string[]>([
     "Hiện đại",
@@ -84,10 +87,14 @@ export function ProjectForm({ project }: { project?: Project }) {
           .filter(Boolean);
 
         if (categoryNames.length > 0) {
+          const mergedCategoryBase = [
+            ...defaultProjectCategories,
+            ...categoryNames,
+          ];
           const mergedCategories =
-            project?.category && !categoryNames.includes(project.category)
-              ? [project.category, ...categoryNames]
-              : categoryNames;
+            project?.category && !mergedCategoryBase.includes(project.category)
+              ? [project.category, ...mergedCategoryBase]
+              : mergedCategoryBase;
           setCategoryOptions(mergedCategories);
           setFormData((prev) => ({
             ...prev,
@@ -138,7 +145,8 @@ export function ProjectForm({ project }: { project?: Project }) {
         });
 
         if (!response.ok) {
-          throw new Error("Failed to save project");
+          const payload = await response.json().catch(() => ({}));
+          throw new Error(payload.error || "Failed to save project");
         }
 
         router.push("/admin/projects");

@@ -28,6 +28,19 @@ function toCode(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+function toDisplayName(value: string): string {
+  const normalized = value.replace(/-/g, " ").trim().toLowerCase();
+
+  if (normalized === "du an") {
+    return "Dự án";
+  }
+
+  return normalized
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export async function readBlogCategories(): Promise<TaxonomyItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
@@ -365,10 +378,28 @@ export async function ensureArticleTypeByCode(
   const existing = await getArticleTypeByCode(sectionCode, typeCode);
   if (existing) return existing;
 
+  const pool = getDbPool();
   const sections = await readArticleSections();
-  const section = sections.find((item) => item.code === sectionCode);
+  let section = sections.find((item) => item.code === sectionCode);
   if (!section) {
-    throw new Error(`Section not found: ${sectionCode}`);
+    const createdSection = await pool.query<{
+      id: number;
+      name: string;
+      code: string;
+    }>(
+      `
+        INSERT INTO article_sections (name, code)
+        VALUES ($1, $2)
+        ON CONFLICT (code) DO UPDATE SET name = EXCLUDED.name
+        RETURNING id, name, code
+      `,
+      [toDisplayName(sectionCode), sectionCode],
+    );
+    section = {
+      id: Number(createdSection.rows[0].id),
+      name: createdSection.rows[0].name,
+      code: createdSection.rows[0].code,
+    };
   }
 
   return createArticleType({

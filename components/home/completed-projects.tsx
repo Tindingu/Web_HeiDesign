@@ -37,11 +37,25 @@ function slugifyText(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+const categorySlugAliases: Record<string, string> = {
+  "mau-nha-dep": "nha-dep",
+  "phong-khach": "phong-khach",
+  "phong-bep": "phong-bep",
+  "phong-ngu": "phong-ngu",
+  "phong-tam": "phong-tam",
+};
+
+function resolveTabId(label: string) {
+  const normalized = slugifyText(label);
+  return categorySlugAliases[normalized] || normalized;
+}
+
 const fallbackCategories = [
-  "Biệt thự",
-  "Nhà phố",
-  "Căn hộ",
-  "Công trình dịch vụ",
+  "Mẫu nhà đẹp",
+  "Phòng khách",
+  "Phòng bếp",
+  "Phòng ngủ",
+  "Phòng tắm",
 ];
 
 export function CompletedProjects({
@@ -53,12 +67,16 @@ export function CompletedProjects({
   theme = "dark",
 }: CompletedProjectsProps) {
   const projectTabs = useMemo<ProjectTab[]>(() => {
-    const source =
-      categories.length > 0
-        ? categories
-        : fallbackCategories.map((name, index) => ({ id: index + 1, name }));
+    const mergedSource = [
+      ...fallbackCategories.map((name, index) => ({ id: index + 1, name })),
+      ...categories,
+    ];
+    const source = mergedSource.filter(
+      (category, index, array) =>
+        index === array.findIndex((item) => item.name === category.name),
+    );
     return source.map((category) => ({
-      id: slugifyText(category.name),
+      id: resolveTabId(category.name),
       label: category.name,
     }));
   }, [categories]);

@@ -231,7 +231,9 @@ export function TaxonomyManager() {
       </div>
 
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-        <p className="text-sm font-medium text-slate-700">{tabMeta[tab].label}</p>
+        <p className="text-sm font-medium text-slate-700">
+          {tabMeta[tab].label}
+        </p>
         <p className="text-xs text-slate-500">{tabMeta[tab].hint}</p>
       </div>
 
@@ -343,9 +345,7 @@ export function TaxonomyManager() {
                       <div className="text-sm">
                         <p className="font-medium">{item.name}</p>
                         {item.code && (
-                          <p className="text-gray-500">
-                            code: {item.code}
-                          </p>
+                          <p className="text-gray-500">code: {item.code}</p>
                         )}
                         {tab === "project-style" && !item.code && (
                           <p className="text-gray-500">Style dự án</p>

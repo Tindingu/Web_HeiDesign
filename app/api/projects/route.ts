@@ -45,11 +45,10 @@ export async function POST(request: NextRequest) {
     const project = await createProject(body);
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
-    console.error("POST /api/projects error:", error);
-    return NextResponse.json(
-      { error: "Failed to create project" },
-      { status: 500 },
-    );
+    const message =
+      error instanceof Error ? error.message : "Failed to create project";
+    console.error("POST /api/projects error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -74,11 +73,10 @@ export async function PUT(request: NextRequest) {
 
     return NextResponse.json(project);
   } catch (error) {
-    console.error("PUT /api/projects error:", error);
-    return NextResponse.json(
-      { error: "Failed to update project" },
-      { status: 500 },
-    );
+    const message =
+      error instanceof Error ? error.message : "Failed to update project";
+    console.error("PUT /api/projects error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
@@ -102,10 +100,9 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("DELETE /api/projects error:", error);
-    return NextResponse.json(
-      { error: "Failed to delete project" },
-      { status: 500 },
-    );
+    const message =
+      error instanceof Error ? error.message : "Failed to delete project";
+    console.error("DELETE /api/projects error:", message);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

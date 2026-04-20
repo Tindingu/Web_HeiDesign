@@ -541,7 +541,7 @@ function formatInlineMarkdown(text: string): React.ReactNode {
           href={href}
           target="_blank"
           rel="noreferrer noopener"
-          className="text-amber-600 hover:text-amber-700 underline decoration-amber-600"
+          className="text-amber-600 hover:text-amber-700  decoration-amber-600"
         >
           {match[7]}
         </a>,
@@ -555,7 +555,7 @@ function formatInlineMarkdown(text: string): React.ReactNode {
           href={href}
           target="_blank"
           rel="noreferrer noopener"
-          className="text-amber-600 hover:text-amber-700 underline decoration-amber-600"
+          className="text-amber-600 hover:text-amber-700  decoration-amber-600"
         >
           {href}
         </a>,

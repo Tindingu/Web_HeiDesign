@@ -15,10 +15,15 @@ export const revalidate = 0; // Always fresh
 
 async function ArticlesListPage() {
   const articles = await readArticles();
-  const interiorCount = articles.filter(
+  const designCount = articles.filter(
     (article) => resolveArticleSection(article) === "thiet-ke-noi-that",
   ).length;
-  const constructionCount = articles.length - interiorCount;
+  const constructionCount = articles.filter(
+    (article) => resolveArticleSection(article) === "thi-cong-noi-that",
+  ).length;
+  const duAnCount = articles.filter(
+    (article) => resolveArticleSection(article) === "du-an",
+  ).length;
 
   const typeMap = articles.reduce<Map<string, number>>((acc, article) => {
     const label = getTargetLabel(
@@ -39,8 +44,12 @@ async function ArticlesListPage() {
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Article Management</p>
-            <h2 className="text-2xl font-semibold text-slate-900">Quản lý bài viết dự án</h2>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              Article Management
+            </p>
+            <h2 className="text-2xl font-semibold text-slate-900">
+              Quản lý bài viết dự án
+            </h2>
           </div>
           <Link href="/admin/du-an/new">
             <Button className="bg-amber-600 hover:bg-amber-700">
@@ -55,9 +64,13 @@ async function ArticlesListPage() {
         subtitle="Theo dõi số lượng bài viết theo nhóm thiết kế/thi công và từng hạng mục"
         summaries={[
           { label: "Tổng bài viết", value: articles.length, tone: "slate" },
-          { label: "Thiết kế nội thất", value: interiorCount, tone: "amber" },
-          { label: "Thi công nội thất", value: constructionCount, tone: "emerald" },
-          { label: "Số hạng mục", value: typeData.length, tone: "sky" },
+          { label: "Thiết kế nội thất", value: designCount, tone: "amber" },
+          {
+            label: "Thi công nội thất",
+            value: constructionCount,
+            tone: "emerald",
+          },
+          { label: "Dự án", value: duAnCount, tone: "sky" },
         ]}
         chartTitle="Biểu đồ bài viết theo hạng mục"
         data={typeData}
@@ -104,7 +117,9 @@ async function ArticlesListPage() {
                     <p className="text-sm text-slate-600">
                       {getTargetLabel(targetSection, targetType)}
                     </p>
-                    <p className="truncate text-xs text-slate-500">{publicPath}</p>
+                    <p className="truncate text-xs text-slate-500">
+                      {publicPath}
+                    </p>
                   </div>
                 </div>
 

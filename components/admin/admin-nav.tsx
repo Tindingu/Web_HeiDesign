@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, FolderKanban, FileText, Newspaper, Tags } from "lucide-react";
+import {
+  LayoutGrid,
+  FolderKanban,
+  FileText,
+  Newspaper,
+  Tags,
+  Images,
+} from "lucide-react";
 
 type AdminNavItem = {
   href: string;
@@ -14,6 +21,11 @@ const navItems: AdminNavItem[] = [
   { href: "/admin/projects", label: "Dự án", icon: FolderKanban },
   { href: "/admin/du-an", label: "Bài viết dự án", icon: FileText },
   { href: "/admin/kinh-nghiem", label: "Kinh nghiệm", icon: Newspaper },
+  {
+    href: "/admin/kien-truc-nha-pho",
+    label: "Gallery kiến trúc",
+    icon: Images,
+  },
   { href: "/admin/categories", label: "Category & Style", icon: Tags },
 ];
 

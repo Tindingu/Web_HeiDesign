@@ -43,7 +43,7 @@ export default async function PortfolioPage({
         theme="light"
       />
 
-      <ArchitectureShowcase
+      {/* <ArchitectureShowcase
         projects={projects}
         styles={styles}
         initialTab={initialStyle}
@@ -59,7 +59,7 @@ export default async function PortfolioPage({
             <DualFileWordUploader />
           </div>
         </Container>
-      </section>
+      </section> */}
     </main>
   );
 }

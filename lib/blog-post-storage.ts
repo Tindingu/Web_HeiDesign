@@ -82,6 +82,19 @@ export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
     await pool.query("TRUNCATE TABLE blog_posts RESTART IDENTITY");
 
     for (const post of posts) {
+      const categories = await readBlogCategories();
+      const matchedCategory = categories.find(
+        (item) => item.name === post.category,
+      );
+      const categoryId =
+        matchedCategory?.id ??
+        (
+          await pool.query<{ id: number }>(
+            "INSERT INTO blog_categories (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id",
+            [post.category],
+          )
+        ).rows[0].id;
+
       await pool.query(
         `
           INSERT INTO blog_posts (
@@ -89,7 +102,7 @@ export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
             slug,
             title,
             excerpt,
-            category,
+            category_id,
             content,
             cover_image_url,
             published_at,
@@ -103,7 +116,7 @@ export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
           post.slug,
           post.title,
           post.excerpt,
-          post.category,
+          categoryId,
           post.content,
           post.coverImage?.url ?? "",
           post.publishedAt,

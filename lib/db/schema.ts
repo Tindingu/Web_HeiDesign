@@ -95,6 +95,47 @@ async function createSchema() {
       position INTEGER NOT NULL DEFAULT 0
     );
 
+    CREATE TABLE IF NOT EXISTS architecture_gallery_items (
+      id SERIAL PRIMARY KEY,
+      style_id INTEGER NOT NULL REFERENCES project_styles(id) ON DELETE CASCADE,
+      project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+      slot_index INTEGER NOT NULL,
+      orientation TEXT NOT NULL CHECK (orientation IN ('landscape', 'portrait', 'square')),
+      image_url TEXT NOT NULL,
+      image_alt TEXT NOT NULL DEFAULT '',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      UNIQUE(style_id, slot_index)
+    );
+
+    DO $$
+    DECLARE
+      constraint_name TEXT;
+    BEGIN
+      FOR constraint_name IN
+        SELECT tc.constraint_name
+        FROM information_schema.table_constraints tc
+        JOIN information_schema.constraint_column_usage ccu
+          ON tc.constraint_name = ccu.constraint_name
+         AND tc.constraint_schema = ccu.constraint_schema
+        WHERE tc.table_schema = 'public'
+          AND tc.table_name = 'architecture_gallery_items'
+          AND tc.constraint_type = 'CHECK'
+          AND ccu.column_name = 'orientation'
+      LOOP
+        EXECUTE FORMAT(
+          'ALTER TABLE architecture_gallery_items DROP CONSTRAINT IF EXISTS %I',
+          constraint_name
+        );
+      END LOOP;
+
+      EXECUTE '
+        ALTER TABLE architecture_gallery_items
+        ADD CONSTRAINT architecture_gallery_items_orientation_check
+        CHECK (orientation IN (''landscape'', ''portrait'', ''square''))
+      ';
+    END$$;
+
     CREATE TABLE IF NOT EXISTS blog_posts (
       id SERIAL PRIMARY KEY,
       slug TEXT NOT NULL UNIQUE,
@@ -194,7 +235,8 @@ async function createSchema() {
     INSERT INTO article_sections (name, code)
     VALUES
       ('Thiết kế nội thất', 'thiet-ke-noi-that'),
-      ('Thi công nội thất', 'thi-cong-noi-that')
+      ('Thi công nội thất', 'thi-cong-noi-that'),
+      ('Dự án', 'du-an')
     ON CONFLICT (code) DO NOTHING;
 
     INSERT INTO article_types (name, code, section_id)
@@ -213,7 +255,12 @@ async function createSchema() {
         ('Thi công nội thất biệt thự', 'biet-thu', 'thi-cong-noi-that'),
         ('Thi công nội thất chung cư', 'chung-cu', 'thi-cong-noi-that'),
         ('Thi công nội thất nhà phố', 'nha-pho', 'thi-cong-noi-that'),
-        ('Thi công nội thất văn phòng', 'van-phong', 'thi-cong-noi-that')
+        ('Thi công nội thất văn phòng', 'van-phong', 'thi-cong-noi-that'),
+        ('Mẫu nhà đẹp', 'nha-dep', 'du-an'),
+        ('Phòng khách', 'phong-khach', 'du-an'),
+        ('Phòng bếp', 'phong-bep', 'du-an'),
+        ('Phòng ngủ', 'phong-ngu', 'du-an'),
+        ('Phòng tắm', 'phong-tam', 'du-an')
     ) AS v(name, code, section_code)
     JOIN article_sections s ON s.code = v.section_code
     ON CONFLICT (section_id, code) DO NOTHING;
@@ -228,6 +275,22 @@ async function createSchema() {
       ('Báo giá và chi phí')
     ON CONFLICT (name) DO NOTHING;
 
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name='blog_posts' AND column_name='category'
+      ) THEN
+        UPDATE blog_posts bp
+        SET category_id = c.id
+        FROM blog_categories c
+        WHERE bp.category_id IS NULL
+          AND c.name = bp.category;
+
+        EXECUTE 'ALTER TABLE blog_posts ALTER COLUMN category DROP NOT NULL';
+      END IF;
+    END$$;
+
     INSERT INTO project_categories (name)
     VALUES
       ('Căn hộ'),
@@ -236,6 +299,15 @@ async function createSchema() {
       ('Văn phòng'),
       ('Khách sạn'),
       ('Café')
+    ON CONFLICT (name) DO NOTHING;
+
+    INSERT INTO project_categories (name)
+    VALUES
+      ('Mẫu nhà đẹp'),
+      ('Phòng khách'),
+      ('Phòng bếp'),
+      ('Phòng ngủ'),
+      ('Phòng tắm')
     ON CONFLICT (name) DO NOTHING;
 
     INSERT INTO project_styles (name)
@@ -285,6 +357,14 @@ async function createSchema() {
           FROM project_styles s
           WHERE p.style_id = s.id
         ';
+
+        EXECUTE '
+          UPDATE projects
+          SET style = COALESCE(style, ''Hiện đại'')
+          WHERE style IS NULL OR style = ''''
+        ';
+
+        EXECUTE 'ALTER TABLE projects ALTER COLUMN style SET DEFAULT ''Hiện đại''';
       END IF;
     END$$;
 
@@ -304,6 +384,20 @@ async function createSchema() {
       END IF;
     END$$;
 
+    DO $$
+    BEGIN
+      IF EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_name='projects' AND column_name='category'
+      ) THEN
+        UPDATE projects
+        SET category = COALESCE(category, 'Chưa phân loại')
+        WHERE category IS NULL;
+
+        EXECUTE 'ALTER TABLE projects ALTER COLUMN category DROP NOT NULL';
+      END IF;
+    END$$;
+
     CREATE INDEX IF NOT EXISTS idx_projects_featured ON projects(featured);
     CREATE INDEX IF NOT EXISTS idx_projects_category_id ON projects(category_id);
     CREATE INDEX IF NOT EXISTS idx_projects_style_id ON projects(style_id);
@@ -314,6 +408,8 @@ async function createSchema() {
     CREATE INDEX IF NOT EXISTS idx_project_sections_project_id_position ON project_sections(project_id, position);
     CREATE INDEX IF NOT EXISTS idx_project_images_project_id_position ON project_images(project_id, position);
     CREATE INDEX IF NOT EXISTS idx_project_highlights_project_id_position ON project_highlights(project_id, position);
+    CREATE INDEX IF NOT EXISTS idx_architecture_gallery_style_slot ON architecture_gallery_items(style_id, slot_index);
+    CREATE INDEX IF NOT EXISTS idx_architecture_gallery_project_id ON architecture_gallery_items(project_id);
 
     CREATE INDEX IF NOT EXISTS idx_blog_posts_category_id ON blog_posts(category_id);
     CREATE INDEX IF NOT EXISTS idx_blog_posts_published_at ON blog_posts(published_at DESC);
@@ -343,6 +439,12 @@ async function createSchema() {
     DROP TRIGGER IF EXISTS trg_project_articles_updated_at ON project_articles;
     CREATE TRIGGER trg_project_articles_updated_at
       BEFORE UPDATE ON project_articles
+      FOR EACH ROW
+      EXECUTE FUNCTION set_updated_at();
+
+    DROP TRIGGER IF EXISTS trg_architecture_gallery_items_updated_at ON architecture_gallery_items;
+    CREATE TRIGGER trg_architecture_gallery_items_updated_at
+      BEFORE UPDATE ON architecture_gallery_items
       FOR EACH ROW
       EXECUTE FUNCTION set_updated_at();
   `);

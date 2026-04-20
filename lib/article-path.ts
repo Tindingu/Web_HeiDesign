@@ -6,7 +6,10 @@ export function normalizeVietnamese(value: string): string {
     .trim();
 }
 
-export type ArticleTargetSection = "thiet-ke-noi-that" | "thi-cong-noi-that";
+export type ArticleTargetSection =
+  | "thiet-ke-noi-that"
+  | "thi-cong-noi-that"
+  | "du-an";
 
 export const INTERIOR_TARGET_OPTIONS = [
   { value: "biet-thu", label: "Thiết kế nội thất biệt thự" },
@@ -27,18 +30,35 @@ export const CONSTRUCTION_TARGET_OPTIONS = [
   { value: "van-phong", label: "Thi công nội thất văn phòng" },
 ] as const;
 
+export const DU_AN_TARGET_OPTIONS = [
+  { value: "nha-dep", label: "Mẫu nhà đẹp" },
+  { value: "phong-khach", label: "Phòng khách" },
+  { value: "phong-bep", label: "Phòng bếp" },
+  { value: "phong-ngu", label: "Phòng ngủ" },
+  { value: "phong-tam", label: "Phòng tắm" },
+] as const;
+
 export type InteriorTargetType =
   (typeof INTERIOR_TARGET_OPTIONS)[number]["value"];
 
 export type ConstructionTargetType =
   (typeof CONSTRUCTION_TARGET_OPTIONS)[number]["value"];
 
-export type ArticleTargetType = InteriorTargetType | ConstructionTargetType;
+export type DuAnTargetType = (typeof DU_AN_TARGET_OPTIONS)[number]["value"];
+
+export type ArticleTargetType =
+  | InteriorTargetType
+  | ConstructionTargetType
+  | DuAnTargetType;
 
 export function isArticleTargetSection(
   value: string,
 ): value is ArticleTargetSection {
-  return value === "thiet-ke-noi-that" || value === "thi-cong-noi-that";
+  return (
+    value === "thiet-ke-noi-that" ||
+    value === "thi-cong-noi-that" ||
+    value === "du-an"
+  );
 }
 
 export function isInteriorTargetType(
@@ -53,8 +73,16 @@ export function isConstructionTargetType(
   return CONSTRUCTION_TARGET_OPTIONS.some((item) => item.value === value);
 }
 
+export function isDuAnTargetType(value: string): value is DuAnTargetType {
+  return DU_AN_TARGET_OPTIONS.some((item) => item.value === value);
+}
+
 export function isArticleTargetType(value: string): value is ArticleTargetType {
-  return isInteriorTargetType(value) || isConstructionTargetType(value);
+  return (
+    isInteriorTargetType(value) ||
+    isConstructionTargetType(value) ||
+    isDuAnTargetType(value)
+  );
 }
 
 export function getInteriorTargetLabel(type: string): string {
@@ -71,10 +99,30 @@ export function getConstructionTargetLabel(type: string): string {
   );
 }
 
+export function getDuAnTargetLabel(type: string): string {
+  return (
+    DU_AN_TARGET_OPTIONS.find((item) => item.value === type)?.label ||
+    "Mẫu nhà đẹp"
+  );
+}
+
+export function toKhongGianTypeSlug(type: string): string {
+  if (type === "nha-dep") return "mau-nha-dep";
+  return type;
+}
+
+export function fromKhongGianTypeSlug(type: string): string {
+  if (type === "mau-nha-dep") return "nha-dep";
+  return type;
+}
+
 export function getTargetLabel(
   section: ArticleTargetSection,
   type: string,
 ): string {
+  if (section === "du-an") {
+    return getDuAnTargetLabel(type);
+  }
   if (section === "thi-cong-noi-that") {
     return getConstructionTargetLabel(type);
   }
@@ -82,13 +130,30 @@ export function getTargetLabel(
 }
 
 export function getTargetOptions(section: ArticleTargetSection) {
-  return section === "thi-cong-noi-that"
-    ? CONSTRUCTION_TARGET_OPTIONS
-    : INTERIOR_TARGET_OPTIONS;
+  if (section === "thi-cong-noi-that") return CONSTRUCTION_TARGET_OPTIONS;
+  if (section === "du-an") return DU_AN_TARGET_OPTIONS;
+  return INTERIOR_TARGET_OPTIONS;
 }
 
 export function categoryToTypeSlug(category: string): string {
   const normalized = normalizeVietnamese(category);
+  const slugLike = normalized.replace(/-/g, " ");
+
+  if (normalized === "nha-dep" || slugLike.includes("nha dep")) {
+    return "nha-dep";
+  }
+  if (normalized === "phong-khach" || slugLike.includes("phong khach")) {
+    return "phong-khach";
+  }
+  if (normalized === "phong-bep" || slugLike.includes("phong bep")) {
+    return "phong-bep";
+  }
+  if (normalized === "phong-ngu" || slugLike.includes("phong ngu")) {
+    return "phong-ngu";
+  }
+  if (normalized === "phong-tam" || slugLike.includes("phong tam")) {
+    return "phong-tam";
+  }
 
   if (normalized.includes("biet thu") || normalized.includes("villa")) {
     return "biet-thu";
@@ -98,6 +163,21 @@ export function categoryToTypeSlug(category: string): string {
   }
   if (normalized.includes("can ho") || normalized.includes("chung cu")) {
     return "can-ho";
+  }
+  if (slugLike.includes("mau nha dep") || slugLike.includes("nha dep")) {
+    return "nha-dep";
+  }
+  if (slugLike.includes("phong khach")) {
+    return "phong-khach";
+  }
+  if (slugLike.includes("phong bep")) {
+    return "phong-bep";
+  }
+  if (slugLike.includes("phong ngu")) {
+    return "phong-ngu";
+  }
+  if (slugLike.includes("phong tam")) {
+    return "phong-tam";
   }
   if (
     normalized.includes("cong trinh dich vu") ||
@@ -143,6 +223,9 @@ export function buildTargetTypePath(
   const type = isArticleTargetType(typeOrCategory)
     ? typeOrCategory
     : categoryToTypeSlug(typeOrCategory);
+  if (section === "du-an") {
+    return `/khong-gian/${toKhongGianTypeSlug(type)}`;
+  }
   return `/${section}/${type}`;
 }
 

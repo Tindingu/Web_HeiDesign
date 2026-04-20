@@ -154,7 +154,7 @@ export function ArchitectureShowcase({
               <Link
                 key={`${image.projectSlug}-${index}-${image.url}`}
                 href={`/du-an/${image.projectSlug}`}
-                className="group relative block overflow-hidden rounded-sm"
+                className="group relative block overflow-hidden"
               >
                 <div
                   className={`relative h-64 md:h-80 ${isLight ? "bg-muted/40" : "bg-white/5"}`}

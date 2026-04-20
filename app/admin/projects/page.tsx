@@ -25,8 +25,12 @@ async function ProjectsListPage() {
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Project Management</p>
-            <h2 className="text-2xl font-semibold text-slate-900">Quản lý dự án</h2>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              Project Management
+            </p>
+            <h2 className="text-2xl font-semibold text-slate-900">
+              Quản lý dự án
+            </h2>
           </div>
           <Link href="/admin/projects/new">
             <Button className="bg-amber-600 hover:bg-amber-700">
