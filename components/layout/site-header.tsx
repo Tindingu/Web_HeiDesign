@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { Search, Menu, ChevronDown } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const topCategories = [
   {
@@ -125,6 +125,10 @@ export function SiteHeader() {
   const [constructionSubmenu, setConstructionSubmenu] = useState(
     defaultConstructionSubmenu,
   );
+  const topCategoriesRef = useRef<HTMLDivElement>(null);
+  const isDraggingTopRef = useRef(false);
+  const topStartXRef = useRef(0);
+  const topStartScrollLeftRef = useRef(0);
 
   useEffect(() => {
     setSearchKeyword(searchParams.get("s") || "");
@@ -192,6 +196,32 @@ export function SiteHeader() {
     });
   }, [constructionSubmenu, interiorSubmenu]);
 
+  const onTopCategoriesMouseDown: React.MouseEventHandler<HTMLDivElement> = (
+    event,
+  ) => {
+    const rail = topCategoriesRef.current;
+    if (!rail) return;
+    isDraggingTopRef.current = true;
+    topStartXRef.current = event.pageX - rail.offsetLeft;
+    topStartScrollLeftRef.current = rail.scrollLeft;
+  };
+
+  const onTopCategoriesMouseMove: React.MouseEventHandler<HTMLDivElement> = (
+    event,
+  ) => {
+    if (!isDraggingTopRef.current) return;
+    const rail = topCategoriesRef.current;
+    if (!rail) return;
+    event.preventDefault();
+    const x = event.pageX - rail.offsetLeft;
+    const walk = (x - topStartXRef.current) * 1.2;
+    rail.scrollLeft = topStartScrollLeftRef.current - walk;
+  };
+
+  const stopTopCategoriesDragging = () => {
+    isDraggingTopRef.current = false;
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* Top Bar: Logo + Search + Category Icons */}
@@ -235,7 +265,14 @@ export function SiteHeader() {
           </div>
 
           {/* Category Icons - Horizontal */}
-          <div className="hidden flex-1 items-center justify-center gap-4 overflow-x-auto lg:flex scrollbar-hide">
+          <div
+            ref={topCategoriesRef}
+            className="hidden flex-1 items-center justify-center gap-4 overflow-x-auto lg:flex scrollbar-hide cursor-grab active:cursor-grabbing"
+            onMouseDown={onTopCategoriesMouseDown}
+            onMouseMove={onTopCategoriesMouseMove}
+            onMouseLeave={stopTopCategoriesDragging}
+            onMouseUp={stopTopCategoriesDragging}
+          >
             {topCategories.map((cat) => {
               return (
                 <Link

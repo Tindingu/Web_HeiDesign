@@ -28,12 +28,19 @@ export function RelatedPostsCarousel({
   showTopBorder = true,
 }: RelatedPostsCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const hasDraggedRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const dragStartScrollLeftRef = useRef(0);
+  const nextScrollLeftRef = useRef(0);
+  const rafIdRef = useRef<number | null>(null);
+
   const [cardsPerPage, setCardsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(0);
+  const [isInteracting, setIsInteracting] = useState(false);
 
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStartX, setDragStartX] = useState(0);
-  const [dragStartScrollLeft, setDragStartScrollLeft] = useState(0);
+  const MIN_DRAG_DISTANCE = 6;
 
   const totalPages = useMemo(
     () => Math.max(1, Math.ceil(posts.length / cardsPerPage)),
@@ -99,6 +106,8 @@ export function RelatedPostsCarousel({
     if (!container) return;
 
     const handleScroll = () => {
+      if (isDraggingRef.current) return;
+
       const pageWidth = getPageWidth();
       if (!pageWidth) return;
 
@@ -115,6 +124,7 @@ export function RelatedPostsCarousel({
   // auto scroll (dừng ở cuối)
   useEffect(() => {
     if (posts.length <= cardsPerPage) return;
+    if (isInteracting) return;
 
     const id = setInterval(() => {
       setCurrentPage((prev) => {
@@ -126,7 +136,7 @@ export function RelatedPostsCarousel({
     }, 5000);
 
     return () => clearInterval(id);
-  }, [posts.length, cardsPerPage, totalPages]);
+  }, [posts.length, cardsPerPage, totalPages, isInteracting]);
 
   // reset khi resize/data change
   useEffect(() => {
@@ -139,21 +149,61 @@ export function RelatedPostsCarousel({
     const container = scrollRef.current;
     if (!container) return;
 
+    isDraggingRef.current = true;
+    hasDraggedRef.current = false;
+    dragStartXRef.current = e.clientX;
+    dragStartScrollLeftRef.current = container.scrollLeft;
+
+    setIsInteracting(true);
     setIsDragging(true);
-    setDragStartX(e.pageX);
-    setDragStartScrollLeft(container.scrollLeft);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
+    if (!isDraggingRef.current) return;
 
     const container = scrollRef.current;
     if (!container) return;
 
-    container.scrollLeft = dragStartScrollLeft - (e.pageX - dragStartX);
+    e.preventDefault();
+
+    const distance = e.clientX - dragStartXRef.current;
+    if (Math.abs(distance) >= MIN_DRAG_DISTANCE) {
+      hasDraggedRef.current = true;
+    }
+
+    nextScrollLeftRef.current = dragStartScrollLeftRef.current - distance;
+    if (rafIdRef.current !== null) return;
+
+    rafIdRef.current = requestAnimationFrame(() => {
+      const activeContainer = scrollRef.current;
+      if (activeContainer) {
+        activeContainer.scrollLeft = nextScrollLeftRef.current;
+      }
+      rafIdRef.current = null;
+    });
   };
 
-  const stopDrag = () => setIsDragging(false);
+  const stopDrag = () => {
+    const container = scrollRef.current;
+    const pageWidth = getPageWidth();
+    if (container && pageWidth) {
+      const nearestPage = Math.round(container.scrollLeft / pageWidth);
+      const boundedPage = Math.max(0, Math.min(nearestPage, totalPages - 1));
+      scrollToPage(boundedPage);
+    }
+
+    isDraggingRef.current = false;
+    setIsDragging(false);
+    setIsInteracting(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+    };
+  }, []);
 
   if (posts.length === 0) return null;
 
@@ -187,7 +237,12 @@ export function RelatedPostsCarousel({
 
         <div
           ref={scrollRef}
-          className="flex flex-1 snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className={`flex flex-1 gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none ${
+            isDragging
+              ? "snap-none cursor-grabbing"
+              : "snap-x snap-mandatory cursor-grab"
+          }`}
+          onDragStart={(event) => event.preventDefault()}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={stopDrag}
@@ -197,6 +252,13 @@ export function RelatedPostsCarousel({
             <div
               key={post.slug}
               className="shrink-0 snap-start basis-[88%] sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)]"
+              onClickCapture={(event) => {
+                if (hasDraggedRef.current) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  hasDraggedRef.current = false;
+                }
+              }}
             >
               <PostCard post={post} />
             </div>

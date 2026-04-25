@@ -14,7 +14,9 @@ export function SectionHeading({
   return (
     <div className="space-y-3">
       <Badge>{label}</Badge>
-      <h2 className="text-3xl font-semibold md:text-4xl">{title}</h2>
+      <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
+        {title}
+      </h2>
       {description ? (
         <p className="max-w-2xl text-muted-foreground">{description}</p>
       ) : null}

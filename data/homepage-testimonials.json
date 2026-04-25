@@ -1,0 +1,22 @@
+{
+  "items": [
+    {
+      "id": "1777104311255-0",
+      "name": "Chị Trang",
+      "quote": "\"Gia đình tôi rất kĩ tính trong quá trình thiết kế và thi công. Tuy nhiên, đội ngũ Hometalk đã giải đáp và thể hiện sự\n\nchuyên nghiệp cho gia đình tôi một cách đầy thuyết phục.”",
+      "imageUrl": "https://res.cloudinary.com/dfazfoh2l/image/upload/v1777104234/chi-trang-1_bvsgbt.webp",
+      "sortOrder": 0,
+      "isActive": true,
+      "updatedAt": "2026-04-25T08:05:11.255Z"
+    },
+    {
+      "id": "1777104311255-1",
+      "name": "Anh Đức",
+      "quote": "“Chuyên nghiệp, tận tâm từ thiết kế đến thi công và rất nhanh gọn trong vấn đề bảo hành. Tôi đã lựa chọn\n\nHometalk cho nhiều dự án của mình và sẽ tiếp tục đồng hành cùng Hometalk trong những dự án sắp tới. \"",
+      "imageUrl": "https://res.cloudinary.com/dfazfoh2l/image/upload/v1777104234/anh-toan-chi-ngoc-1_bq6hyh.webp",
+      "sortOrder": 1,
+      "isActive": true,
+      "updatedAt": "2026-04-25T08:05:11.255Z"
+    }
+  ]
+}

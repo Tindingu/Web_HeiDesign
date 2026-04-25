@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { LeadCapturePopup } from "@/components/contact/lead-capture-popup";
 import { PageTransition } from "@/components/motion/page-transition";
 import { siteConfig } from "@/lib/constants";
 
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body>
         <SiteHeader />
         <PageTransition>{children}</PageTransition>
+        <LeadCapturePopup />
         <SiteFooter />
       </body>
     </html>

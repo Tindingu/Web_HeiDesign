@@ -33,6 +33,7 @@ export function PostCard({ post, variant = "default" }: PostCardProps) {
           src={coverImageUrl}
           alt={coverImageAlt}
           fill
+          draggable={false}
           sizes={
             isHorizontal
               ? "(max-width: 768px) 50vw, 25vw"

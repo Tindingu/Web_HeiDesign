@@ -174,19 +174,21 @@ export function ArchitectureStyles({
   };
 
   return (
-    <section className="bg-gray-900 py-20 text-white">
+    <section className="bg-[#f3f6fa] py-20 text-slate-900">
       <Container className="space-y-12">
-        <h2 className="text-5xl font-bold md:text-6xl">KIẾN TRÚC NHÀ PHỐ</h2>
+        <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
+          KIẾN TRÚC NHÀ PHỐ
+        </h2>
 
-        <div className="flex flex-wrap gap-6 border-b border-gray-700 pb-6">
+        <div className="flex flex-wrap gap-6 border-b border-slate-200 pb-6">
           {styleTabs.map((style) => (
             <button
               key={style.id}
               onClick={() => setActiveTab(style.id)}
               className={`text-sm font-semibold uppercase tracking-wide transition-colors ${
                 activeTab === style.id
-                  ? "text-amber-400"
-                  : "text-gray-400 hover:text-white"
+                  ? "text-[#1f4569]"
+                  : "text-slate-500 hover:text-slate-900"
               }`}
             >
               {style.label}
@@ -227,9 +229,9 @@ export function ArchitectureStyles({
                     blurDataURL={image.blurDataURL}
                   />
                 </div>
-                <div className="absolute inset-0 bg-black/15 transition duration-300 group-hover:bg-black/35" />
+                <div className="absolute inset-0 bg-black/10 transition duration-300 group-hover:bg-black/25" />
                 <div className="absolute inset-x-0 bottom-0 p-4 text-left">
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/75">
+                  <p className="text-xs uppercase tracking-[0.2em] text-white/85">
                     {image.projectTitle}
                   </p>
                 </div>
@@ -237,7 +239,7 @@ export function ArchitectureStyles({
             ))}
           </Masonry>
         ) : (
-          <div className="rounded-lg border border-white/10 bg-white/5 p-6 text-white/70">
+          <div className="rounded-lg border border-slate-200 bg-white/80 p-6 text-slate-500">
             Chưa có ảnh cho style này.
           </div>
         )}
@@ -245,7 +247,7 @@ export function ArchitectureStyles({
         <div className="flex justify-end">
           <Link
             href={`/du-an?style=${activeTab}`}
-            className="inline-flex items-center gap-3 text-lg font-semibold transition hover:text-amber-400"
+            className="inline-flex items-center gap-3 text-lg font-semibold transition hover:text-[#1f4569]"
           >
             <span>XEM THÊM</span>
             <div className="flex h-10 w-10 items-center justify-center rounded-full border border-current">

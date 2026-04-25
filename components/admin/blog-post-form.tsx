@@ -10,7 +10,7 @@ import type { BlogPostRecord } from "@/lib/blog-post-storage";
 const BLOG_CATEGORIES = [
   "Xu hướng thiết kế",
   "Kinh nghiệm thi công",
-  "Vật liệu nội thất",
+  // "Vật liệu nội thất",
   "Phong thủy nội thất",
   "Mẹo tối ưu không gian",
   "Báo giá và chi phí",

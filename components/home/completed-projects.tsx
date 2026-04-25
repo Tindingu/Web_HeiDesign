@@ -125,7 +125,7 @@ export function CompletedProjects({
       }`}
     >
       <Container className="space-y-10">
-        <h2 className="text-4xl font-bold uppercase tracking-wide md:text-6xl">
+        <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
           Dự Án Hoàn Thiện
         </h2>
 

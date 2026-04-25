@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-const previewImage = "/upload/banner/simulator-base.jpg";
+const previewImage = "https://res.cloudinary.com/dfazfoh2l/image/upload/v1772784550/2-2048x1280_bix1ei.png";
 
 export function InteriorSimulator() {
   const [wall, setWall] = useState("#c6b9a7");

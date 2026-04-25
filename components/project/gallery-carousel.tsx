@@ -11,6 +11,10 @@ export function GalleryCarousel({ project }: { project: Project }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const isDraggingThumbRef = useRef(false);
+  const thumbDragStartXRef = useRef(0);
+  const thumbDragStartScrollLeftRef = useRef(0);
+  const thumbDidDragRef = useRef(false);
 
   // Combine cover image + gallery
   const allImages = [project.coverImage, ...project.gallery];
@@ -39,6 +43,32 @@ export function GalleryCarousel({ project }: { project: Project }) {
         });
       }
     }
+  };
+
+  const onThumbMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    const rail = thumbnailsRef.current;
+    if (!rail) return;
+    isDraggingThumbRef.current = true;
+    thumbDidDragRef.current = false;
+    thumbDragStartXRef.current = event.pageX - rail.offsetLeft;
+    thumbDragStartScrollLeftRef.current = rail.scrollLeft;
+  };
+
+  const onThumbMouseMove: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    if (!isDraggingThumbRef.current) return;
+    const rail = thumbnailsRef.current;
+    if (!rail) return;
+    event.preventDefault();
+    const x = event.pageX - rail.offsetLeft;
+    const walk = (x - thumbDragStartXRef.current) * 1.1;
+    if (Math.abs(walk) > 5) {
+      thumbDidDragRef.current = true;
+    }
+    rail.scrollLeft = thumbDragStartScrollLeftRef.current - walk;
+  };
+
+  const stopThumbDragging = () => {
+    isDraggingThumbRef.current = false;
   };
 
   const openLightbox = (index: number) => {
@@ -137,12 +167,23 @@ export function GalleryCarousel({ project }: { project: Project }) {
                 <div className="relative">
                   <div
                     ref={thumbnailsRef}
-                    className="flex gap-3 overflow-x-auto pb-2 scroll-smooth scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400"
+                    className="flex gap-3 overflow-x-auto pb-2 scroll-smooth scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 cursor-grab active:cursor-grabbing"
+                    onMouseDown={onThumbMouseDown}
+                    onMouseMove={onThumbMouseMove}
+                    onMouseUp={stopThumbDragging}
+                    onMouseLeave={stopThumbDragging}
                   >
                     {allImages.map((image, idx) => (
                       <button
                         key={idx}
-                        onClick={() => goToSlide(idx)}
+                        onClick={(event) => {
+                          if (thumbDidDragRef.current) {
+                            event.preventDefault();
+                            thumbDidDragRef.current = false;
+                            return;
+                          }
+                          goToSlide(idx);
+                        }}
                         className={`relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border-3 transition-all md:h-24 md:w-24 ${
                           idx === currentIndex
                             ? "border-amber-500 ring-2 ring-amber-500 ring-offset-2"

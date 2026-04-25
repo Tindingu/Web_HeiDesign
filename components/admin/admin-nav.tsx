@@ -9,6 +9,9 @@ import {
   Newspaper,
   Tags,
   Images,
+  Youtube,
+  Flame,
+  MessageSquareQuote,
 } from "lucide-react";
 
 type AdminNavItem = {
@@ -26,6 +29,13 @@ const navItems: AdminNavItem[] = [
     label: "Gallery kiến trúc",
     icon: Images,
   },
+  { href: "/admin/video", label: "Video trang chủ", icon: Youtube },
+  {
+    href: "/admin/nhan-xet-khach-hang",
+    label: "Nhận xét khách hàng",
+    icon: MessageSquareQuote,
+  },
+  { href: "/admin/chu-de-hot", label: "Chủ đề hot", icon: Flame },
   { href: "/admin/categories", label: "Category & Style", icon: Tags },
 ];
 

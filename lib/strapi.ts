@@ -55,6 +55,7 @@ export type Testimonial = {
   name: string;
   role: string;
   quote: string;
+  imageUrl?: string;
 };
 
 export type Post = {
@@ -211,24 +212,7 @@ const fallbackProjects: Project[] = [
   },
 ];
 
-const fallbackPosts: Post[] = [
-  {
-    id: 1,
-    slug: "lua-chon-vat-lieu-noi-that-cao-cap",
-    title: "Lựa chọn vật liệu nội thất cao cấp",
-    excerpt:
-      "Hướng dẫn chi tiết cách chọn bề mặt cao cấp hiệu quả, tránh lãng phí.",
-    category: "Vật liệu",
-    content:
-      "## Lựa chọn có chủ đích\nNội thất cao cấp bắt đầu từ bảng màu tập trung và tinh tế.",
-    coverImage: {
-      url: "/upload/blog/blog-1.png",
-      alt: "Vật liệu nội thất",
-      blurDataURL: defaultBlurDataURL,
-    },
-    publishedAt: new Date().toISOString(),
-  },
-];
+const fallbackPosts: Post[] = [];
 
 type StrapiResponse<T> = {
   data: T;

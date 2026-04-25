@@ -108,6 +108,20 @@ async function createSchema() {
       UNIQUE(style_id, slot_index)
     );
 
+    CREATE TABLE IF NOT EXISTS homepage_videos (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      youtube_url TEXT NOT NULL,
+      youtube_id TEXT NOT NULL,
+      thumbnail_url TEXT NOT NULL DEFAULT '',
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      is_active BOOLEAN NOT NULL DEFAULT TRUE,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
+    ALTER TABLE homepage_videos DROP COLUMN IF EXISTS description;
+
     DO $$
     DECLARE
       constraint_name TEXT;
@@ -410,6 +424,8 @@ async function createSchema() {
     CREATE INDEX IF NOT EXISTS idx_project_highlights_project_id_position ON project_highlights(project_id, position);
     CREATE INDEX IF NOT EXISTS idx_architecture_gallery_style_slot ON architecture_gallery_items(style_id, slot_index);
     CREATE INDEX IF NOT EXISTS idx_architecture_gallery_project_id ON architecture_gallery_items(project_id);
+    CREATE INDEX IF NOT EXISTS idx_homepage_videos_sort_order ON homepage_videos(sort_order, id);
+    CREATE INDEX IF NOT EXISTS idx_homepage_videos_is_active ON homepage_videos(is_active);
 
     CREATE INDEX IF NOT EXISTS idx_blog_posts_category_id ON blog_posts(category_id);
     CREATE INDEX IF NOT EXISTS idx_blog_posts_published_at ON blog_posts(published_at DESC);
