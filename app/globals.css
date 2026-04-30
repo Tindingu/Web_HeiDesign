@@ -20,12 +20,23 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   @apply bg-background text-foreground antialiased;
   font-family: "Space Grotesk", ui-sans-serif, system-ui;
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe {
+  max-width: 100%;
 }
 
 section {

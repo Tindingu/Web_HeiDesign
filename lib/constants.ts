@@ -6,6 +6,13 @@ export const siteConfig = {
   phone: "0795743429",
   email: "info@icepdesign.vn",
   address: "Thành phố Hồ Chí Minh, Việt Nam",
+  zaloUrl:
+    process.env.NEXT_PUBLIC_ZALO_URL ??
+    `https://zalo.me/${process.env.NEXT_PUBLIC_PHONE ?? "0795743429"}`,
+  facebookUrl:
+    process.env.NEXT_PUBLIC_FACEBOOK_URL ??
+    process.env.NEXT_PUBLIC_MESSENGER_URL ??
+    "https://m.me/",
 };
 
 export const defaultBlurDataURL =

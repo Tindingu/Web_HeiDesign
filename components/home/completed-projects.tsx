@@ -50,14 +50,6 @@ function resolveTabId(label: string) {
   return categorySlugAliases[normalized] || normalized;
 }
 
-const fallbackCategories = [
-  "Mẫu nhà đẹp",
-  "Phòng khách",
-  "Phòng bếp",
-  "Phòng ngủ",
-  "Phòng tắm",
-];
-
 export function CompletedProjects({
   projects,
   categories = [],
@@ -67,11 +59,7 @@ export function CompletedProjects({
   theme = "dark",
 }: CompletedProjectsProps) {
   const projectTabs = useMemo<ProjectTab[]>(() => {
-    const mergedSource = [
-      ...fallbackCategories.map((name, index) => ({ id: index + 1, name })),
-      ...categories,
-    ];
-    const source = mergedSource.filter(
+    const source = categories.filter(
       (category, index, array) =>
         index === array.findIndex((item) => item.name === category.name),
     );
@@ -120,17 +108,17 @@ export function CompletedProjects({
 
   return (
     <section
-      className={`py-20 ${
+      className={`py-12 sm:py-20 ${
         isLight ? "bg-background text-foreground" : "bg-[#070d1f] text-white"
       }`}
     >
-      <Container className="space-y-10">
-        <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
+      <Container className="space-y-8 sm:space-y-10">
+        <h2 className="text-lg font-bold uppercase text-[#1f4569] sm:text-xl md:text-2xl">
           Dự Án Hoàn Thiện
         </h2>
 
         <div
-          className={`flex flex-wrap gap-6 pb-6 ${
+          className={`grid grid-cols-2 gap-2 pb-5 sm:flex sm:flex-wrap sm:gap-6 sm:pb-6 ${
             isLight ? "border-b border-border/60" : "border-b border-white/20"
           }`}
         >
@@ -138,12 +126,14 @@ export function CompletedProjects({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`pb-1 text-sm font-semibold uppercase tracking-wider transition-colors ${
+              className={`min-h-[42px] rounded-xl border px-3 py-2 text-center text-[11px] font-semibold uppercase tracking-[0.08em] transition-colors sm:min-h-0 sm:rounded-none sm:border-0 sm:px-0 sm:py-0 sm:pb-1 sm:text-sm sm:tracking-wider ${
                 activeTab === tab.id
-                  ? "text-amber-500"
+                  ? isLight
+                    ? "border-amber-500 bg-amber-50 text-amber-600"
+                    : "border-amber-400/60 bg-amber-500/10 text-amber-300"
                   : isLight
-                    ? "text-muted-foreground hover:text-foreground"
-                    : "text-white/60 hover:text-white"
+                    ? "border-border/70 bg-background text-muted-foreground hover:border-foreground/20 hover:text-foreground"
+                    : "border-white/10 bg-white/[0.03] text-white/60 hover:text-white"
               }`}
             >
               {tab.label.toUpperCase()}
@@ -152,7 +142,7 @@ export function CompletedProjects({
         </div>
 
         {activeProjects.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-5 sm:gap-5 md:grid-cols-3 md:gap-6">
             {activeProjects.map((project) => (
               <Link
                 key={project.slug}
@@ -160,7 +150,7 @@ export function CompletedProjects({
                 className="group block"
               >
                 <div
-                  className={`relative aspect-[16/10] overflow-hidden rounded-sm ${
+                  className={`relative aspect-[4/3] overflow-hidden rounded-lg ${
                     isLight ? "bg-muted/40" : "bg-white/5"
                   }`}
                 >
@@ -169,11 +159,11 @@ export function CompletedProjects({
                     alt={project.coverImage.alt || project.title}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, 33vw"
                   />
                 </div>
                 <h3
-                  className={`mt-3 line-clamp-2 text-xl font-medium leading-snug transition-colors ${
+                  className={`mt-2 line-clamp-2 text-xs font-medium leading-snug transition-colors sm:mt-3 sm:text-lg md:text-xl ${
                     isLight
                       ? "text-foreground group-hover:text-amber-600"
                       : "text-white group-hover:text-amber-300"
@@ -200,13 +190,13 @@ export function CompletedProjects({
           <div className="flex justify-end">
             <Link
               href={`/du-an?category=${activeTab}`}
-              className={`inline-flex items-center gap-4 text-lg font-semibold uppercase tracking-wide transition ${
+              className={`inline-flex items-center gap-3 text-base font-semibold uppercase tracking-wide transition sm:gap-4 sm:text-lg ${
                 isLight ? "hover:text-amber-600" : "hover:text-amber-300"
               }`}
             >
               <span>XEM THÊM</span>
-              <div className="flex h-14 w-14 items-center justify-center rounded-full border border-current">
-                <ArrowRight className="h-6 w-6" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-current sm:h-14 sm:w-14">
+                <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
               </div>
             </Link>
           </div>

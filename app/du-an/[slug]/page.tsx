@@ -192,46 +192,26 @@ export default async function ProjectDetailPage({
                   key={idx}
                   className="grid gap-8 md:grid-cols-2 md:items-center"
                 >
-                  {idx % 2 === 0 ? (
-                    <>
-                      <div>
-                        <h3 className="text-2xl font-bold">{section.title}</h3>
-                        <p className="mt-4 whitespace-pre-wrap text-gray-700">
-                          {section.content}
-                        </p>
-                      </div>
-                      {section.image && (
-                        <div className="relative h-96 overflow-hidden rounded-lg">
-                          <Image
-                            src={section.image.url}
-                            alt={section.image.alt}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                          />
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {section.image && (
-                        <div className="relative h-96 overflow-hidden rounded-lg">
-                          <Image
-                            src={section.image.url}
-                            alt={section.image.alt}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <h3 className="text-2xl font-bold">{section.title}</h3>
-                        <p className="mt-4 whitespace-pre-wrap text-gray-700">
-                          {section.content}
-                        </p>
-                      </div>
-                    </>
+                  <div className={idx % 2 !== 0 ? "md:order-2" : undefined}>
+                    <h3 className="text-2xl font-bold">{section.title}</h3>
+                    <p className="mt-4 whitespace-pre-wrap text-gray-700">
+                      {section.content}
+                    </p>
+                  </div>
+                  {section.image && (
+                    <div
+                      className={`relative aspect-[4/5] overflow-hidden rounded-lg sm:aspect-[16/10] sm:h-auto ${
+                        idx % 2 !== 0 ? "md:order-1" : ""
+                      }`}
+                    >
+                      <Image
+                        src={section.image.url}
+                        alt={section.image.alt}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) calc(100vw - 2rem), 50vw"
+                      />
+                    </div>
                   )}
                 </div>
               ))}

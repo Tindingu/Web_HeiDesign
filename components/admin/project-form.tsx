@@ -9,21 +9,13 @@ import Link from "next/link";
 
 type FormData = Omit<Project, "id" | "createdAt" | "updatedAt">;
 
-const defaultProjectCategories = [
-  "Mẫu nhà đẹp",
-  "Phòng khách",
-  "Phòng bếp",
-  "Phòng ngủ",
-  "Phòng tắm",
-];
-
 const initialFormData: FormData = {
   slug: "",
   title: "",
   summary: "",
   description: "",
-  category: "Mẫu nhà đẹp",
-  style: "Hiện đại",
+  category: "",
+  style: "",
   budget: "3-5 tỷ",
   coverImage: { url: "", alt: "", blurDataURL: "" },
   gallery: [],
@@ -60,18 +52,8 @@ export function ProjectForm({ project }: { project?: Project }) {
   const [wordLoading, setWordLoading] = useState(false);
   const [wordError, setWordError] = useState("");
   const [wordMessage, setWordMessage] = useState("");
-  const [categoryOptions, setCategoryOptions] = useState<string[]>([
-    ...defaultProjectCategories,
-  ]);
-  const [styleOptions, setStyleOptions] = useState<string[]>([
-    "Hiện đại",
-    "Tân cổ điển",
-    "Minimalism",
-    "Japandi",
-    "Wabi Sabi",
-    "Tropical",
-    "Modern Luxury",
-  ]);
+  const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+  const [styleOptions, setStyleOptions] = useState<string[]>([]);
 
   useEffect(() => {
     const loadTaxonomies = async () => {
@@ -87,30 +69,28 @@ export function ProjectForm({ project }: { project?: Project }) {
           .filter(Boolean);
 
         if (categoryNames.length > 0) {
-          const mergedCategoryBase = [
-            ...defaultProjectCategories,
-            ...categoryNames,
-          ];
-          const mergedCategories =
-            project?.category && !mergedCategoryBase.includes(project.category)
-              ? [project.category, ...mergedCategoryBase]
-              : mergedCategoryBase;
-          setCategoryOptions(mergedCategories);
+          const categories = categoryNames;
+          const finalCategories =
+            project?.category && !categories.includes(project.category)
+              ? [project.category, ...categories]
+              : categories;
+          setCategoryOptions(finalCategories);
           setFormData((prev) => ({
             ...prev,
-            category: prev.category || mergedCategories[0],
+            category: prev.category || (finalCategories[0] ?? ""),
           }));
         }
 
         if (styleNames.length > 0) {
-          const mergedStyles =
-            project?.style && !styleNames.includes(project.style)
-              ? [project.style, ...styleNames]
-              : styleNames;
-          setStyleOptions(mergedStyles);
+          const stylesFromDb = styleNames;
+          const finalStyles =
+            project?.style && !stylesFromDb.includes(project.style)
+              ? [project.style, ...stylesFromDb]
+              : stylesFromDb;
+          setStyleOptions(finalStyles);
           setFormData((prev) => ({
             ...prev,
-            style: prev.style || mergedStyles[0],
+            style: prev.style || (finalStyles[0] ?? ""),
           }));
         }
       } catch {

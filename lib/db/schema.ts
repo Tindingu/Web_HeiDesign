@@ -246,49 +246,6 @@ async function createSchema() {
       END IF;
     END$$;
 
-    INSERT INTO article_sections (name, code)
-    VALUES
-      ('Thiết kế nội thất', 'thiet-ke-noi-that'),
-      ('Thi công nội thất', 'thi-cong-noi-that'),
-      ('Dự án', 'du-an')
-    ON CONFLICT (code) DO NOTHING;
-
-    INSERT INTO article_types (name, code, section_id)
-    SELECT v.name, v.code, s.id
-    FROM (
-      VALUES
-        ('Thiết kế nội thất biệt thự', 'biet-thu', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất chung cư', 'chung-cu', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất nhà phố', 'nha-pho', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất penthouse, duplex', 'penthouse', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất văn phòng', 'van-phong', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất khách sạn', 'khach-san', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất nhà hàng', 'nha-hang', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất quán cafe', 'cafe', 'thiet-ke-noi-that'),
-        ('Thiết kế nội thất showroom', 'showroom', 'thiet-ke-noi-that'),
-        ('Thi công nội thất biệt thự', 'biet-thu', 'thi-cong-noi-that'),
-        ('Thi công nội thất chung cư', 'chung-cu', 'thi-cong-noi-that'),
-        ('Thi công nội thất nhà phố', 'nha-pho', 'thi-cong-noi-that'),
-        ('Thi công nội thất văn phòng', 'van-phong', 'thi-cong-noi-that'),
-        ('Mẫu nhà đẹp', 'nha-dep', 'du-an'),
-        ('Phòng khách', 'phong-khach', 'du-an'),
-        ('Phòng bếp', 'phong-bep', 'du-an'),
-        ('Phòng ngủ', 'phong-ngu', 'du-an'),
-        ('Phòng tắm', 'phong-tam', 'du-an')
-    ) AS v(name, code, section_code)
-    JOIN article_sections s ON s.code = v.section_code
-    ON CONFLICT (section_id, code) DO NOTHING;
-
-    INSERT INTO blog_categories (name)
-    VALUES
-      ('Xu hướng thiết kế'),
-      ('Kinh nghiệm thi công'),
-      ('Vật liệu nội thất'),
-      ('Phong thủy nội thất'),
-      ('Mẹo tối ưu không gian'),
-      ('Báo giá và chi phí')
-    ON CONFLICT (name) DO NOTHING;
-
     DO $$
     BEGIN
       IF EXISTS (
@@ -305,35 +262,7 @@ async function createSchema() {
       END IF;
     END$$;
 
-    INSERT INTO project_categories (name)
-    VALUES
-      ('Căn hộ'),
-      ('Biệt thự'),
-      ('Nhà phố'),
-      ('Văn phòng'),
-      ('Khách sạn'),
-      ('Café')
-    ON CONFLICT (name) DO NOTHING;
-
-    INSERT INTO project_categories (name)
-    VALUES
-      ('Mẫu nhà đẹp'),
-      ('Phòng khách'),
-      ('Phòng bếp'),
-      ('Phòng ngủ'),
-      ('Phòng tắm')
-    ON CONFLICT (name) DO NOTHING;
-
-    INSERT INTO project_styles (name)
-    VALUES
-      ('Hiện đại'),
-      ('Tân cổ điển'),
-      ('Minimalism'),
-      ('Japandi'),
-      ('Wabi Sabi'),
-      ('Tropical'),
-      ('Modern Luxury')
-    ON CONFLICT (name) DO NOTHING;
+    
 
     DO $$
     BEGIN

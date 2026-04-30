@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { HeroContent } from "@/components/home/types";
 
 export function Hero({ hero }: { hero: HeroContent }) {
@@ -14,6 +14,11 @@ export function Hero({ hero }: { hero: HeroContent }) {
   }, [hero.imageUrl, hero.imageUrls]);
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartXRef = useRef(0);
+  const dragDistanceRef = useRef(0);
+  const isDragActiveRef = useRef(false);
+  const SWIPE_THRESHOLD = 50;
 
   useEffect(() => {
     if (slides.length <= 1) return;
@@ -28,8 +33,52 @@ export function Hero({ hero }: { hero: HeroContent }) {
   const goToPrev = () =>
     setActiveIndex((current) => (current - 1 + slides.length) % slides.length);
 
+  const onPointerDown: React.PointerEventHandler<HTMLElement> = (event) => {
+    if (slides.length <= 1) return;
+    const target = event.target as HTMLElement;
+    if (target.closest("button") || target.closest("a")) return;
+    isDragActiveRef.current = true;
+    dragStartXRef.current = event.clientX;
+    dragDistanceRef.current = 0;
+    setIsDragging(true);
+  };
+
+  const onPointerMove: React.PointerEventHandler<HTMLElement> = (event) => {
+    if (!isDragActiveRef.current) return;
+    dragDistanceRef.current = event.clientX - dragStartXRef.current;
+  };
+
+  const stopDragging = () => {
+    if (!isDragActiveRef.current) return;
+    const dragDistance = dragDistanceRef.current;
+    isDragActiveRef.current = false;
+    dragDistanceRef.current = 0;
+    setIsDragging(false);
+
+    if (dragDistance > SWIPE_THRESHOLD) {
+      goToPrev();
+      return;
+    }
+    if (dragDistance < -SWIPE_THRESHOLD) {
+      goToNext();
+    }
+  };
+
   return (
-    <section className="relative h-[500px] overflow-hidden md:h-[600px] lg:h-[700px]">
+    <section
+      className={`relative h-[500px] overflow-hidden md:h-[600px] lg:h-[700px] ${
+        slides.length > 1
+          ? isDragging
+            ? "cursor-grabbing"
+            : "cursor-grab"
+          : ""
+      }`}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={stopDragging}
+      onPointerCancel={stopDragging}
+      onPointerLeave={stopDragging}
+    >
       {/* Background Image */}
       <div className="absolute inset-0">
         {slides.map((src, index) => (
@@ -39,9 +88,9 @@ export function Hero({ hero }: { hero: HeroContent }) {
             alt={hero.title}
             fill
             priority={index === 0}
-            className={`object-cover transition-opacity duration-700 ${
+            className={`object-cover transition-[opacity,transform] duration-700 ${
               index === activeIndex ? "opacity-100" : "opacity-0"
-            }`}
+            } ${index === activeIndex ? "hover:scale-[1.03]" : ""}`}
             sizes="100vw"
           />
         ))}

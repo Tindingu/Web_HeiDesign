@@ -10,11 +10,18 @@ export function GalleryCarousel({ project }: { project: Project }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [isMainDragging, setIsMainDragging] = useState(false);
+  const [mainDragOffset, setMainDragOffset] = useState(0);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const mainDragStartXRef = useRef(0);
+  const mainDragDistanceRef = useRef(0);
+  const isMainDragActiveRef = useRef(false);
+  const mainPointerIdRef = useRef<number | null>(null);
   const isDraggingThumbRef = useRef(false);
   const thumbDragStartXRef = useRef(0);
   const thumbDragStartScrollLeftRef = useRef(0);
   const thumbDidDragRef = useRef(false);
+  const MAIN_SWIPE_THRESHOLD = 50;
 
   // Combine cover image + gallery
   const allImages = [project.coverImage, ...project.gallery];
@@ -71,6 +78,56 @@ export function GalleryCarousel({ project }: { project: Project }) {
     isDraggingThumbRef.current = false;
   };
 
+  const onMainPointerDown: React.PointerEventHandler<HTMLDivElement> = (
+    event,
+  ) => {
+    if (allImages.length <= 1) return;
+    const target = event.target as HTMLElement;
+    if (target.closest("button")) return;
+    isMainDragActiveRef.current = true;
+    mainPointerIdRef.current = event.pointerId;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    mainDragStartXRef.current = event.clientX;
+    mainDragDistanceRef.current = 0;
+    setMainDragOffset(0);
+    setIsMainDragging(true);
+  };
+
+  const onMainPointerMove: React.PointerEventHandler<HTMLDivElement> = (
+    event,
+  ) => {
+    if (!isMainDragActiveRef.current) return;
+    const delta = event.clientX - mainDragStartXRef.current;
+    mainDragDistanceRef.current = delta;
+    setMainDragOffset(delta * 0.35);
+  };
+
+  const stopMainDragging = (target?: HTMLDivElement | null) => {
+    if (!isMainDragActiveRef.current) return;
+    if (target && mainPointerIdRef.current !== null) {
+      try {
+        target.releasePointerCapture(mainPointerIdRef.current);
+      } catch {
+        // no-op
+      }
+    }
+
+    const dragDistance = mainDragDistanceRef.current;
+    isMainDragActiveRef.current = false;
+    mainPointerIdRef.current = null;
+    mainDragDistanceRef.current = 0;
+    setIsMainDragging(false);
+    setMainDragOffset(0);
+
+    if (dragDistance > MAIN_SWIPE_THRESHOLD) {
+      goToPrevious();
+      return;
+    }
+    if (dragDistance < -MAIN_SWIPE_THRESHOLD) {
+      goToNext();
+    }
+  };
+
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
     setLightboxOpen(true);
@@ -112,19 +169,36 @@ export function GalleryCarousel({ project }: { project: Project }) {
 
   return (
     <>
-      <div className="relative w-full bg-gray-100">
-        <Container className="py-8">
-          <div className="grid gap-6 lg:grid-cols-[1fr_350px]">
+      <div className="relative w-full overflow-x-clip bg-gray-100">
+        <Container className="py-6 sm:py-8">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-6">
             {/* Main Carousel */}
-            <div className="space-y-4">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-white shadow-lg">
+            <div className="min-w-0 space-y-4">
+              <div
+                className={`relative aspect-[4/5] overflow-hidden rounded-lg bg-white shadow-lg sm:aspect-[16/10] ${
+                  allImages.length > 1
+                    ? isMainDragging
+                      ? "cursor-grabbing"
+                      : "cursor-grab"
+                    : ""
+                }`}
+                onPointerDown={onMainPointerDown}
+                onPointerMove={onMainPointerMove}
+                onPointerUp={(event) => stopMainDragging(event.currentTarget)}
+                onPointerCancel={(event) =>
+                  stopMainDragging(event.currentTarget)
+                }
+              >
                 <Image
                   src={allImages[currentIndex].url}
                   alt={allImages[currentIndex].alt}
                   fill
                   priority
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 70vw"
+                  className={`object-contain transition-transform hover:scale-[1.02] ${
+                    isMainDragging ? "duration-75" : "duration-500"
+                  }`}
+                  style={{ transform: `translateX(${mainDragOffset}px)` }}
+                  sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1024px) calc(100vw - 3rem), 70vw"
                 />
 
                 {/* Navigation Arrows */}
@@ -205,7 +279,7 @@ export function GalleryCarousel({ project }: { project: Project }) {
             </div>
 
             {/* Project Info Sidebar */}
-            <div className="rounded-lg bg-white p-6 shadow-lg">
+            <div className="min-w-0 rounded-lg bg-white p-5 shadow-lg sm:p-6">
               <div className="mb-4">
                 <p className="text-sm uppercase tracking-wider text-amber-600 font-semibold">
                   {project.category}
@@ -220,51 +294,51 @@ export function GalleryCarousel({ project }: { project: Project }) {
                 {project.projectDetails && (
                   <>
                     {project.projectDetails.area && (
-                      <div className="flex justify-between">
+                      <div className="flex min-w-0 justify-between gap-4">
                         <span className="text-sm font-semibold text-gray-500">
                           Diện tích:
                         </span>
-                        <span className="text-sm font-medium text-gray-900">
+                        <span className="text-right text-sm font-medium text-gray-900">
                           {project.projectDetails.area}
                         </span>
                       </div>
                     )}
                     {project.projectDetails.duration && (
-                      <div className="flex justify-between">
+                      <div className="flex min-w-0 justify-between gap-4">
                         <span className="text-sm font-semibold text-gray-500">
                           Thời gian:
                         </span>
-                        <span className="text-sm font-medium text-gray-900">
+                        <span className="text-right text-sm font-medium text-gray-900">
                           {project.projectDetails.duration}
                         </span>
                       </div>
                     )}
                     {project.projectDetails.scope && (
-                      <div className="flex justify-between">
+                      <div className="flex min-w-0 justify-between gap-4">
                         <span className="text-sm font-semibold text-gray-500">
                           Phạm vi:
                         </span>
-                        <span className="text-sm font-medium text-gray-900">
+                        <span className="text-right text-sm font-medium text-gray-900">
                           {project.projectDetails.scope}
                         </span>
                       </div>
                     )}
                     {project.projectDetails.client && (
-                      <div className="flex justify-between">
+                      <div className="flex min-w-0 justify-between gap-4">
                         <span className="text-sm font-semibold text-gray-500">
                           Khách hàng:
                         </span>
-                        <span className="text-sm font-medium text-gray-900">
+                        <span className="text-right text-sm font-medium text-gray-900">
                           {project.projectDetails.client}
                         </span>
                       </div>
                     )}
                     {project.projectDetails.location && (
-                      <div className="flex justify-between">
+                      <div className="flex min-w-0 justify-between gap-4">
                         <span className="text-sm font-semibold text-gray-500">
                           Địa điểm:
                         </span>
-                        <span className="text-sm font-medium text-gray-900">
+                        <span className="text-right text-sm font-medium text-gray-900">
                           {project.projectDetails.location}
                         </span>
                       </div>

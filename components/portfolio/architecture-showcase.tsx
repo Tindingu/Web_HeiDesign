@@ -42,16 +42,6 @@ function slugifyText(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-const fallbackStyles = [
-  "Hiện đại",
-  "Tân cổ điển",
-  "Minimalism",
-  "Japandi",
-  "Wabi Sabi",
-  "Tropical",
-  "Modern Luxury",
-];
-
 export function ArchitectureShowcase({
   projects,
   styles = [],
@@ -59,11 +49,12 @@ export function ArchitectureShowcase({
   theme = "light",
 }: ArchitectureShowcaseProps) {
   const styleTabs = useMemo<StyleTab[]>(() => {
-    const source =
-      styles.length > 0
-        ? styles
-        : fallbackStyles.map((name, index) => ({ id: index + 1, name }));
-    return source.map((style) => ({
+    const source = styles.length > 0 ? styles : [];
+    const unique = source.filter(
+      (style, index, array) =>
+        index === array.findIndex((s) => s.name === style.name),
+    );
+    return unique.map((style) => ({
       id: slugifyText(style.name),
       label: style.name,
     }));
@@ -114,6 +105,7 @@ export function ArchitectureShowcase({
 
   const activeImages = imagesByTab[activeTab] ?? [];
   const isLight = theme === "light";
+  const [brokenImages, setBrokenImages] = useState<Record<string, true>>({});
 
   return (
     <section
@@ -122,12 +114,12 @@ export function ArchitectureShowcase({
       }`}
     >
       <Container className="space-y-10">
-        <h2 className="text-4xl font-bold uppercase tracking-wide md:text-6xl">
+        <h2 className="text-2xl font-bold uppercase tracking-wide sm:text-3xl md:text-6xl">
           Kiến Trúc Nhà Phố
         </h2>
 
         <div
-          className={`flex flex-wrap gap-6 pb-6 ${
+          className={`flex flex-wrap gap-x-4 gap-y-3 pb-6 sm:gap-6 ${
             isLight ? "border-b border-border/60" : "border-b border-white/20"
           }`}
         >
@@ -135,7 +127,7 @@ export function ArchitectureShowcase({
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`pb-1 text-sm font-semibold uppercase tracking-wider transition-colors ${
+              className={`whitespace-nowrap pb-1 text-xs font-semibold uppercase tracking-[0.14em] transition-colors sm:text-sm sm:tracking-wider ${
                 activeTab === tab.id
                   ? "text-amber-500"
                   : isLight
@@ -149,7 +141,7 @@ export function ArchitectureShowcase({
         </div>
 
         {activeImages.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
             {activeImages.map((image, index) => (
               <Link
                 key={`${image.projectSlug}-${index}-${image.url}`}
@@ -157,21 +149,36 @@ export function ArchitectureShowcase({
                 className="group relative block overflow-hidden"
               >
                 <div
-                  className={`relative h-64 md:h-80 ${isLight ? "bg-muted/40" : "bg-white/5"}`}
+                  className={`relative aspect-[3/4] sm:h-64 sm:aspect-auto md:h-80 ${isLight ? "bg-muted/40" : "bg-white/5"}`}
                 >
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    fill
-                    className="object-cover transition duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 25vw"
-                    placeholder={image.blurDataURL ? "blur" : "empty"}
-                    blurDataURL={image.blurDataURL}
-                  />
+                  {brokenImages[`${image.projectSlug}-${index}`] ? (
+                    <div className="flex h-full w-full items-center justify-center bg-gray-100">
+                      <span className="text-xs text-gray-400">
+                        Ảnh không tải được
+                      </span>
+                    </div>
+                  ) : (
+                    <Image
+                      src={image.url}
+                      alt={image.alt}
+                      fill
+                      unoptimized
+                      onError={() =>
+                        setBrokenImages((prev) => ({
+                          ...prev,
+                          [`${image.projectSlug}-${index}`]: true,
+                        }))
+                      }
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, 25vw"
+                      placeholder={image.blurDataURL ? "blur" : undefined}
+                      blurDataURL={image.blurDataURL}
+                    />
+                  )}
                 </div>
                 <div className="absolute inset-0 bg-black/15 transition duration-300 group-hover:bg-black/35" />
-                <div className="absolute inset-x-0 bottom-0 p-4 text-left">
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/75">
+                <div className="absolute inset-x-0 bottom-0 p-3 text-left sm:p-4">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-white/75 sm:text-xs sm:tracking-[0.2em]">
                     {image.projectTitle}
                   </p>
                 </div>

@@ -82,10 +82,10 @@ export function VideoSection({
   };
 
   return (
-    <section className="bg-[#efefef] py-10 text-slate-900 md:py-12">
+    <section className="overflow-x-clip bg-[#efefef] py-10 text-slate-900 md:py-12">
       <Container>
         <div className="mx-auto max-w-[1060px]">
-          <div className="grid items-start gap-6 lg:grid-cols-[220px_1fr]">
+          <div className="grid items-start gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
             <div className="space-y-4 pt-1">
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-400">
                 Video
@@ -107,7 +107,7 @@ export function VideoSection({
               </a>
             </div>
 
-            <div className="space-y-3">
+            <div className="min-w-0 space-y-3">
               <div className="overflow-hidden rounded-lg border border-slate-300/70 bg-black shadow-sm">
                 <div className="relative aspect-[16/9] w-full">
                   <iframe
@@ -147,7 +147,7 @@ export function VideoSection({
 
               <div
                 ref={railRef}
-                className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
+                className="flex w-full max-w-full gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden cursor-grab active:cursor-grabbing"
                 onMouseDown={onMouseDown}
                 onMouseMove={onMouseMove}
                 onMouseLeave={stopDragging}
@@ -164,7 +164,7 @@ export function VideoSection({
                       key={video.id}
                       type="button"
                       onClick={() => setActiveIndex(index)}
-                      className={`group shrink-0 basis-[calc((100%-0.5rem)/2)] md:basis-[calc((100%-1rem)/3)] lg:basis-[calc((100%-1.5rem)/4)] overflow-hidden rounded border text-left transition ${
+                      className={`group shrink-0 basis-[45%] sm:basis-[calc((100%-0.5rem)/2)] md:basis-[calc((100%-1rem)/3)] lg:basis-[calc((100%-1.5rem)/4)] overflow-hidden rounded border text-left transition ${
                         isActive
                           ? "border-[#1f4569] shadow-sm"
                           : "border-slate-300 hover:border-slate-400"

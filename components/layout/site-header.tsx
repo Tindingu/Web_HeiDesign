@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { Search, Menu, ChevronDown } from "lucide-react";
@@ -115,8 +116,10 @@ const baseMenuItems = [
 
 export function SiteHeader() {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [interiorSubmenu, setInteriorSubmenu] = useState(
@@ -126,6 +129,7 @@ export function SiteHeader() {
     defaultConstructionSubmenu,
   );
   const topCategoriesRef = useRef<HTMLDivElement>(null);
+  const mobileSearchInputRef = useRef<HTMLInputElement>(null);
   const isDraggingTopRef = useRef(false);
   const topStartXRef = useRef(0);
   const topStartScrollLeftRef = useRef(0);
@@ -134,8 +138,20 @@ export function SiteHeader() {
     setSearchKeyword(searchParams.get("s") || "");
   }, [searchParams]);
 
+  useEffect(() => {
+    if (!mobileSearchOpen) return;
+    mobileSearchInputRef.current?.focus();
+  }, [mobileSearchOpen]);
+
   const handleSearchSubmit = (event?: React.FormEvent) => {
     event?.preventDefault();
+    mobileSearchInputRef.current?.blur();
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    setMobileSearchOpen(false);
+    setMobileMenuOpen(false);
+    setActiveSubmenu(null);
     const keyword = searchKeyword.trim();
     if (!keyword) {
       router.push("/tim-kiem");
@@ -143,6 +159,12 @@ export function SiteHeader() {
     }
     router.push(`/tim-kiem?s=${encodeURIComponent(keyword)}`);
   };
+
+  useEffect(() => {
+    setMobileSearchOpen(false);
+    setMobileMenuOpen(false);
+    setActiveSubmenu(null);
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     const loadTargets = async () => {
@@ -226,16 +248,16 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       {/* Top Bar: Logo + Search + Category Icons */}
       <Container>
-        <div className="flex h-20 items-center justify-between gap-4 py-2">
+        <div className="flex min-h-[4.5rem] items-center justify-between gap-3 py-2 sm:min-h-[5rem] sm:gap-4">
           {/* Logo */}
-          <Link href="/" className="flex min-w-fit items-center gap-2">
+          <Link href="/" className="flex min-w-0 items-center gap-2">
             <Image
               src="/upload/logo/icep-logo.svg"
               alt="ICEP"
               width={120}
               height={120}
               priority
-              className="h-12 w-auto"
+              className="h-10 w-auto sm:h-12"
             />
             {/* <div className="hidden flex-col md:flex">
               <span className="text-xl font-bold tracking-wider">
@@ -246,7 +268,7 @@ export function SiteHeader() {
           </Link>
 
           {/* Search Bar */}
-          <div className="hidden flex-1 max-w-sm md:block lg:max-w-md">
+          <div className="hidden max-w-sm flex-1 md:block lg:max-w-md">
             <form className="relative" onSubmit={handleSearchSubmit}>
               <input
                 type="text"
@@ -264,57 +286,95 @@ export function SiteHeader() {
             </form>
           </div>
 
-          {/* Category Icons - Horizontal */}
+          {/* Desktop Category Icons */}
           <div
             ref={topCategoriesRef}
-            className="hidden flex-1 items-center justify-center gap-4 overflow-x-auto lg:flex scrollbar-hide cursor-grab active:cursor-grabbing"
+            className="hidden flex-1 items-center justify-center gap-4 overflow-x-auto cursor-grab scrollbar-hide active:cursor-grabbing lg:flex"
             onMouseDown={onTopCategoriesMouseDown}
             onMouseMove={onTopCategoriesMouseMove}
             onMouseLeave={stopTopCategoriesDragging}
             onMouseUp={stopTopCategoriesDragging}
           >
-            {topCategories.map((cat) => {
-              return (
-                <Link
-                  key={cat.href}
-                  href={cat.href}
-                  className="group flex min-w-fit flex-col items-center gap-1 transition-colors hover:text-amber-600"
-                >
-                  <Image
-                    src={cat.src}
-                    alt={cat.label}
-                    width={40}
-                    height={40}
-                    className="h-10 w-10 transition-transform group-hover:scale-110"
-                  />
-                  <span className="text-[8px] font-medium uppercase tracking-wide text-center whitespace-nowrap max-w-[60px]">
-                    {cat.label}
-                  </span>
-                </Link>
-              );
-            })}
+            {topCategories.map((cat) => (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className="group flex min-w-fit flex-col items-center gap-1 transition-colors hover:text-amber-600"
+              >
+                <Image
+                  src={cat.src}
+                  alt={cat.label}
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 transition-transform group-hover:scale-110"
+                />
+                <span className="max-w-[60px] whitespace-nowrap text-center text-[8px] font-medium uppercase tracking-wide">
+                  {cat.label}
+                </span>
+              </Link>
+            ))}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             {/* Mobile Search */}
             <button
-              onClick={() => handleSearchSubmit()}
+              onClick={() => {
+                setMobileSearchOpen((prev) => !prev);
+                setMobileMenuOpen(false);
+              }}
               className="rounded-full p-2 hover:bg-gray-100 md:hidden"
+              aria-label="Tìm kiếm"
             >
               <Search className="h-5 w-5 text-gray-600" />
             </button>
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => {
+                setMobileMenuOpen(!mobileMenuOpen);
+                setMobileSearchOpen(false);
+              }}
               className="rounded-lg p-2 hover:bg-gray-100 lg:hidden"
+              aria-label="Mở menu"
             >
               <Menu className="h-5 w-5" />
             </button>
           </div>
         </div>
       </Container>
+
+      <div className="border-t border-gray-100 bg-white md:hidden">
+        <Container>
+          <div
+            ref={topCategoriesRef}
+            className="-mx-4 flex gap-3 overflow-x-auto px-4 py-3 cursor-grab scrollbar-hide active:cursor-grabbing"
+            onMouseDown={onTopCategoriesMouseDown}
+            onMouseMove={onTopCategoriesMouseMove}
+            onMouseLeave={stopTopCategoriesDragging}
+            onMouseUp={stopTopCategoriesDragging}
+          >
+            {topCategories.map((cat) => (
+              <Link
+                key={cat.href}
+                href={cat.href}
+                className="group flex w-20 shrink-0 flex-col items-center gap-1.5 rounded-xl border border-gray-100 bg-gray-50 px-2 py-2 text-center transition-colors hover:border-amber-200 hover:bg-amber-50"
+              >
+                <Image
+                  src={cat.src}
+                  alt={cat.label}
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 transition-transform group-hover:scale-110"
+                />
+                <span className="text-[10px] font-semibold uppercase leading-4 tracking-wide text-gray-700">
+                  {cat.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </div>
 
       {/* Main Navigation Menu */}
       <div className="border-t border-gray-100 bg-gray-50/30">
@@ -358,58 +418,89 @@ export function SiteHeader() {
         </Container>
       </div>
 
-      {/* Mobile Menu */}
+      {mobileSearchOpen && (
+        <div className="border-t border-gray-100 bg-white md:hidden">
+          <Container>
+            <form className="relative py-2.5" onSubmit={handleSearchSubmit}>
+              <input
+                ref={mobileSearchInputRef}
+                type="text"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                placeholder="Bạn đang tìm gì?"
+                className="h-10 w-full max-w-full rounded-full border border-gray-300 bg-white py-2 pl-3.5 pr-11 text-base outline-none transition-all duration-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+              />
+              <button
+                type="submit"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full p-2 text-gray-500 transition-colors hover:text-amber-600"
+                aria-label="Tìm kiếm"
+              >
+                <Search className="h-4 w-4" />
+              </button>
+            </form>
+          </Container>
+        </div>
+      )}
+
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="border-t border-gray-100 bg-white lg:hidden">
           <Container>
-            <nav className="space-y-1 py-4">
-              {menuItems.map((item) => (
-                <div key={item.href}>
-                  {item.submenu ? (
-                    <>
-                      <button
-                        onClick={() =>
-                          setActiveSubmenu(
-                            activeSubmenu === item.label ? null : item.label,
-                          )
-                        }
-                        className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+            <div className="py-4">
+              <nav className="space-y-1">
+                {menuItems.map((item) => (
+                  <div key={item.href}>
+                    {item.submenu ? (
+                      <>
+                        <button
+                          onClick={() =>
+                            setActiveSubmenu(
+                              activeSubmenu === item.label ? null : item.label,
+                            )
+                          }
+                          className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                        >
+                          {item.label}
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform ${
+                              activeSubmenu === item.label ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+                        {activeSubmenu === item.label && (
+                          <div className="space-y-1 pl-4">
+                            {item.submenu.map((sub) => (
+                              <Link
+                                key={sub.href}
+                                href={sub.href}
+                                className="block rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-amber-600"
+                                onClick={() => {
+                                  setMobileMenuOpen(false);
+                                  setActiveSubmenu(null);
+                                }}
+                              >
+                                {sub.label}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <Link
+                        href={item.href}
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-amber-600"
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          setActiveSubmenu(null);
+                        }}
                       >
                         {item.label}
-                        <ChevronDown
-                          className={`h-4 w-4 transition-transform ${
-                            activeSubmenu === item.label ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {activeSubmenu === item.label && (
-                        <div className="space-y-1 pl-4">
-                          {item.submenu.map((sub) => (
-                            <Link
-                              key={sub.href}
-                              href={sub.href}
-                              className="block rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-amber-600"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {sub.label}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <Link
-                      href={item.href}
-                      className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-amber-600"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </nav>
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </nav>
+            </div>
           </Container>
         </div>
       )}

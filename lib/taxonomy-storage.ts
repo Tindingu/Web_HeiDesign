@@ -54,7 +54,7 @@ export async function readProjectCategories(): Promise<TaxonomyItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
   const result = await pool.query<{ id: number; name: string }>(
-    "SELECT id, name FROM project_categories ORDER BY id ASC",
+    "SELECT id, name FROM project_categories  ORDER BY id ASC",
   );
   return result.rows.map((row) => ({ id: Number(row.id), name: row.name }));
 }

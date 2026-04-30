@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, Flame } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { toCategorySlug } from "@/lib/post-category";
 import type { Post } from "@/lib/strapi";
@@ -51,7 +51,6 @@ export function HotTopicSection({ settings, posts }: HotTopicSectionProps) {
     hasDragged.current = false;
     dragStartX.current = e.clientX;
     scrollStartLeft.current = scrollRef.current.scrollLeft;
-    scrollRef.current.setPointerCapture(e.pointerId);
     setDragging(true);
   };
 
@@ -148,8 +147,9 @@ export function HotTopicSection({ settings, posts }: HotTopicSectionProps) {
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                onClick={(e) => {
+                onClickCapture={(e) => {
                   if (hasDragged.current) e.preventDefault();
+                  hasDragged.current = false;
                 }}
                 draggable={false}
                 className="group w-72 flex-shrink-0 overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-[0_12px_32px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_16px_40px_rgba(15,23,42,0.08)]"

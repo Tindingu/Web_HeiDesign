@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useRef, useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
-import { Project } from '@/lib/strapi';
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { Project } from "@/lib/strapi";
 
 interface RelatedProjectsCarouselProps {
   projects: Project[];
@@ -26,7 +26,8 @@ export function RelatedProjectsCarousel({
     if (container) {
       setCanScrollLeft(container.scrollLeft > 0);
       setCanScrollRight(
-        container.scrollLeft < container.scrollWidth - container.clientWidth - 10
+        container.scrollLeft <
+          container.scrollWidth - container.clientWidth - 10,
       );
     }
   };
@@ -34,12 +35,12 @@ export function RelatedProjectsCarousel({
   useEffect(() => {
     checkScroll();
     const container = scrollContainerRef.current;
-    container?.addEventListener('scroll', checkScroll);
-    window.addEventListener('resize', checkScroll);
+    container?.addEventListener("scroll", checkScroll);
+    window.addEventListener("resize", checkScroll);
 
     return () => {
-      container?.removeEventListener('scroll', checkScroll);
-      window.removeEventListener('resize', checkScroll);
+      container?.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
     };
   }, []);
 
@@ -47,24 +48,27 @@ export function RelatedProjectsCarousel({
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    container.scrollTo({ left: 0, behavior: 'auto' });
+    container.scrollTo({ left: 0, behavior: "auto" });
     checkScroll();
   }, [projects.length]);
 
-  const scroll = (direction: 'left' | 'right') => {
+  const scroll = (direction: "left" | "right") => {
     const container = scrollContainerRef.current;
     if (container) {
-      const firstCard = container.querySelector('a');
+      const firstCard = container.querySelector("a");
       const cardWidth = firstCard
         ? (firstCard as HTMLElement).getBoundingClientRect().width
         : 0;
       const containerStyles = window.getComputedStyle(container);
-      const gap = parseFloat(containerStyles.columnGap || containerStyles.gap || '0');
+      const gap = parseFloat(
+        containerStyles.columnGap || containerStyles.gap || "0",
+      );
       const scrollAmount = cardWidth + gap;
       const newScrollLeft =
-        container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
-      container.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
-      
+        container.scrollLeft +
+        (direction === "left" ? -scrollAmount : scrollAmount);
+      container.scrollTo({ left: newScrollLeft, behavior: "smooth" });
+
       // Update button states after scroll
       setTimeout(checkScroll, 100);
     }
@@ -73,15 +77,15 @@ export function RelatedProjectsCarousel({
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     const container = scrollContainerRef.current;
     if (!container) return;
-    
+
     // Check if clicking on a link or button - if so, don't start drag
     const target = e.target as HTMLElement;
-    const linkOrButton = target.closest('a') || target.closest('button');
-    
+    const linkOrButton = target.closest("a") || target.closest("button");
+
     if (linkOrButton) {
       return;
     }
-    
+
     setIsDragging(true);
     setDragStartX(e.pageX);
     setDragStartScrollLeft(container.scrollLeft);
@@ -89,12 +93,12 @@ export function RelatedProjectsCarousel({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isDragging) return;
-    
+
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const dragDistance = e.pageX - dragStartX;
-    
+
     // Only scroll if drag distance exceeds minimum threshold
     if (Math.abs(dragDistance) > MIN_DRAG_DISTANCE) {
       container.scrollLeft = dragStartScrollLeft - dragDistance;
@@ -120,7 +124,7 @@ export function RelatedProjectsCarousel({
       <div className="flex items-center gap-4">
         {/* Left Arrow */}
         <button
-          onClick={() => scroll('left')}
+          onClick={() => scroll("left")}
           disabled={!canScrollLeft}
           className="flex-shrink-0 rounded-full bg-white p-2 shadow-lg transition-all hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-200"
           aria-label="Scroll left"
@@ -132,7 +136,10 @@ export function RelatedProjectsCarousel({
         <div
           ref={scrollContainerRef}
           className="flex gap-6 overflow-x-auto scroll-smooth flex-1 pb-4 cursor-grab active:cursor-grabbing select-none snap-x snap-mandatory"
-          style={{ scrollBehavior: isDragging ? 'auto' : 'smooth', scrollbarWidth: 'none' }}
+          style={{
+            scrollBehavior: isDragging ? "auto" : "smooth",
+            scrollbarWidth: "none",
+          }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -142,7 +149,7 @@ export function RelatedProjectsCarousel({
             <Link
               key={project.id}
               href={`/du-an/${project.slug}`}
-              className="group relative basis-[85%] min-w-[85%] max-w-[85%] overflow-hidden rounded-lg border border-gray-200 transition-shadow hover:shadow-lg sm:basis-[calc((100%-1.5rem)/2)] sm:min-w-[calc((100%-1.5rem)/2)] sm:max-w-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-4.5rem)/4)] lg:min-w-[calc((100%-4.5rem)/4)] lg:max-w-[calc((100%-4.5rem)/4)] flex-shrink-0 pointer-events-auto snap-start"
+              className="group relative basis-[75%] min-w-[75%] max-w-[75%] overflow-hidden rounded-lg border border-gray-200 transition-shadow hover:shadow-lg sm:basis-[calc((100%-1.5rem)/2)] sm:min-w-[calc((100%-1.5rem)/2)] sm:max-w-[calc((100%-1.5rem)/2)] lg:basis-[calc((100%-4.5rem)/4)] lg:min-w-[calc((100%-4.5rem)/4)] lg:max-w-[calc((100%-4.5rem)/4)] flex-shrink-0 pointer-events-auto snap-start"
               draggable="false"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
@@ -151,18 +158,18 @@ export function RelatedProjectsCarousel({
                   alt={project.coverImage.alt || project.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105 pointer-events-none"
-                  sizes="(max-width: 640px) 85vw, (max-width: 1024px) 50vw, 25vw"
+                  sizes="(max-width: 640px) 75vw, (max-width: 1024px) 50vw, 25vw"
                   draggable="false"
                 />
               </div>
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-amber-600 transition-colors">
+              <div className="p-4 sm:p-6">
+                <h3 className="text-base font-bold text-gray-900 transition-colors group-hover:text-amber-600 sm:text-lg">
                   {project.title}
                 </h3>
                 {/* <p className="mt-2 text-sm text-gray-600 line-clamp-2">
                   {project.summary}
                 </p> */}
-                <div className="mt-4 flex items-center gap-2 text-sm text-amber-600 font-semibold">
+                <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-amber-600">
                   Xem chi tiết
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </div>
@@ -173,7 +180,7 @@ export function RelatedProjectsCarousel({
 
         {/* Right Arrow */}
         <button
-          onClick={() => scroll('right')}
+          onClick={() => scroll("right")}
           disabled={!canScrollRight}
           className="flex-shrink-0 rounded-full bg-white p-2 shadow-lg transition-all hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-200"
           aria-label="Scroll right"

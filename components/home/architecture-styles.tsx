@@ -170,7 +170,7 @@ export function ArchitectureStyles({
     default: 4,
     1280: 3,
     1024: 2,
-    640: 1,
+    640: 2,
   };
 
   return (
@@ -199,8 +199,8 @@ export function ArchitectureStyles({
         {activeImages.length > 0 ? (
           <Masonry
             breakpointCols={breakpointColumnsObj}
-            className="-ml-4 flex w-auto"
-            columnClassName="space-y-4 pl-4 bg-clip-padding"
+            className="-ml-2 flex w-auto sm:-ml-4"
+            columnClassName="space-y-2 pl-2 bg-clip-padding sm:space-y-4 sm:pl-4"
           >
             {activeImages.map((image, index) => (
               <Link
@@ -224,7 +224,7 @@ export function ArchitectureStyles({
                     alt={image.alt}
                     fill
                     className="object-cover transition duration-500 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, 25vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, 25vw"
                     placeholder={image.blurDataURL ? "blur" : undefined}
                     blurDataURL={image.blurDataURL}
                   />
