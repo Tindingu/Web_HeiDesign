@@ -6,6 +6,9 @@ const envSchema = z.object({
   POSTGRES_PRISMA_URL: z.string().optional(),
   POSTGRES_URL_NON_POOLING: z.string().optional(),
   NEON_DATABASE_URL: z.string().optional(),
+  NEON_USE_LIBPQ_COMPAT: z.string().optional(),
+  FORCE_SSLMODE_VERIFY_FULL: z.string().optional(),
+  DISABLE_DB_DURING_BUILD: z.string().optional(),
   STRAPI_URL: z.string().url().default("http://localhost:1337"),
   STRAPI_TOKEN: z.string().optional().default(""),
   NEXT_PUBLIC_SITE_URL: z.string().url().default("https://icepdesign.vn"),
@@ -24,4 +27,7 @@ export const env = envSchema.parse({
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   RATE_LIMIT_WINDOW_MS: process.env.RATE_LIMIT_WINDOW_MS,
   RATE_LIMIT_MAX: process.env.RATE_LIMIT_MAX,
+  NEON_USE_LIBPQ_COMPAT: process.env.NEON_USE_LIBPQ_COMPAT,
+  FORCE_SSLMODE_VERIFY_FULL: process.env.FORCE_SSLMODE_VERIFY_FULL,
+  DISABLE_DB_DURING_BUILD: process.env.DISABLE_DB_DURING_BUILD,
 });

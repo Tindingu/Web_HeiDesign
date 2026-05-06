@@ -1,1 +1,1 @@
-declare module "pg";\n
+declare module "pg";

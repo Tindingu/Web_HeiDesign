@@ -10,8 +10,6 @@ export function TestimonialsCarousel({
 }: {
   testimonials: Testimonial[];
 }) {
-  if (!testimonials.length) return null;
-
   const [index, setIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -21,6 +19,18 @@ export function TestimonialsCarousel({
   const pointerIdRef = useRef<number | null>(null);
 
   const total = testimonials.length;
+
+  useEffect(() => {
+    if (testimonials.length <= 1) return;
+    if (isDragging || isPaused) return;
+
+    const timer = setInterval(() => {
+      setIndex((currentIndex) => (currentIndex + 1) % testimonials.length);
+    }, 4200);
+    return () => clearInterval(timer);
+  }, [testimonials.length, isDragging, isPaused]);
+
+  if (!testimonials.length) return null;
 
   const goPrev = () =>
     setIndex((currentIndex) => (currentIndex - 1 + total) % total);
@@ -66,15 +76,7 @@ export function TestimonialsCarousel({
     setIsPaused(false);
   };
 
-  useEffect(() => {
-    if (testimonials.length <= 1) return;
-    if (isDragging || isPaused) return;
-
-    const timer = setInterval(() => {
-      setIndex((currentIndex) => (currentIndex + 1) % testimonials.length);
-    }, 4200);
-    return () => clearInterval(timer);
-  }, [testimonials.length, isDragging, isPaused]);
+  
 
   return (
     <section className="border-y border-slate-200 bg-gradient-to-b from-slate-50 to-white py-20 text-slate-900">

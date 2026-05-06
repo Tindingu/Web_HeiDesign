@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import React, { Suspense } from "react";
 import { LeadCapturePopup } from "@/components/contact/lead-capture-popup";
 import { FloatingContactButtons } from "@/components/contact/floating-contact-buttons";
 import { PageTransition } from "@/components/motion/page-transition";
@@ -47,7 +48,9 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
-        <SiteHeader />
+        <Suspense fallback={null}>
+          <SiteHeader />
+        </Suspense>
         <PageTransition>{children}</PageTransition>
         <FloatingContactButtons />
         <LeadCapturePopup />

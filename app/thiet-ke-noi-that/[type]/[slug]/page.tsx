@@ -14,9 +14,11 @@ export async function generateMetadata({
   params: { type: string; slug: string };
 }) {
   const articles = await readArticles();
-  const article = articles.find((item) => toSlug(item.slug) === params.slug);
+  const article = articles.find(
+    (item) => toSlug(item.slug ?? item.title ?? "") === params.slug,
+  );
 
-  if (!article || categoryToTypeSlug(article.category) !== params.type) {
+  if (!article || categoryToTypeSlug(article.category ?? "") !== params.type) {
     return buildMetadata({
       title: "Bài viết",
       path: `/thiet-ke-noi-that/${params.type}/${params.slug}`,
@@ -37,9 +39,11 @@ export default async function InteriorArticleDetailPage({
   params: { type: string; slug: string };
 }) {
   const articles = await readArticles();
-  const article = articles.find((item) => toSlug(item.slug) === params.slug);
+  const article = articles.find(
+    (item) => toSlug(item.slug ?? item.title ?? "") === params.slug,
+  );
 
-  if (!article || categoryToTypeSlug(article.category) !== params.type) {
+  if (!article || categoryToTypeSlug(article.category ?? "") !== params.type) {
     notFound();
   }
 

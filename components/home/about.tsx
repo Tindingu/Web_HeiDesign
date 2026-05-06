@@ -30,7 +30,7 @@ export function About() {
                 vô hình thành nét nội thất tinh xảo, nơi thẩm mỹ và công năng
                 giao thoa tuyệt đối. Mỗi dự án là một tuyên ngôn về sự{" "}
                 <span className="italic font-medium text-amber-600">
-                  "Độc bản"
+                  &quot;Độc bản&quot;
                 </span>
                 , nơi bản sắc cá nhân và văn hóa doanh nghiệp được tôn vinh đầy
                 kiêu hãnh.

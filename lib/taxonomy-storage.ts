@@ -44,37 +44,37 @@ function toDisplayName(value: string): string {
 export async function readBlogCategories(): Promise<TaxonomyItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "SELECT id, name FROM blog_categories ORDER BY name ASC",
-  );
+  )) as { rows: { id: number; name: string }[] };
   return result.rows.map((row) => ({ id: Number(row.id), name: row.name }));
 }
 
 export async function readProjectCategories(): Promise<TaxonomyItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "SELECT id, name FROM project_categories  ORDER BY id ASC",
-  );
+  )) as { rows: { id: number; name: string }[] };
   return result.rows.map((row) => ({ id: Number(row.id), name: row.name }));
 }
 
 export async function readProjectStyles(): Promise<TaxonomyItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "SELECT id, name FROM project_styles ORDER BY id ASC",
-  );
+  )) as { rows: { id: number; name: string }[] };
   return result.rows.map((row) => ({ id: Number(row.id), name: row.name }));
 }
 
 export async function createBlogCategory(name: string): Promise<TaxonomyItem> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "INSERT INTO blog_categories (name) VALUES ($1) RETURNING id, name",
     [name.trim()],
-  );
+  )) as { rows: { id: number; name: string }[] };
   const row = result.rows[0];
   return { id: Number(row.id), name: row.name };
 }
@@ -84,10 +84,10 @@ export async function createProjectCategory(
 ): Promise<TaxonomyItem> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "INSERT INTO project_categories (name) VALUES ($1) RETURNING id, name",
     [name.trim()],
-  );
+  )) as { rows: { id: number; name: string }[] };
   const row = result.rows[0];
   return { id: Number(row.id), name: row.name };
 }
@@ -95,10 +95,10 @@ export async function createProjectCategory(
 export async function createProjectStyle(name: string): Promise<TaxonomyItem> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "INSERT INTO project_styles (name) VALUES ($1) RETURNING id, name",
     [name.trim()],
-  );
+  )) as { rows: { id: number; name: string }[] };
   const row = result.rows[0];
   return { id: Number(row.id), name: row.name };
 }
@@ -109,10 +109,10 @@ export async function updateBlogCategory(
 ): Promise<TaxonomyItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "UPDATE blog_categories SET name = $2 WHERE id = $1 RETURNING id, name",
     [id, name.trim()],
-  );
+  )) as { rows: { id: number; name: string }[] };
   if (!result.rows[0]) return null;
   return { id: Number(result.rows[0].id), name: result.rows[0].name };
 }
@@ -123,10 +123,10 @@ export async function updateProjectCategory(
 ): Promise<TaxonomyItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "UPDATE project_categories SET name = $2 WHERE id = $1 RETURNING id, name",
     [id, name.trim()],
-  );
+  )) as { rows: { id: number; name: string }[] };
   if (!result.rows[0]) return null;
   return { id: Number(result.rows[0].id), name: result.rows[0].name };
 }
@@ -137,10 +137,10 @@ export async function updateProjectStyle(
 ): Promise<TaxonomyItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; name: string }>(
+  const result = (await pool.query(
     "UPDATE project_styles SET name = $2 WHERE id = $1 RETURNING id, name",
     [id, name.trim()],
-  );
+  )) as { rows: { id: number; name: string }[] };
   if (!result.rows[0]) return null;
   return { id: Number(result.rows[0].id), name: result.rows[0].name };
 }
@@ -148,10 +148,10 @@ export async function updateProjectStyle(
 export async function deleteBlogCategory(id: number): Promise<boolean> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const inUse = await pool.query<{ count: string }>(
+  const inUse = (await pool.query(
     "SELECT COUNT(*)::text AS count FROM blog_posts WHERE category_id = $1",
     [id],
-  );
+  )) as { rows: { count: string }[] };
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa category đang được bài viết sử dụng");
   }
@@ -164,10 +164,10 @@ export async function deleteBlogCategory(id: number): Promise<boolean> {
 export async function deleteProjectCategory(id: number): Promise<boolean> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const inUse = await pool.query<{ count: string }>(
+  const inUse = (await pool.query(
     "SELECT COUNT(*)::text AS count FROM projects WHERE category_id = $1",
     [id],
-  );
+  )) as { rows: { count: string }[] };
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa category đang được dự án sử dụng");
   }
@@ -181,10 +181,10 @@ export async function deleteProjectCategory(id: number): Promise<boolean> {
 export async function deleteProjectStyle(id: number): Promise<boolean> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const inUse = await pool.query<{ count: string }>(
+  const inUse = (await pool.query(
     "SELECT COUNT(*)::text AS count FROM projects WHERE style_id = $1",
     [id],
-  );
+  )) as { rows: { count: string }[] };
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa style đang được dự án sử dụng");
   }
@@ -197,11 +197,9 @@ export async function deleteProjectStyle(id: number): Promise<boolean> {
 export async function readArticleSections(): Promise<TaxonomyItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{
-    id: number;
-    name: string;
-    code: string | null;
-  }>("SELECT id, name, code FROM article_sections ORDER BY id ASC");
+  const result = (await pool.query(
+    "SELECT id, name, code FROM article_sections ORDER BY id ASC",
+  )) as { rows: { id: number; name: string; code: string | null }[] };
   return result.rows.map((row) => ({
     id: Number(row.id),
     name: row.name,
@@ -212,21 +210,23 @@ export async function readArticleSections(): Promise<TaxonomyItem[]> {
 export async function readArticleTypes(): Promise<ArticleTypeItem[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{
-    id: number;
-    name: string;
-    code: string;
-    section_id: number;
-    section_code: string;
-    section_name: string;
-  }>(
+  const result = (await pool.query(
     `
       SELECT t.id, t.name, t.code, t.section_id, s.code AS section_code, s.name AS section_name
       FROM article_types t
       JOIN article_sections s ON s.id = t.section_id
       ORDER BY s.id ASC, t.id ASC
     `,
-  );
+  )) as {
+    rows: {
+      id: number;
+      name: string;
+      code: string;
+      section_id: number;
+      section_code: string;
+      section_name: string;
+    }[];
+  };
 
   return result.rows.map((row) => ({
     id: Number(row.id),
@@ -246,14 +246,7 @@ export async function createArticleType(input: {
   await ensureDbSchema();
   const pool = getDbPool();
   const code = toCode(input.code || input.name);
-  const result = await pool.query<{
-    id: number;
-    name: string;
-    code: string;
-    section_id: number;
-    section_code: string;
-    section_name: string;
-  }>(
+  const result = (await pool.query(
     `
       INSERT INTO article_types (name, code, section_id)
       VALUES ($1, $2, $3)
@@ -266,7 +259,16 @@ export async function createArticleType(input: {
         (SELECT name FROM article_sections WHERE id = section_id) AS section_name
     `,
     [input.name.trim(), code, input.sectionId],
-  );
+  )) as {
+    rows: {
+      id: number;
+      name: string;
+      code: string;
+      section_id: number;
+      section_code: string;
+      section_name: string;
+    }[];
+  };
   const row = result.rows[0];
   return {
     id: Number(row.id),
@@ -285,14 +287,7 @@ export async function updateArticleType(
   await ensureDbSchema();
   const pool = getDbPool();
   const code = toCode(input.code || input.name);
-  const result = await pool.query<{
-    id: number;
-    name: string;
-    code: string;
-    section_id: number;
-    section_code: string;
-    section_name: string;
-  }>(
+  const result = (await pool.query(
     `
       UPDATE article_types
       SET name = $2, code = $3, section_id = $4
@@ -306,7 +301,16 @@ export async function updateArticleType(
         (SELECT name FROM article_sections WHERE id = section_id) AS section_name
     `,
     [id, input.name.trim(), code, input.sectionId],
-  );
+  )) as {
+    rows: {
+      id: number;
+      name: string;
+      code: string;
+      section_id: number;
+      section_code: string;
+      section_name: string;
+    }[];
+  };
   if (!result.rows[0]) return null;
   const row = result.rows[0];
   return {
@@ -322,10 +326,10 @@ export async function updateArticleType(
 export async function deleteArticleType(id: number): Promise<boolean> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const inUse = await pool.query<{ count: string }>(
+  const inUse = (await pool.query(
     "SELECT COUNT(*)::text AS count FROM project_articles WHERE type_id = $1",
     [id],
-  );
+  )) as { rows: { count: string }[] };
   if (Number(inUse.rows[0]?.count || 0) > 0) {
     throw new Error("Không thể xóa loại bài viết đang được sử dụng");
   }
@@ -341,14 +345,7 @@ export async function getArticleTypeByCode(
 ): Promise<ArticleTypeItem | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{
-    id: number;
-    name: string;
-    code: string;
-    section_id: number;
-    section_code: string;
-    section_name: string;
-  }>(
+  const result = (await pool.query(
     `
       SELECT t.id, t.name, t.code, t.section_id, s.code AS section_code, s.name AS section_name
       FROM article_types t
@@ -357,7 +354,16 @@ export async function getArticleTypeByCode(
       LIMIT 1
     `,
     [sectionCode, typeCode],
-  );
+  )) as {
+    rows: {
+      id: number;
+      name: string;
+      code: string;
+      section_id: number;
+      section_code: string;
+      section_name: string;
+    }[];
+  };
 
   if (!result.rows[0]) return null;
   const row = result.rows[0];
@@ -382,11 +388,7 @@ export async function ensureArticleTypeByCode(
   const sections = await readArticleSections();
   let section = sections.find((item) => item.code === sectionCode);
   if (!section) {
-    const createdSection = await pool.query<{
-      id: number;
-      name: string;
-      code: string;
-    }>(
+    const createdSection = (await pool.query(
       `
         INSERT INTO article_sections (name, code)
         VALUES ($1, $2)
@@ -394,7 +396,7 @@ export async function ensureArticleTypeByCode(
         RETURNING id, name, code
       `,
       [toDisplayName(sectionCode), sectionCode],
-    );
+    )) as { rows: { id: number; name: string; code: string }[] };
     section = {
       id: Number(createdSection.rows[0].id),
       name: createdSection.rows[0].name,

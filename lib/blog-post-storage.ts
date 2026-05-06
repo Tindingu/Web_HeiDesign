@@ -52,7 +52,7 @@ function mapBlogPostRow(row: BlogPostRow): BlogPostRecord {
 export async function readBlogPosts(): Promise<BlogPostRecord[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<BlogPostRow>(
+  const result = (await pool.query(
     `
       SELECT
         bp.id,
@@ -69,7 +69,7 @@ export async function readBlogPosts(): Promise<BlogPostRecord[]> {
       LEFT JOIN blog_categories c ON c.id = bp.category_id
       ORDER BY published_at DESC, bp.id DESC
     `,
-  );
+  )) as { rows: BlogPostRow[] };
   return result.rows.map(mapBlogPostRow);
 }
 
@@ -87,12 +87,11 @@ export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
         (item) => item.name === post.category,
       );
       const categoryId =
-        matchedCategory?.id ??
-        (
-          await pool.query<{ id: number }>(
+        matchedCategory?.id ?? (
+          (await pool.query(
             "INSERT INTO blog_categories (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id",
             [post.category],
-          )
+          )) as { rows: { id: number }[] }
         ).rows[0].id;
 
       await pool.query(
@@ -141,7 +140,7 @@ export async function getBlogPostById(
 ): Promise<BlogPostRecord | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<BlogPostRow>(
+  const result = (await pool.query(
     `
       SELECT
         bp.id,
@@ -160,7 +159,7 @@ export async function getBlogPostById(
       LIMIT 1
     `,
     [id],
-  );
+  )) as { rows: BlogPostRow[] };
   return result.rows[0] ? mapBlogPostRow(result.rows[0]) : null;
 }
 
@@ -169,7 +168,7 @@ export async function getBlogPostBySlug(
 ): Promise<BlogPostRecord | null> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<BlogPostRow>(
+  const result = (await pool.query(
     `
       SELECT
         bp.id,
@@ -188,7 +187,7 @@ export async function getBlogPostBySlug(
       LIMIT 1
     `,
     [slug],
-  );
+  )) as { rows: BlogPostRow[] };
   return result.rows[0] ? mapBlogPostRow(result.rows[0]) : null;
 }
 
@@ -204,13 +203,13 @@ export async function createBlogPost(
   const categoryId =
     matchedCategory?.id ??
     (
-      await pool.query<{ id: number }>(
+      (await pool.query(
         "INSERT INTO blog_categories (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id",
         [post.category],
-      )
+      )) as { rows: { id: number }[] }
     ).rows[0].id;
 
-  const result = await pool.query<BlogPostRow>(
+  const result = (await pool.query(
     `
       INSERT INTO blog_posts (
         slug,
@@ -243,7 +242,7 @@ export async function createBlogPost(
       post.coverImage?.url ?? "",
       post.publishedAt,
     ],
-  );
+  )) as { rows: BlogPostRow[] };
   return mapBlogPostRow(result.rows[0]);
 }
 
@@ -270,13 +269,13 @@ export async function updateBlogPost(
   const categoryId =
     matchedCategory?.id ??
     (
-      await pool.query<{ id: number }>(
+      (await pool.query(
         "INSERT INTO blog_categories (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id",
         [merged.category],
-      )
+      )) as { rows: { id: number }[] }
     ).rows[0].id;
 
-  const result = await pool.query<BlogPostRow>(
+  const result = (await pool.query(
     `
       UPDATE blog_posts
       SET
@@ -310,7 +309,7 @@ export async function updateBlogPost(
       merged.coverImage?.url ?? "",
       merged.publishedAt,
     ],
-  );
+  )) as { rows: BlogPostRow[] };
 
   return result.rows[0] ? mapBlogPostRow(result.rows[0]) : null;
 }

@@ -84,7 +84,7 @@ export async function readArchitectureGallery(): Promise<
 > {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<GalleryRow>(
+  const result = (await pool.query(
     `
       SELECT
         agi.id,
@@ -102,7 +102,7 @@ export async function readArchitectureGallery(): Promise<
       JOIN projects p ON p.id = agi.project_id
       ORDER BY agi.style_id ASC, agi.slot_index ASC
     `,
-  );
+  )) as { rows: GalleryRow[] };
 
   return result.rows.map((row) => ({
     ...mapRow(row),
@@ -112,13 +112,13 @@ export async function readArchitectureGallery(): Promise<
 export async function readProjectLinkOptions(): Promise<ProjectLinkOption[]> {
   await ensureDbSchema();
   const pool = getDbPool();
-  const result = await pool.query<{ id: number; title: string; slug: string }>(
+  const result = (await pool.query(
     `
       SELECT id, title, slug
       FROM projects
       ORDER BY updated_at DESC, id DESC
     `,
-  );
+  )) as { rows: { id: number; title: string; slug: string }[] };
 
   return result.rows.map((row) => ({
     id: Number(row.id),

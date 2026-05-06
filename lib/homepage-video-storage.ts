@@ -89,7 +89,7 @@ export async function readHomepageVideos(): Promise<HomepageVideoItem[]> {
   await ensureDbSchema();
   await ensureHomepageVideosTable();
   const pool = getDbPool();
-  const result = await pool.query<HomepageVideoRow>(
+  const result = (await pool.query(
     `
       SELECT
         id,
@@ -102,7 +102,7 @@ export async function readHomepageVideos(): Promise<HomepageVideoItem[]> {
       FROM homepage_videos
       ORDER BY sort_order ASC, id ASC
     `,
-  );
+  )) as { rows: HomepageVideoRow[] };
 
   return result.rows.map(mapRow);
 }
