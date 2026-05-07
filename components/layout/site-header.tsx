@@ -252,7 +252,7 @@ export function SiteHeader() {
           {/* Logo */}
           <Link href="/" className="flex min-w-0 items-center gap-2">
             <Image
-              src="/upload/logo/HEI-logo.svg"
+              src="/upload/logo/hei-logo.svg"
               alt="HEI"
               width={120}
               height={120}
