@@ -3,12 +3,12 @@ export const siteConfig = {
   description:
     "Đơn vị thiết kế và thi công nội thất trọn gói chuyên nghiệp cho không gian cao cấp.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://icepdesign.vn",
-  phone: "0940465448",
+  phone: "0904465448",
   email: "heidesigninterior@gmail.com",
   address: "Thành phố Hồ Chí Minh, Việt Nam",
   zaloUrl:
     process.env.NEXT_PUBLIC_ZALO_URL ??
-    `https://zalo.me/${process.env.NEXT_PUBLIC_PHONE ?? "0940465448"}`,
+    `https://zalo.me/${process.env.NEXT_PUBLIC_PHONE ?? "0904465448"}`,
   facebookUrl:
     process.env.NEXT_PUBLIC_FACEBOOK_URL ??
     process.env.NEXT_PUBLIC_MESSENGER_URL ??

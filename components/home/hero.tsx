@@ -114,7 +114,7 @@ export function Hero({ hero }: { hero: HeroContent }) {
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-8 py-4">
         <div className="flex items-center justify-between">
           <a
-            href="tel:0940465448"
+            href="tel:0904465448"
             className="text-lg font-semibold text-white hover:text-amber-400 md:text-xl"
           >
             📞 0795.743.429

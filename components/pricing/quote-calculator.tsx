@@ -108,7 +108,7 @@ export function QuoteCalculator() {
       </div>
 
       <Button asChild size="lg" className="w-full">
-        <a href="https://zalo.me/0940465448" target="_blank" rel="noreferrer">
+        <a href="https://zalo.me/0904465448" target="_blank" rel="noreferrer">
           Nhận báo giá qua Zalo
         </a>
       </Button>
