@@ -1,4 +1,4 @@
-# ICEP Design - Local Images
+# HEI Design - Local Images
 
 All images are now stored locally in `/public/upload/`.
 

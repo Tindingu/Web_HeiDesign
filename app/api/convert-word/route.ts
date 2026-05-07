@@ -209,7 +209,7 @@ export async function POST(request: NextRequest) {
       const frontmatter = `---
 title: "${title}"
 slug: "${newSlug}"
-description: "${description || "Dịch vụ từ ICEP Design"}"
+description: "${description || "Dịch vụ từ HEI Design"}"
 coverImage: "${coverImage || "https://res.cloudinary.com/dfazfoh2l/image/upload/v1771992147/vila_tld4bi.webp"}"
 ---
 

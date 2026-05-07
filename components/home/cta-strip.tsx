@@ -3,7 +3,7 @@ import { LeadCaptureForm } from "@/components/contact/lead-capture-form";
 
 export function CtaStrip() {
   return (
-    <section className="py-16">
+    <section className="bg-white py-16">
       <Container>
         <div className="grid gap-8 rounded-3xl border border-slate-200 bg-white p-8 shadow-sm lg:grid-cols-[0.95fr_1.05fr] lg:p-10">
           <div className="space-y-5">
@@ -15,7 +15,7 @@ export function CtaStrip() {
                 Nhận báo giá chi tiết trong vài phút.
               </h2>
               <p className="max-w-xl text-sm leading-7 text-slate-600">
-                Để lại thông tin liên hệ và nhu cầu của bạn, đội ngũ ICEP Design
+                Để lại thông tin liên hệ và nhu cầu của bạn, đội ngũ HEI Design
                 sẽ phản hồi sớm nhất.
               </p>
             </div>

@@ -87,7 +87,8 @@ export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
         (item) => item.name === post.category,
       );
       const categoryId =
-        matchedCategory?.id ?? (
+        matchedCategory?.id ??
+        (
           (await pool.query(
             "INSERT INTO blog_categories (name) VALUES ($1) ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name RETURNING id",
             [post.category],

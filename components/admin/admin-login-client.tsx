@@ -53,13 +53,19 @@ export default function AdminLoginClient() {
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
             Admin Login
           </p>
-          <h1 className="text-2xl font-bold text-slate-900">Đăng nhập quản trị</h1>
-          <p className="text-sm text-slate-600">Vui lòng đăng nhập để truy cập các trang quản lý.</p>
+          <h1 className="text-2xl font-bold text-slate-900">
+            Đăng nhập quản trị
+          </h1>
+          <p className="text-sm text-slate-600">
+            Vui lòng đăng nhập để truy cập các trang quản lý.
+          </p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <label className="block space-y-1">
-            <span className="text-sm font-medium text-slate-700">Tài khoản</span>
+            <span className="text-sm font-medium text-slate-700">
+              Tài khoản
+            </span>
             <div className="flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-2">
               <User className="h-4 w-4 text-slate-500" />
               <input
@@ -91,7 +97,9 @@ export default function AdminLoginClient() {
           </label>
 
           {error ? (
-            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+            <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {error}
+            </p>
           ) : null}
 
           <button

@@ -1,4 +1,4 @@
-# ICEP Design - Complete Strapi + Cloudinary Implementation
+# HEI Design - Complete Strapi + Cloudinary Implementation
 
 ## 📊 Project Overview
 

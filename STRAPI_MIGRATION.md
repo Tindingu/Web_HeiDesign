@@ -1,4 +1,4 @@
-# ICEP Design - Strapi Migration Guide for Frontend
+# HEI Design - Strapi Migration Guide for Frontend
 
 This guide explains how to update your Next.js code to fetch data from Strapi instead of local JSON files.
 

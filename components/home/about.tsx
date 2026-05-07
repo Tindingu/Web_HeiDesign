@@ -1,7 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { useEffect, useRef, useState } from "react";
 
 export function About() {
   const stats = [
@@ -11,8 +14,32 @@ export function About() {
     { label: "Hài lòng", value: "98%" },
   ];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setHasAnimated(true);
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="bg-[#f6f8fb] py-20 text-slate-900">
+    <section ref={sectionRef} className="bg-white py-20 text-slate-900">
       <Container className="space-y-16">
         {/* Main Content */}
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
@@ -70,9 +97,7 @@ export function About() {
                 index >= 1 ? "md:border-l md:pl-8" : ""
               }`}
             >
-              <p className="text-3xl font-bold text-amber-600 sm:text-4xl">
-                {stat.value}
-              </p>
+              <AnimatedStat value={stat.value} active={hasAnimated} />
               <p className="mt-2 text-xs uppercase tracking-[0.2em] text-slate-500 sm:text-sm sm:tracking-widest">
                 {stat.label}
               </p>
@@ -81,5 +106,46 @@ export function About() {
         </div>
       </Container>
     </section>
+  );
+}
+
+function AnimatedStat({ value, active }: { value: string; active: boolean }) {
+  const match = value.match(/^(\d+)(.*)$/);
+  const target = match ? Number(match[1]) : 0;
+  const suffix = match?.[2] ?? value;
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (!active) return;
+
+    let frame = 0;
+    const duration = 1200;
+    const start = performance.now();
+
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayValue(Math.round(target * eased));
+
+      if (progress < 1) {
+        frame = window.requestAnimationFrame(tick);
+      }
+    };
+
+    frame = window.requestAnimationFrame(tick);
+    return () => window.cancelAnimationFrame(frame);
+  }, [active, target]);
+
+  if (!match) {
+    return (
+      <p className="text-3xl font-bold text-amber-600 sm:text-4xl">{value}</p>
+    );
+  }
+
+  return (
+    <p className="text-3xl font-bold text-amber-600 sm:text-4xl">
+      {active ? displayValue : 0}
+      {suffix}
+    </p>
   );
 }

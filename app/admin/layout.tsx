@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck } from "lucide-react";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { LogoutButton } from "@/components/admin/logout-button";
 
 export default function AdminLayout({
   children,
@@ -20,17 +21,20 @@ export default function AdminLayout({
               <p className="text-xs uppercase tracking-[0.18em] text-white/70">
                 Admin Console
               </p>
-              <h1 className="text-xl font-semibold">Icep Design Management</h1>
+              <h1 className="text-xl font-semibold">HEI Design Management</h1>
             </div>
           </div>
-          <Link href="/">
-            <Button
-              variant="outline"
-              className="border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
-            >
-              ← Về Trang Chủ
-            </Button>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/">
+              <Button
+                variant="outline"
+                className="border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+              >
+                ← Về Trang Chủ
+              </Button>
+            </Link>
+            <LogoutButton />
+          </div>
         </div>
       </div>
 

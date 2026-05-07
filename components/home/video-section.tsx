@@ -82,7 +82,7 @@ export function VideoSection({
   };
 
   return (
-    <section className="overflow-x-clip bg-[#efefef] py-10 text-slate-900 md:py-12">
+    <section className="overflow-x-clip bg-[#f8f9fa] py-10 text-slate-900 md:py-12">
       <Container>
         <div className="mx-auto max-w-[1060px]">
           <div className="grid items-start gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">

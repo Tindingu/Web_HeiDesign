@@ -6,6 +6,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { LeadCaptureForm } from "@/components/contact/lead-capture-form";
 
+const POPUP_NEXT_AT_KEY = "icep_lead_popup_next_at";
+const FIVE_SECONDS = 5_000;
+const FIVE_MINUTES = 5 * 60_000;
+
 export function LeadCapturePopup() {
   const pathname = usePathname();
   const pageUrl = pathname || "/";
@@ -14,19 +18,31 @@ export function LeadCapturePopup() {
   useEffect(() => {
     if (pathname.startsWith("/admin")) return;
 
-    const firstTimer = window.setTimeout(() => setIsOpen(true), 5000);
-    const repeatTimer = window.setInterval(
-      () => setIsOpen(true),
-      5 * 60 * 1000,
-    );
+    const now = Date.now();
+    const nextAtRaw = window.localStorage.getItem(POPUP_NEXT_AT_KEY);
+    const nextAt = nextAtRaw ? Number(nextAtRaw) : 0;
+    const initialDelay = nextAt > now ? nextAt - now : FIVE_SECONDS;
 
-    return () => {
-      window.clearTimeout(firstTimer);
-      window.clearInterval(repeatTimer);
-    };
+    const timer = window.setTimeout(() => {
+      setIsOpen(true);
+      window.localStorage.setItem(
+        POPUP_NEXT_AT_KEY,
+        String(Date.now() + FIVE_MINUTES),
+      );
+    }, initialDelay);
+
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   if (pathname.startsWith("/admin")) return null;
+
+  const closeAndScheduleNext = () => {
+    setIsOpen(false);
+    window.localStorage.setItem(
+      POPUP_NEXT_AT_KEY,
+      String(Date.now() + FIVE_MINUTES),
+    );
+  };
 
   return (
     <AnimatePresence>
@@ -46,7 +62,7 @@ export function LeadCapturePopup() {
           >
             <button
               type="button"
-              onClick={() => setIsOpen(false)}
+              onClick={closeAndScheduleNext}
               aria-label="Đóng form"
               className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-slate-950 text-white transition hover:bg-[#1f4569]"
             >
@@ -71,9 +87,7 @@ export function LeadCapturePopup() {
                 pageUrl={pageUrl}
                 source="Popup liên hệ"
                 submitLabel="Gửi ngay"
-                onSuccess={() =>
-                  window.setTimeout(() => setIsOpen(false), 5 * 60 * 1000)
-                }
+                onSuccess={closeAndScheduleNext}
               />
             </div>
           </motion.div>

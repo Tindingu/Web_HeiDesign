@@ -15,9 +15,9 @@ export const revalidate = 120;
 
 export const generateMetadata = () =>
   buildMetadata({
-    title: "Giới thiệu ICEP Design",
+    title: "Giới thiệu HEI Design",
     description:
-      "ICEP Design là đơn vị thiết kế, thi công nội thất trọn gói với quy trình minh bạch, đội ngũ chuyên sâu và định hướng phát triển bền vững.",
+      "HEI Design là đơn vị thiết kế, thi công nội thất trọn gói với quy trình minh bạch, đội ngũ chuyên sâu và định hướng phát triển bền vững.",
     path: "/gioi-thieu",
     image: "/upload/about/image.png",
   });
@@ -87,10 +87,10 @@ export default function AboutPage() {
               Hồ sơ doanh nghiệp
             </p>
             <h1 className="max-w-4xl text-3xl font-semibold leading-tight text-[#1f4569] md:text-5xl">
-              Giới thiệu về ICEP Design
+              Giới thiệu về HEI Design
             </h1>
             <p className="max-w-3xl text-base leading-8 text-slate-600">
-              ICEP Design là đơn vị tư vấn thiết kế và thi công nội thất trọn
+              HEI Design là đơn vị tư vấn thiết kế và thi công nội thất trọn
               gói, tập trung vào giải pháp phù hợp thực tế sử dụng của từng gia
               đình. Chúng tôi xây dựng trải nghiệm dịch vụ rõ ràng, từ khâu khảo
               sát, thiết kế, lựa chọn vật liệu đến giám sát thi công và hậu mãi
@@ -126,7 +126,7 @@ export default function AboutPage() {
                 Đơn vị thiết kế thi công nội thất theo định hướng cá nhân hóa
               </h2>
               <p className="text-base leading-8 text-slate-600">
-                Mỗi dự án tại ICEP Design được triển khai dựa trên 3 lớp nghiên
+                Mỗi dự án tại HEI Design được triển khai dựa trên 3 lớp nghiên
                 cứu: nhu cầu sinh hoạt thực tế, đặc điểm không gian và khả năng
                 đầu tư của gia chủ. Cách tiếp cận này giúp phương án đạt hiệu
                 quả sử dụng cao thay vì chỉ tập trung vào hình ảnh.
@@ -198,7 +198,7 @@ export default function AboutPage() {
               Tầm nhìn - Sứ mệnh - Giá trị
             </p>
             <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#1f4569] md:text-4xl">
-              Triết lý vận hành của ICEP Design
+              Triết lý vận hành của HEI Design
             </h2>
           </div>
 
@@ -274,7 +274,7 @@ export default function AboutPage() {
                   Đồng hành dài hạn
                 </p>
                 <h2 className="text-3xl font-semibold leading-tight md:text-4xl">
-                  ICEP Design sẵn sàng đồng hành trong toàn bộ vòng đời không
+                  HEI Design sẵn sàng đồng hành trong toàn bộ vòng đời không
                   gian sống của bạn
                 </h2>
                 <p className="max-w-2xl text-sm leading-7 text-slate-100/90 md:text-base">

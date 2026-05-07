@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide will help you set up Strapi CMS with automatic Cloudinary image uploads for the ICEP Design project.
+This guide will help you set up Strapi CMS with automatic Cloudinary image uploads for the HEI Design project.
 
 ## Prerequisites
 

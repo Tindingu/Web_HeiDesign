@@ -30,7 +30,10 @@ function createPool(databaseUrl: string) {
   }
 
   // Allow disabling DB during static build/export to avoid timeouts.
-  if (env.DISABLE_DB_DURING_BUILD === "true" || process.env.DISABLE_DB_DURING_BUILD === "true") {
+  if (
+    env.DISABLE_DB_DURING_BUILD === "true" ||
+    process.env.DISABLE_DB_DURING_BUILD === "true"
+  ) {
     // Return a minimal no-op pool that won't attempt network connections.
     // This helps `next build`/static export on machines without DB access.
     // NOTE: Calls to this pool should be guarded in production if the DB is required.
@@ -80,8 +83,8 @@ function createPool(databaseUrl: string) {
     sslmode === "require" || sslmode === "prefer" || sslmode === "verify-ca"
       ? { rejectUnauthorized: false }
       : sslmode === "verify-full"
-      ? { rejectUnauthorized: true }
-      : undefined;
+        ? { rejectUnauthorized: true }
+        : undefined;
 
   return new Pool({
     connectionString: conn,

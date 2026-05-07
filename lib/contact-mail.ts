@@ -38,7 +38,17 @@ function encodeSubject(value: string) {
   return `=?UTF-8?B?${base64(value)}?=`;
 }
 
-function buildMessage({ from, to, subject, text }: { from: string; to: string; subject: string; text: string }) {
+function buildMessage({
+  from,
+  to,
+  subject,
+  text,
+}: {
+  from: string;
+  to: string;
+  subject: string;
+  text: string;
+}) {
   const body = chunkText(base64(escapeDotStuffing(text)));
 
   return [

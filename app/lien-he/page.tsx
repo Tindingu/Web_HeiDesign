@@ -16,9 +16,9 @@ export const revalidate = 120;
 
 export const generateMetadata = () =>
   buildMetadata({
-    title: "Liên hệ ICEP Design",
+    title: "Liên hệ HEI Design",
     description:
-      "Liên hệ ICEP Design để được tư vấn thiết kế thi công nội thất, nhận báo giá và lịch khảo sát nhanh chóng.",
+      "Liên hệ HEI Design để được tư vấn thiết kế thi công nội thất, nhận báo giá và lịch khảo sát nhanh chóng.",
     path: "/lien-he",
   });
 
@@ -61,7 +61,7 @@ export default function ContactPage() {
             Liên hệ
           </p>
           <h1 className="max-w-4xl text-3xl font-semibold leading-tight text-[#1f4569] md:text-5xl">
-            Kết nối với đội ngũ ICEP Design
+            Kết nối với đội ngũ HEI Design
           </h1>
           <p className="max-w-3xl text-base leading-8 text-slate-600">
             Chia sẻ nhu cầu thiết kế hoặc thi công nội thất của bạn. Đội ngũ
@@ -95,7 +95,7 @@ export default function ContactPage() {
                 Gửi yêu cầu tư vấn
               </p>
               <h2 className="text-2xl font-semibold leading-tight text-[#1f4569] md:text-3xl">
-                Để lại thông tin, ICEP Design sẽ liên hệ sớm nhất
+                Để lại thông tin, HEI Design sẽ liên hệ sớm nhất
               </h2>
               <p className="text-sm leading-7 text-slate-600">
                 Vui lòng điền đầy đủ thông tin để đội ngũ tư vấn có thể phản hồi
@@ -198,7 +198,7 @@ export default function ContactPage() {
               </p>
             </div>
             <iframe
-              title="Bản đồ liên hệ ICEP Design"
+              title="Bản đồ liên hệ HEI Design"
               src="https://maps.google.com/maps?q=Ho%20Chi%20Minh%20City&t=&z=12&ie=UTF8&iwloc=&output=embed"
               className="h-[420px] w-full"
               loading="lazy"

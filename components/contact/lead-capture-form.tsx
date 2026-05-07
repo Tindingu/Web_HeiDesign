@@ -162,7 +162,7 @@ export function LeadCaptureForm({
           aria-live="polite"
         >
           {message ||
-            "Thông tin sẽ được gửi tới đội ngũ tư vấn của ICEP Design."}
+            "Thông tin sẽ được gửi tới đội ngũ tư vấn của HEI Design."}
         </p>
       </div>
     </form>

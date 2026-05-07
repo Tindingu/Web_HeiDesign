@@ -76,10 +76,8 @@ export function TestimonialsCarousel({
     setIsPaused(false);
   };
 
-  
-
   return (
-    <section className="border-y border-slate-200 bg-gradient-to-b from-slate-50 to-white py-20 text-slate-900">
+    <section className="border-y border-slate-200 bg-[#f8f9fa] py-20 text-slate-900">
       <Container className="space-y-10">
         <div className="space-y-8">
           <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">

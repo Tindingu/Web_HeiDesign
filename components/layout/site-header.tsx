@@ -379,14 +379,14 @@ export function SiteHeader() {
       {/* Main Navigation Menu */}
       <div className="border-t border-gray-100 bg-gray-50/30">
         <Container>
-          <nav className="hidden flex-1 items-center justify-start gap-1 lg:flex py-3">
+          <nav className="hidden flex-1 items-center justify-center gap-2 py-3 lg:flex xl:gap-3">
             {menuItems.map((item) => (
               <div key={item.href} className="relative group">
                 {item.submenu ? (
                   <>
                     <Link
                       href={item.href}
-                      className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-white hover:text-amber-600 whitespace-nowrap"
+                      className="flex items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-white hover:text-amber-600"
                     >
                       {item.label}
                       <ChevronDown className="h-3 w-3" />
@@ -407,7 +407,7 @@ export function SiteHeader() {
                 ) : (
                   <Link
                     href={item.href}
-                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-white hover:text-amber-600 whitespace-nowrap"
+                    className="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-white hover:text-amber-600"
                   >
                     {item.label}
                   </Link>

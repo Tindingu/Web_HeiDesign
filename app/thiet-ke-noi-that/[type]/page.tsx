@@ -4,6 +4,7 @@ import {
   readProjectCategories,
   readProjectStyles,
 } from "@/lib/taxonomy-storage";
+import { readArchitectureGallery } from "@/lib/architecture-gallery-storage";
 import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureShowcase } from "@/components/portfolio/architecture-showcase";
 import { readArticles } from "@/lib/article-storage";
@@ -42,6 +43,8 @@ export default async function InteriorDesignTypePage({
     readProjectStyles(),
     readArticles(),
   ]);
+  // load admin-managed architecture gallery (used on homepage)
+  const architectureGallery = await readArchitectureGallery();
   const matchedArticles = articles
     .filter(
       (article) =>
@@ -128,6 +131,15 @@ export default async function InteriorDesignTypePage({
       <ArchitectureShowcase
         projects={projects}
         styles={styles}
+        curatedItems={architectureGallery.map((item) => ({
+          styleSlug: item.styleSlug,
+          projectSlug: item.projectSlug,
+          projectTitle: item.projectTitle,
+          slotIndex: item.slotIndex,
+          orientation: item.orientation,
+          imageUrl: item.imageUrl,
+          imageAlt: item.imageAlt,
+        }))}
         initialTab={params.type}
         theme="light"
       />

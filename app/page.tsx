@@ -28,7 +28,7 @@ export const generateMetadata = () =>
   buildMetadata({
     title: "Thiết kế nội thất cao cấp",
     description:
-      "ICEP Design cung cấp dịch vụ thiết kế và thi công nội thất cao cấp với chi phí minh bạch, đo lường được.",
+      "HEI Design cung cấp dịch vụ thiết kế và thi công nội thất cao cấp với chi phí minh bạch, đo lường được.",
     path: "/",
   });
 

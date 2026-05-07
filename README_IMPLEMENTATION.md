@@ -2,7 +2,7 @@
 
 ## 📦 Deliverables
 
-This package contains a complete, production-ready Strapi + Cloudinary integration for your ICEP Design Next.js project.
+This package contains a complete, production-ready Strapi + Cloudinary integration for your HEI Design Next.js project.
 
 **Setup Time:** ~45 minutes  
 **Difficulty:** ⭐⭐ (Beginner-Friendly)  

@@ -11,7 +11,7 @@ const iconMap = {
 
 export function Services({ services }: { services: Service[] }) {
   return (
-    <section className="border-y border-border/60 bg-muted/30 py-20">
+    <section className="bg-white py-20">
       <Container className="space-y-10">
         <SectionHeading
           label="Dịch vụ"

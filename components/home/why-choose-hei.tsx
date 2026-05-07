@@ -25,7 +25,7 @@ const reasons = [
 
 export function WhyChooseHei() {
   return (
-    <section className="bg-slate-50 py-24 text-slate-900">
+    <section className="bg-[#f8f9fa] py-24 text-slate-900">
       <Container className="space-y-16">
         {/* Main Grid */}
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">

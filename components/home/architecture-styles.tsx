@@ -174,7 +174,7 @@ export function ArchitectureStyles({
   };
 
   return (
-    <section className="bg-[#f3f6fa] py-20 text-slate-900">
+    <section className="bg-white py-20 text-slate-900">
       <Container className="space-y-12">
         <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
           KIẾN TRÚC NHÀ PHỐ

@@ -7,7 +7,7 @@ import type { ProcessStep } from "@/lib/strapi";
 
 export function ProcessTimeline({ steps }: { steps: ProcessStep[] }) {
   return (
-    <section className="py-20">
+    <section className="bg-[#f8f9fa] py-20">
       <Container className="space-y-10">
         <SectionHeading
           label="Quy trình"

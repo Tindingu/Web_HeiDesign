@@ -249,7 +249,7 @@ export default async function ProjectDetailPage({
                 variant="outline"
                 className="border-white text-white hover:bg-white hover:text-gray-900"
               >
-                <a href="tel:0795743429">Gọi Tư Vấn</a>
+                <a href="tel:0940465448">Gọi Tư Vấn</a>
               </Button>
             </div>
           </div>

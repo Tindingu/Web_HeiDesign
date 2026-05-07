@@ -1,4 +1,4 @@
-# ICEP Design - Strapi + Cloudinary Quick Start
+# HEI Design - Strapi + Cloudinary Quick Start
 
 ## 🚀 Quick Overview
 

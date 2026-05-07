@@ -84,7 +84,7 @@ export function WordUploader() {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("title", title);
-      formData.append("description", description || "Dịch vụ từ ICEP Design");
+      formData.append("description", description || "Dịch vụ từ HEI Design");
       formData.append("slug", slug);
       formData.append(
         "coverImage",

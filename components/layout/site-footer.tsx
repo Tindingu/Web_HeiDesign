@@ -32,7 +32,7 @@ export function SiteFooter() {
 
           <div className="space-y-4 text-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
-              Về ICEP
+              Về HEI
             </p>
             <div className="flex flex-col gap-2 text-slate-700">
               <Link href="/gioi-thieu">Giới thiệu</Link>

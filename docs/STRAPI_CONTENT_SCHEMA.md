@@ -1,4 +1,4 @@
-# Strapi Content Type Schema for ICEP Design
+# Strapi Content Type Schema for HEI Design
 
 Complete schema definition for the Project content type with field descriptions and validation rules.
 
@@ -382,7 +382,7 @@ Project {
   "completedDate": "2024-06-15",
   "featured": true,
   "highlights": ["Thiết kế hiện đại", "Vật liệu cao cấp", "Thi công nhanh"],
-  "seoTitle": "Penthouse Skyline | ICEP Design",
+  "seoTitle": "Penthouse Skyline | HEI Design",
   "seoDescription": "Căn penthouse toàn cảnh với thiết kế hiện đại...",
   "seoImage": 789
 }

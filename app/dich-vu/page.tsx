@@ -6,9 +6,9 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export const metadata = {
-  title: "Dịch Vụ Thiết Kế Nội Thất | ICEP Design",
+  title: "Dịch Vụ Thiết Kế Nội Thất | HEI Design",
   description:
-    "Dịch vụ thiết kế nội thất chuyên nghiệp từ ICEP Design. Nhà ở, văn phòng, nhà hàng, khách sạn...",
+    "Dịch vụ thiết kế nội thất chuyên nghiệp từ HEI Design. Nhà ở, văn phòng, nhà hàng, khách sạn...",
 };
 
 export default async function ServicesPage() {
@@ -111,7 +111,7 @@ export default async function ServicesPage() {
                 variant="outline"
                 className="border-white text-white hover:bg-white hover:text-gray-900"
               >
-                <a href="tel:0795743429">Gọi Tư Vấn: 0795 743 429</a>
+                <a href="tel:0940465448">Gọi Tư Vấn: 0795 743 429</a>
               </Button>
             </div>
           </div>
