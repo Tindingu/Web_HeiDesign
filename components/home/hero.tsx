@@ -15,18 +15,29 @@ export function Hero({ hero }: { hero: HeroContent }) {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
   const dragStartXRef = useRef(0);
   const dragDistanceRef = useRef(0);
   const isDragActiveRef = useRef(false);
+  const autoPlayTimerRef = useRef<NodeJS.Timeout>();
   const SWIPE_THRESHOLD = 50;
 
+  // Auto-play management
   useEffect(() => {
-    if (slides.length <= 1) return;
-    const timer = setInterval(() => {
+    if (slides.length <= 1 || isDragging || isHovering) {
+      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+      return;
+    }
+
+    autoPlayTimerRef.current = setInterval(() => {
       setActiveIndex((current) => (current + 1) % slides.length);
     }, 5000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
+
+    return () => {
+      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+    };
+  }, [slides.length, isDragging, isHovering]);
 
   const goToNext = () =>
     setActiveIndex((current) => (current + 1) % slides.length);
@@ -46,6 +57,7 @@ export function Hero({ hero }: { hero: HeroContent }) {
   const onPointerMove: React.PointerEventHandler<HTMLElement> = (event) => {
     if (!isDragActiveRef.current) return;
     dragDistanceRef.current = event.clientX - dragStartXRef.current;
+    setDragOffset(dragDistanceRef.current);
   };
 
   const stopDragging = () => {
@@ -53,6 +65,7 @@ export function Hero({ hero }: { hero: HeroContent }) {
     const dragDistance = dragDistanceRef.current;
     isDragActiveRef.current = false;
     dragDistanceRef.current = 0;
+    setDragOffset(0);
     setIsDragging(false);
 
     if (dragDistance > SWIPE_THRESHOLD) {
@@ -66,7 +79,7 @@ export function Hero({ hero }: { hero: HeroContent }) {
 
   return (
     <section
-      className={`relative h-[500px] overflow-hidden md:h-[600px] lg:h-[700px] ${
+      className={`relative w-full aspect-video overflow-hidden group ${
         slides.length > 1
           ? isDragging
             ? "cursor-grabbing"
@@ -78,9 +91,11 @@ export function Hero({ hero }: { hero: HeroContent }) {
       onPointerUp={stopDragging}
       onPointerCancel={stopDragging}
       onPointerLeave={stopDragging}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Background Image */}
-      <div className="absolute inset-0">
+      {/* Background Image Container */}
+      <div className="absolute inset-0 will-change-transform">
         {slides.map((src, index) => (
           <Image
             key={src}
@@ -88,49 +103,33 @@ export function Hero({ hero }: { hero: HeroContent }) {
             alt={hero.title}
             fill
             priority={index === 0}
-            className={`object-cover transition-[opacity,transform] duration-700 ${
-              index === activeIndex ? "opacity-100" : "opacity-0"
-            } ${index === activeIndex ? "hover:scale-[1.03]" : ""}`}
+            className={`object-cover transition-all duration-500 ease-out will-change-transform ${
+              index === activeIndex 
+                ? "opacity-100 scale-100" 
+                : "opacity-0 scale-95"
+            } ${
+              index === activeIndex && isHovering 
+                ? "scale-105" 
+                : index === activeIndex 
+                ? "scale-100"
+                : "scale-95"
+            }`}
             sizes="100vw"
+            draggable={false}
           />
         ))}
-        {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/20" />
       </div>
 
-      {/* Text Content - Right Side */}
-      <div className="absolute right-8 top-1/2 z-10 max-w-xl -translate-y-1/2 space-y-4 text-right md:right-16 lg:right-24">
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold leading-tight text-white drop-shadow-2xl md:text-5xl lg:text-6xl">
-            {hero.title}
-          </h1>
-          <p className="text-xl font-light text-white/90 drop-shadow-lg md:text-2xl lg:text-3xl">
-            {hero.subtitle}
-          </p>
-        </div>
-      </div>
+      {/* Hover Overlay */}
+      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
 
-      {/* Bottom Info Bar */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent px-8 py-4">
-        <div className="flex items-center justify-between">
-          <a
-            href="tel:0904465448"
-            className="text-lg font-semibold text-white hover:text-amber-400 md:text-xl"
-          >
-            📞 0795.743.429
-          </a>
-          <p className="hidden text-sm text-white/80 md:block">
-            {hero.ctaPrimary}
-          </p>
-        </div>
-      </div>
-
+      {/* Navigation Buttons */}
       {slides.length > 1 && (
         <>
           <button
             type="button"
             onClick={goToPrev}
-            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur transition hover:bg-black/60"
+            className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 backdrop-blur-sm p-2 text-white transition-all duration-300 opacity-0 group-hover:opacity-100 hover:bg-white/40 active:scale-95"
             aria-label="Ảnh trước"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -138,11 +137,28 @@ export function Hero({ hero }: { hero: HeroContent }) {
           <button
             type="button"
             onClick={goToNext}
-            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur transition hover:bg-black/60"
+            className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 backdrop-blur-sm p-2 text-white transition-all duration-300 opacity-0 group-hover:opacity-100 hover:bg-white/40 active:scale-95"
             aria-label="Ảnh kế tiếp"
           >
             <ChevronRight className="h-6 w-6" />
           </button>
+
+          {/* Slide Indicators */}
+          <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                className={`h-2 transition-all duration-300 rounded-full ${
+                  index === activeIndex
+                    ? "w-8 bg-white"
+                    : "w-2 bg-white/50 hover:bg-white/70"
+                }`}
+                aria-label={`Slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </>
       )}
     </section>

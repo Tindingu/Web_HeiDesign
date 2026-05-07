@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { LeadCaptureForm } from "@/components/contact/lead-capture-form";
 
-const POPUP_NEXT_AT_KEY = "icep_lead_popup_next_at";
+const POPUP_NEXT_AT_KEY = "HEI_lead_popup_next_at";
 const FIVE_SECONDS = 5_000;
 const FIVE_MINUTES = 5 * 60_000;
 
@@ -75,7 +75,7 @@ export function LeadCapturePopup() {
                   Liên hệ nhanh
                 </p>
                 <h2 className="text-xl font-bold uppercase leading-tight text-[#1f4569]">
-                  Để lại thông tin để ICEP gọi lại
+                  Để lại thông tin để HEI liên hệ
                 </h2>
                 <p className="text-sm leading-6 text-slate-600">
                   Chúng tôi sẽ liên hệ và tư vấn phương án phù hợp trong thời

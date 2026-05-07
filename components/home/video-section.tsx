@@ -18,7 +18,7 @@ type VideoSectionProps = {
 
 export function VideoSection({
   videos,
-  title = "DECOX CHANNEL",
+  title = "HEI CHANNEL",
   subtitle = "See more at Youtube",
 }: VideoSectionProps) {
   const visibleVideos = useMemo(

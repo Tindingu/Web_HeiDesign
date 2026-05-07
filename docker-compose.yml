@@ -6,7 +6,7 @@ services:
     environment:
       - NODE_ENV=production
       - DATABASE_URL=
-      - NEXT_PUBLIC_SITE_URL=https://icepdesign.vn
+      - NEXT_PUBLIC_SITE_URL=https://HEIdesign.vn
       - STRAPI_URL=http://strapi:1337
       - STRAPI_TOKEN=
       - NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=

@@ -423,7 +423,7 @@ export function getTestimonials(): Testimonial[] {
       name: "Cô Hoa",
       role: "Nhà thiết kế",
       quote:
-        "Tôi lựa chọn làm việc với ICEP vì sự tỉ mỉ và chuyên nghiệp của họ.",
+        "Tôi lựa chọn làm việc với HEI vì sự tỉ mỉ và chuyên nghiệp của họ.",
     },
   ];
 }

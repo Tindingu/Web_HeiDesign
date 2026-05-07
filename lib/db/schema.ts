@@ -2,7 +2,7 @@ import { getDbPool } from "@/lib/db/neon";
 
 declare global {
   // eslint-disable-next-line no-var
-  var __icepSchemaInitPromise: Promise<void> | undefined;
+  var __HEISchemaInitPromise: Promise<void> | undefined;
 }
 
 async function createSchema() {
@@ -121,6 +121,55 @@ async function createSchema() {
     );
 
     ALTER TABLE homepage_videos DROP COLUMN IF EXISTS description;
+
+    CREATE TABLE IF NOT EXISTS homepage_testimonials (
+      id SERIAL PRIMARY KEY,
+      external_id TEXT,
+      name TEXT NOT NULL,
+      quote TEXT NOT NULL,
+      image_url TEXT NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      is_active BOOLEAN NOT NULL DEFAULT TRUE,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
+    ALTER TABLE homepage_testimonials ADD COLUMN IF NOT EXISTS external_id TEXT;
+    ALTER TABLE homepage_testimonials ADD COLUMN IF NOT EXISTS name TEXT;
+    ALTER TABLE homepage_testimonials ADD COLUMN IF NOT EXISTS quote TEXT;
+    ALTER TABLE homepage_testimonials ADD COLUMN IF NOT EXISTS image_url TEXT;
+    ALTER TABLE homepage_testimonials ADD COLUMN IF NOT EXISTS sort_order INTEGER DEFAULT 0;
+    ALTER TABLE homepage_testimonials ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;
+    ALTER TABLE homepage_testimonials ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
+
+    CREATE TABLE IF NOT EXISTS homepage_hot_topics (
+      id SERIAL PRIMARY KEY,
+      topic_slug TEXT NOT NULL,
+      topic_label TEXT NOT NULL,
+      banner_image_urls TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
+    ALTER TABLE homepage_hot_topics ADD COLUMN IF NOT EXISTS topic_slug TEXT;
+    ALTER TABLE homepage_hot_topics ADD COLUMN IF NOT EXISTS topic_label TEXT;
+    ALTER TABLE homepage_hot_topics ADD COLUMN IF NOT EXISTS banner_image_urls TEXT[];
+    ALTER TABLE homepage_hot_topics ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
+
+    CREATE TABLE IF NOT EXISTS homepage_hero_banners (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      subtitle TEXT NOT NULL,
+      cta_primary TEXT NOT NULL DEFAULT 'Đặt lịch tư vấn',
+      cta_secondary TEXT NOT NULL DEFAULT 'Xem dự án',
+      image_urls TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
+    ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS title TEXT;
+    ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS subtitle TEXT;
+    ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS cta_primary TEXT;
+    ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS cta_secondary TEXT;
+    ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS image_urls TEXT[];
+    ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
 
     DO $$
     DECLARE
@@ -396,14 +445,14 @@ async function createSchema() {
 }
 
 export async function ensureDbSchema(): Promise<void> {
-  if (!global.__icepSchemaInitPromise) {
-    global.__icepSchemaInitPromise = createSchema();
+  if (!global.__HEISchemaInitPromise) {
+    global.__HEISchemaInitPromise = createSchema();
   }
 
   try {
-    await global.__icepSchemaInitPromise;
+    await global.__HEISchemaInitPromise;
   } catch (error) {
-    global.__icepSchemaInitPromise = undefined;
+    global.__HEISchemaInitPromise = undefined;
     throw error;
   }
 }

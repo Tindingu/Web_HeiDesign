@@ -117,7 +117,7 @@ export function LeadCaptureForm({
 
         <div className={cn("space-y-2", compact ? "md:col-span-1" : "")}>
           <label className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-            Bạn muốn ICEP tư vấn gì?
+            Bạn muốn HEI tư vấn gì?
           </label>
           <textarea
             value={formState.need}

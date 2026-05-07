@@ -1,5 +1,5 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
+import { ensureDbSchema } from "@/lib/db/schema";
+import { getDbPool } from "@/lib/db/neon";
 
 export type HomepageTestimonial = {
   id: string;
@@ -11,47 +11,28 @@ export type HomepageTestimonial = {
   updatedAt: string;
 };
 
-type StorageShape = {
-  items: HomepageTestimonial[];
-};
-
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "homepage-testimonials.json");
-
-async function ensureDataDir() {
-  await mkdir(DATA_DIR, { recursive: true });
-}
-
-function normalizeItem(
-  item: Partial<HomepageTestimonial>,
-  index: number,
-): HomepageTestimonial {
-  return {
-    id: String(item.id || `${Date.now()}-${index}`),
-    name: String(item.name || "").trim(),
-    quote: String(item.quote || "").trim(),
-    imageUrl: String(item.imageUrl || "").trim(),
-    sortOrder: Number.isFinite(item.sortOrder) ? Number(item.sortOrder) : index,
-    isActive: item.isActive ?? true,
-    updatedAt:
-      typeof item.updatedAt === "string"
-        ? item.updatedAt
-        : new Date().toISOString(),
-  };
-}
-
 export async function readHomepageTestimonials(): Promise<
   HomepageTestimonial[]
 > {
+  await ensureDbSchema();
+  const pool = getDbPool();
   try {
-    const raw = await readFile(DATA_FILE, "utf8");
-    const parsed = JSON.parse(raw) as Partial<StorageShape>;
-    const items = Array.isArray(parsed.items) ? parsed.items : [];
+    const res = (await pool.query(
+      `SELECT id, external_id, name, quote, image_url, sort_order, is_active, updated_at FROM homepage_testimonials ORDER BY sort_order ASC, id ASC`
+    )) as { rows: any[] };
 
-    return items
-      .map((item, index) => normalizeItem(item, index))
-      .sort((a, b) => a.sortOrder - b.sortOrder);
-  } catch {
+    return res.rows.map((row, index) => ({
+      id: row.external_id ?? String(row.id),
+      name: row.name || "",
+      quote: row.quote || "",
+      imageUrl: row.image_url || "",
+      sortOrder: Number(row.sort_order ?? index),
+      isActive: row.is_active !== false,
+      updatedAt: row.updated_at ? new Date(row.updated_at).toISOString() : new Date().toISOString(),
+    }));
+  } catch (error) {
+    // Table might not exist or columns missing, return empty
+    console.warn("Error reading testimonials from DB:", error);
     return [];
   }
 }
@@ -68,34 +49,42 @@ export async function saveHomepageTestimonials(
     Pick<HomepageTestimonial, "name" | "quote" | "imageUrl" | "isActive">
   >,
 ): Promise<void> {
-  await ensureDataDir();
+  await ensureDbSchema();
+  const pool = getDbPool();
 
-  const normalized = input.map((item, index) => {
-    const name = String(item.name || "").trim();
-    const quote = String(item.quote || "").trim();
-    const imageUrl = String(item.imageUrl || "").trim();
+  await pool.query("BEGIN");
+  try {
+    await pool.query("TRUNCATE TABLE homepage_testimonials RESTART IDENTITY");
 
-    if (!name) {
-      throw new Error(`Nhận xét #${index + 1} chưa có tên khách hàng.`);
+    for (let i = 0; i < input.length; i++) {
+      const item = input[i];
+      const name = String(item.name || "").trim();
+      const quote = String(item.quote || "").trim();
+      const imageUrl = String(item.imageUrl || "").trim();
+
+      if (!name) throw new Error(`Nhận xét #${i + 1} chưa có tên khách hàng.`);
+      if (!quote) throw new Error(`Nhận xét #${i + 1} chưa có nội dung.`);
+      if (!imageUrl) throw new Error(`Nhận xét #${i + 1} chưa có hình khách hàng.`);
+
+      const externalId = `${Date.now()}-${i}`;
+      await pool.query(
+        `INSERT INTO homepage_testimonials (external_id, name, quote, image_url, sort_order, is_active, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [
+          externalId,
+          name,
+          quote,
+          imageUrl,
+          i,
+          item.isActive ?? true,
+          new Date().toISOString(),
+        ],
+      );
     }
-    if (!quote) {
-      throw new Error(`Nhận xét #${index + 1} chưa có nội dung.`);
-    }
-    if (!imageUrl) {
-      throw new Error(`Nhận xét #${index + 1} chưa có hình khách hàng.`);
-    }
 
-    return {
-      id: `${Date.now()}-${index}`,
-      name,
-      quote,
-      imageUrl,
-      sortOrder: index,
-      isActive: item.isActive ?? true,
-      updatedAt: new Date().toISOString(),
-    } satisfies HomepageTestimonial;
-  });
-
-  const payload: StorageShape = { items: normalized };
-  await writeFile(DATA_FILE, JSON.stringify(payload, null, 2), "utf8");
+    await pool.query("COMMIT");
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    throw error;
+  }
 }

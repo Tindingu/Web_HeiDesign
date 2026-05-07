@@ -13,7 +13,7 @@
                          │
                     ┌────▼────────────────────────────────────┐
                     │     NEXT.JS FRONTEND                    │
-                    │     (icep-design/)                      │
+                    │     (HEI-design/)                      │
                     │                                         │
                     │  - Dynamic page rendering               │
                     │  - Image optimization                   │
@@ -175,7 +175,7 @@ FINAL STATE:
 ## 5. File Structure After Setup
 
 ```
-icep-design/
+HEI-design/
 ├── .env.local (secrets - git ignored)
 │   ├── NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
 │   ├── STRAPI_API_TOKEN=...

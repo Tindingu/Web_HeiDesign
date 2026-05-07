@@ -17,6 +17,8 @@ export function TestimonialsCarousel({
   const viewportRef = useRef<HTMLDivElement>(null);
   const dragStartXRef = useRef(0);
   const pointerIdRef = useRef<number | null>(null);
+  const pauseTimeoutRef = useRef<NodeJS.Timeout>();
+  const activeTouchIdRef = useRef<number | null>(null);
 
   const total = testimonials.length;
 
@@ -43,37 +45,90 @@ export function TestimonialsCarousel({
     return value;
   };
 
-  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (!viewportRef.current) return;
-    event.preventDefault();
-    pointerIdRef.current = event.pointerId;
-    viewportRef.current.setPointerCapture(event.pointerId);
-    setIsDragging(true);
+  const setPauseTimer = () => {
+    if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
     setIsPaused(true);
-    dragStartXRef.current = event.clientX;
+    pauseTimeoutRef.current = setTimeout(() => {
+      setIsPaused(false);
+    }, 2000);
   };
 
-  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const beginDrag = (clientX: number, pointerId?: number) => {
+    if (!viewportRef.current) return;
+
+    if (typeof pointerId === "number") {
+      pointerIdRef.current = pointerId;
+      viewportRef.current.setPointerCapture(pointerId);
+    }
+
+    dragStartXRef.current = clientX;
+    setDragOffset(0);
+    setIsDragging(true);
+    setPauseTimer();
+  };
+
+  const updateDrag = (clientX: number) => {
     if (!isDragging) return;
-    const delta = event.clientX - dragStartXRef.current;
+
+    const delta = clientX - dragStartXRef.current;
     setDragOffset(clampOffset(delta));
   };
 
-  const finishDrag = () => {
+  const endDrag = (finalOffset = dragOffset) => {
     if (!isDragging) return;
+
     const width = viewportRef.current?.clientWidth ?? 1;
     const threshold = Math.min(120, width * 0.16);
 
-    if (dragOffset > threshold) {
+    if (finalOffset > threshold) {
       goPrev();
-    } else if (dragOffset < -threshold) {
+    } else if (finalOffset < -threshold) {
       goNext();
     }
 
     setIsDragging(false);
     setDragOffset(0);
     pointerIdRef.current = null;
-    setIsPaused(false);
+    activeTouchIdRef.current = null;
+  };
+
+  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!viewportRef.current) return;
+    event.preventDefault();
+    beginDrag(event.clientX, event.pointerId);
+  };
+
+  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (pointerIdRef.current !== event.pointerId) return;
+    updateDrag(event.clientX);
+  };
+
+  const finishDrag = () => {
+    endDrag();
+  };
+
+  const onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (!viewportRef.current || event.touches.length !== 1) return;
+
+    const touch = event.touches[0];
+    activeTouchIdRef.current = touch.identifier;
+    beginDrag(touch.clientX);
+  };
+
+  const onTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (activeTouchIdRef.current === null) return;
+
+    const touch = Array.from(event.touches).find(
+      (item) => item.identifier === activeTouchIdRef.current,
+    );
+    if (!touch) return;
+
+    event.preventDefault();
+    updateDrag(touch.clientX);
+  };
+
+  const onTouchEnd = () => {
+    endDrag();
   };
 
   return (
@@ -92,7 +147,7 @@ export function TestimonialsCarousel({
               type="button"
               onClick={goPrev}
               aria-label="Xem nhận xét trước"
-              className="absolute left-4 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:border-[#1f4569] hover:text-[#1f4569] md:flex"
+              className="absolute left-2 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:border-[#1f4569] hover:text-[#1f4569] md:left-4 md:h-11 md:w-11"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -103,15 +158,21 @@ export function TestimonialsCarousel({
               onPointerMove={onPointerMove}
               onPointerUp={finishDrag}
               onPointerCancel={finishDrag}
-              onPointerLeave={finishDrag}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-              className="overflow-hidden px-4 py-8 md:px-16"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+              onMouseEnter={() => setPauseTimer()}
+              onMouseLeave={() => {
+                if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+                setIsPaused(false);
+              }}
+              className="overflow-hidden px-2 py-8 md:px-16 select-none"
               role="region"
               aria-label="Carousel để kéo xem nhận xét"
               style={{
                 cursor: isDragging ? "grabbing" : "grab",
-                touchAction: "none",
+                touchAction: "pan-y",
+                WebkitUserSelect: "none",
               }}
             >
               <div
@@ -121,6 +182,7 @@ export function TestimonialsCarousel({
                   transition: isDragging
                     ? "none"
                     : "transform 550ms cubic-bezier(0.22, 1, 0.36, 1)",
+                  willChange: isDragging ? "transform" : "auto",
                 }}
               >
                 {testimonials.map((testimonial, idx) => {
@@ -132,18 +194,17 @@ export function TestimonialsCarousel({
                       key={`${testimonial.name}-${idx}`}
                       className="min-w-full px-1"
                     >
-                      <div className="grid items-center gap-4 sm:grid-cols-[1fr_1.35fr_1fr]">
-                        <div className="mx-auto hidden h-52 w-36 overflow-hidden rounded-xl border border-slate-200 opacity-70 sm:block md:h-60 md:w-40">
+                      <div className="grid items-center gap-2 sm:grid-cols-[1fr_1.35fr_1fr] sm:gap-4">
+                        <div className="mx-auto hidden h-44 w-32 overflow-hidden rounded-xl border border-slate-200 opacity-70 sm:block md:h-60 md:w-40">
                           {prev?.imageUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                               src={prev.imageUrl}
                               alt={prev.name}
-                              className="h-full w-full select-none object-cover"
+                              className="pointer-events-none h-full w-full select-none object-cover"
                               loading="lazy"
                               draggable={false}
                               style={{
-                                pointerEvents: "auto",
                                 userSelect: "none",
                               }}
                             />
@@ -152,17 +213,16 @@ export function TestimonialsCarousel({
                           )}
                         </div>
 
-                        <div className="mx-auto h-72 w-56 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm sm:h-80 sm:w-64 md:h-[360px] md:w-72">
+                        <div className="mx-auto h-64 w-48 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-sm sm:h-80 sm:w-64 md:h-[360px] md:w-72">
                           {testimonial?.imageUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                               src={testimonial.imageUrl}
                               alt={testimonial.name}
-                              className="h-full w-full select-none object-cover"
+                              className="pointer-events-none h-full w-full select-none object-cover"
                               loading="eager"
                               draggable={false}
                               style={{
-                                pointerEvents: "auto",
                                 userSelect: "none",
                               }}
                             />
@@ -173,17 +233,16 @@ export function TestimonialsCarousel({
                           )}
                         </div>
 
-                        <div className="mx-auto hidden h-52 w-36 overflow-hidden rounded-xl border border-slate-200 opacity-70 sm:block md:h-60 md:w-40">
+                        <div className="mx-auto hidden h-44 w-32 overflow-hidden rounded-xl border border-slate-200 opacity-70 sm:block md:h-60 md:w-40">
                           {next?.imageUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                               src={next.imageUrl}
                               alt={next.name}
-                              className="h-full w-full select-none object-cover"
+                              className="pointer-events-none h-full w-full select-none object-cover"
                               loading="lazy"
                               draggable={false}
                               style={{
-                                pointerEvents: "auto",
                                 userSelect: "none",
                               }}
                             />
@@ -193,12 +252,12 @@ export function TestimonialsCarousel({
                         </div>
                       </div>
 
-                      <div className="mx-auto mt-6 max-w-4xl text-center">
-                        <p className="text-xl font-semibold text-slate-900 md:text-2xl">
+                      <div className="mx-auto mt-4 max-w-4xl text-center sm:mt-6">
+                        <p className="text-lg font-semibold text-slate-900 sm:text-xl md:text-2xl">
                           {testimonial.name}
                         </p>
-                        <p className="mt-3 text-base italic leading-relaxed text-slate-600 md:text-lg">
-                          “{testimonial.quote}”
+                        <p className="mt-2 text-sm italic leading-relaxed text-slate-600 sm:mt-3 sm:text-base md:text-lg">
+                          &ldquo;{testimonial.quote}&rdquo;
                         </p>
                       </div>
                     </div>
@@ -211,7 +270,7 @@ export function TestimonialsCarousel({
               type="button"
               onClick={goNext}
               aria-label="Xem nhận xét tiếp"
-              className="absolute right-4 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:border-[#1f4569] hover:text-[#1f4569] md:flex"
+              className="absolute right-2 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 shadow-sm transition hover:border-[#1f4569] hover:text-[#1f4569] md:right-4 md:h-11 md:w-11"
             >
               <ChevronRight className="h-5 w-5" />
             </button>

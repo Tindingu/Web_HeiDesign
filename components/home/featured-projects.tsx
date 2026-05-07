@@ -37,7 +37,7 @@
 //         <SectionHeading
 //           label="Dự án"
 //           title="Dự án nổi bật"
-//           description="Những dự án được chọn lọc thể hiện phong cách thiết kế và chất lượng thi công của ICEP."
+//           description="Những dự án được chọn lọc thể hiện phong cách thiết kế và chất lượng thi công của HEI."
 //         />
 //         <div className="relative">
 //           <div className="grid gap-6 md:grid-cols-2">

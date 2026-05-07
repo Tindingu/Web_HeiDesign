@@ -3,7 +3,7 @@ import { env } from "@/lib/env";
 
 declare global {
   // eslint-disable-next-line no-var
-  var __icepPgPool: any | undefined;
+  var __HEIPgPool: any | undefined;
 }
 
 function resolveDatabaseUrl() {
@@ -96,12 +96,12 @@ function createPool(databaseUrl: string) {
 }
 
 export function getDbPool(): any {
-  if (!global.__icepPgPool) {
+  if (!global.__HEIPgPool) {
     const databaseUrl = resolveDatabaseUrl();
-    global.__icepPgPool = createPool(databaseUrl);
+    global.__HEIPgPool = createPool(databaseUrl);
   }
 
-  return global.__icepPgPool;
+  return global.__HEIPgPool;
 }
 
 export async function testDbConnection() {

@@ -30,7 +30,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ServicePage({
+export default async function ServHEIage({
   params,
 }: {
   params: { slug: string };

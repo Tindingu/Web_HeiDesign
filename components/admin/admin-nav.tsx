@@ -12,6 +12,7 @@ import {
   Youtube,
   Flame,
   MessageSquareQuote,
+  Maximize2,
 } from "lucide-react";
 
 type AdminNavItem = {
@@ -21,6 +22,11 @@ type AdminNavItem = {
 };
 
 const navItems: AdminNavItem[] = [
+  {
+    href: "/admin/banner-trang-chu",
+    label: "Banner trang chủ",
+    icon: Maximize2,
+  },
   { href: "/admin/projects", label: "Dự án", icon: FolderKanban },
   { href: "/admin/du-an", label: "Bài viết dự án", icon: FileText },
   { href: "/admin/kinh-nghiem", label: "Kinh nghiệm", icon: Newspaper },

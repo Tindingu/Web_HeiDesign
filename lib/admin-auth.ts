@@ -1,7 +1,7 @@
 const DEFAULT_ADMIN_USERNAME = "admin";
 const DEFAULT_ADMIN_PASSWORD = "123456";
 
-export const ADMIN_SESSION_COOKIE = "icep_admin_session";
+export const ADMIN_SESSION_COOKIE = "HEI_admin_session";
 
 function getAdminUsername() {
   return process.env.ADMIN_USERNAME || DEFAULT_ADMIN_USERNAME;
@@ -12,7 +12,7 @@ function getAdminPassword() {
 }
 
 export function getAdminSessionValue() {
-  return process.env.ADMIN_SESSION_TOKEN || "icep-admin-authenticated";
+  return process.env.ADMIN_SESSION_TOKEN || "HEI-admin-authenticated";
 }
 
 export function validateAdminCredentials(username: string, password: string) {

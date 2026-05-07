@@ -58,9 +58,9 @@ export default async function ProjectDetailPage({
 
   const jsonLd = buildProjectJsonLd(project);
   const breadcrumb = buildBreadcrumbJsonLd([
-    { name: "Home", url: "https://icepdesign.vn" },
-    { name: "Portfolio", url: "https://icepdesign.vn/du-an" },
-    { name: project.title, url: `https://icepdesign.vn/du-an/${project.slug}` },
+    { name: "Home", url: "https://HEIdesign.vn" },
+    { name: "Portfolio", url: "https://HEIdesign.vn/du-an" },
+    { name: project.title, url: `https://HEIdesign.vn/du-an/${project.slug}` },
   ]);
 
   return (
@@ -238,7 +238,7 @@ export default async function ProjectDetailPage({
             </h2>
             <p className="mt-4 text-lg text-gray-300">
               Hãy liên hệ với chúng tôi để tìm hiểu thêm về dịch vụ thiết kế và
-              thi công của ICEP.
+              thi công của HEI.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button asChild className="bg-amber-600 hover:bg-amber-700">

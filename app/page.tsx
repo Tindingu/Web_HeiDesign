@@ -18,6 +18,7 @@ import {
 import { readArchitectureGallery } from "@/lib/architecture-gallery-storage";
 import { readActiveHomepageVideos } from "@/lib/homepage-video-storage";
 import { readHotBlogTopicSettings } from "@/lib/hot-blog-topic-storage";
+import { readHeroBannerSettings } from "@/lib/hero-banner-storage";
 import { HotTopicSection } from "@/components/home/hot-topic-section";
 import { readActiveHomepageTestimonials } from "@/lib/homepage-testimonial-storage";
 import { WhyChooseHei } from "@/components/home/why-choose-hei";
@@ -33,20 +34,42 @@ export const generateMetadata = () =>
   });
 
 export default async function HomePage() {
-  const [projects, content, categories, styles, architectureGallery, videos] =
-    await Promise.all([
-      getProjects(),
-      getHomeContent(),
-      readProjectCategories(),
-      readProjectStyles(),
-      readArchitectureGallery(),
-      readActiveHomepageVideos(),
-    ]);
+  const [
+    projects,
+    content,
+    categories,
+    styles,
+    architectureGallery,
+    videos,
+    heroBanner,
+  ] = await Promise.all([
+    getProjects(),
+    getHomeContent(),
+    readProjectCategories(),
+    readProjectStyles(),
+    readArchitectureGallery(),
+    readActiveHomepageVideos(),
+    readHeroBannerSettings(),
+  ]);
   const [posts, hotTopic, managedTestimonials] = await Promise.all([
     getPosts(),
     readHotBlogTopicSettings(),
     readActiveHomepageTestimonials(),
   ]);
+
+  // Use managed hero banner if available, fallback to content.hero
+  const hero = heroBanner
+    ? {
+        title: heroBanner.title,
+        subtitle: heroBanner.subtitle,
+        ctaPrimary: heroBanner.ctaPrimary,
+        ctaSecondary: heroBanner.ctaSecondary,
+        videoUrl: content.hero.videoUrl,
+        imageUrl: heroBanner.imageUrls[0] || content.hero.imageUrl,
+        imageUrls: heroBanner.imageUrls,
+      }
+    : content.hero;
+
   const testimonials =
     managedTestimonials.length > 0
       ? managedTestimonials.map((item) => ({
@@ -60,7 +83,7 @@ export default async function HomePage() {
 
   return (
     <main className="bg-background">
-      <Hero hero={content.hero} />
+      <Hero hero={hero} />
       <About />
       {/* <FeaturedProjects projects={projects} /> */}
       <CompletedProjects

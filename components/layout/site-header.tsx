@@ -245,15 +245,15 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-white/60 bg-white/85 shadow-[0_8px_30px_rgba(15,23,42,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/75">
       {/* Top Bar: Logo + Search + Category Icons */}
       <Container>
         <div className="flex min-h-[4.5rem] items-center justify-between gap-3 py-2 sm:min-h-[5rem] sm:gap-4">
           {/* Logo */}
           <Link href="/" className="flex min-w-0 items-center gap-2">
             <Image
-              src="/upload/logo/icep-logo.svg"
-              alt="ICEP"
+              src="/upload/logo/HEI-logo.svg"
+              alt="HEI"
               width={120}
               height={120}
               priority
@@ -275,13 +275,13 @@ export function SiteHeader() {
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
                 placeholder="Bạn đang tìm gì?"
-                className="w-full rounded-full border border-gray-300 py-2 pl-4 pr-10 text-sm outline-none transition-colors focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+                className="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-4 pr-10 text-sm text-slate-800 outline-none transition-all focus:border-[#1f4569] focus:ring-2 focus:ring-[#1f4569]/15"
               />
               <button
                 type="submit"
                 className="absolute right-2 top-1/2 -translate-y-1/2"
               >
-                <Search className="h-4 w-4 text-gray-400" />
+                <Search className="h-4 w-4 text-slate-400" />
               </button>
             </form>
           </div>
@@ -299,7 +299,7 @@ export function SiteHeader() {
               <Link
                 key={cat.href}
                 href={cat.href}
-                className="group flex min-w-fit flex-col items-center gap-1 transition-colors hover:text-amber-600"
+                className="group flex min-w-fit flex-col items-center gap-1 transition-transform transition-colors hover:-translate-y-0.5 hover:text-[#1f4569]"
               >
                 <Image
                   src={cat.src}
@@ -308,7 +308,7 @@ export function SiteHeader() {
                   height={40}
                   className="h-10 w-10 transition-transform group-hover:scale-110"
                 />
-                <span className="max-w-[60px] whitespace-nowrap text-center text-[8px] font-medium uppercase tracking-wide">
+                <span className="max-w-[60px] whitespace-nowrap text-center text-[8px] font-semibold uppercase tracking-wide text-slate-500">
                   {cat.label}
                 </span>
               </Link>
@@ -323,10 +323,10 @@ export function SiteHeader() {
                 setMobileSearchOpen((prev) => !prev);
                 setMobileMenuOpen(false);
               }}
-              className="rounded-full p-2 hover:bg-gray-100 md:hidden"
+              className="rounded-full border border-slate-200 bg-white p-2.5 shadow-sm transition hover:bg-slate-50 md:hidden"
               aria-label="Tìm kiếm"
             >
-              <Search className="h-5 w-5 text-gray-600" />
+              <Search className="h-5 w-5 text-slate-600" />
             </button>
 
             {/* Mobile Menu Button */}
@@ -335,7 +335,7 @@ export function SiteHeader() {
                 setMobileMenuOpen(!mobileMenuOpen);
                 setMobileSearchOpen(false);
               }}
-              className="rounded-lg p-2 hover:bg-gray-100 lg:hidden"
+              className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm transition hover:bg-slate-50 lg:hidden"
               aria-label="Mở menu"
             >
               <Menu className="h-5 w-5" />
@@ -344,7 +344,7 @@ export function SiteHeader() {
         </div>
       </Container>
 
-      <div className="border-t border-gray-100 bg-white md:hidden">
+      <div className="border-t border-slate-200/70 bg-white/90 backdrop-blur md:hidden">
         <Container>
           <div
             ref={topCategoriesRef}
@@ -358,7 +358,7 @@ export function SiteHeader() {
               <Link
                 key={cat.href}
                 href={cat.href}
-                className="group flex w-20 shrink-0 flex-col items-center gap-1.5 rounded-xl border border-gray-100 bg-gray-50 px-2 py-2 text-center transition-colors hover:border-amber-200 hover:bg-amber-50"
+                className="group flex w-20 shrink-0 flex-col items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-2 py-2 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-[#1f4569]/25 hover:bg-slate-50"
               >
                 <Image
                   src={cat.src}
@@ -367,7 +367,7 @@ export function SiteHeader() {
                   height={32}
                   className="h-8 w-8 transition-transform group-hover:scale-110"
                 />
-                <span className="text-[10px] font-semibold uppercase leading-4 tracking-wide text-gray-700">
+                <span className="text-[10px] font-semibold uppercase leading-4 tracking-wide text-slate-700">
                   {cat.label}
                 </span>
               </Link>
@@ -377,7 +377,7 @@ export function SiteHeader() {
       </div>
 
       {/* Main Navigation Menu */}
-      <div className="border-t border-gray-100 bg-gray-50/30">
+      <div className="border-t border-slate-200/70 bg-slate-50/70">
         <Container>
           <nav className="hidden flex-1 items-center justify-center gap-2 py-3 lg:flex xl:gap-3">
             {menuItems.map((item) => (
@@ -386,18 +386,18 @@ export function SiteHeader() {
                   <>
                     <Link
                       href={item.href}
-                      className="flex items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-white hover:text-amber-600"
+                      className="flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-white hover:text-[#1f4569] hover:shadow-sm"
                     >
                       {item.label}
                       <ChevronDown className="h-3 w-3" />
                     </Link>
                     {/* Submenu Dropdown */}
-                    <div className="absolute left-0 top-full hidden w-56 rounded-lg bg-white shadow-lg group-hover:block pt-2 z-50">
+                    <div className="absolute left-0 top-full z-50 hidden w-56 rounded-2xl border border-slate-200 bg-white/95 pt-2 shadow-xl backdrop-blur group-hover:block">
                       {item.submenu.map((sub) => (
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-amber-50 hover:text-amber-600 first:rounded-t-lg last:rounded-b-lg"
+                          className="block px-4 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-[#1f4569] first:rounded-t-2xl last:rounded-b-2xl"
                         >
                           {sub.label}
                         </Link>
@@ -407,7 +407,7 @@ export function SiteHeader() {
                 ) : (
                   <Link
                     href={item.href}
-                    className="whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-white hover:text-amber-600"
+                    className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-white hover:text-[#1f4569] hover:shadow-sm"
                   >
                     {item.label}
                   </Link>
@@ -419,7 +419,7 @@ export function SiteHeader() {
       </div>
 
       {mobileSearchOpen && (
-        <div className="border-t border-gray-100 bg-white md:hidden">
+        <div className="border-t border-slate-200/70 bg-white/95 backdrop-blur md:hidden">
           <Container>
             <form className="relative py-2.5" onSubmit={handleSearchSubmit}>
               <input
@@ -428,11 +428,11 @@ export function SiteHeader() {
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
                 placeholder="Bạn đang tìm gì?"
-                className="h-10 w-full max-w-full rounded-full border border-gray-300 bg-white py-2 pl-3.5 pr-11 text-base outline-none transition-all duration-200 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20"
+                className="h-10 w-full max-w-full rounded-full border border-slate-200 bg-white py-2 pl-3.5 pr-11 text-base text-slate-800 outline-none transition-all duration-200 focus:border-[#1f4569] focus:ring-2 focus:ring-[#1f4569]/15"
               />
               <button
                 type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full p-2 text-gray-500 transition-colors hover:text-amber-600"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full p-2 text-slate-500 transition-colors hover:text-[#1f4569]"
                 aria-label="Tìm kiếm"
               >
                 <Search className="h-4 w-4" />
@@ -444,7 +444,7 @@ export function SiteHeader() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-gray-100 bg-white lg:hidden">
+        <div className="border-t border-slate-200/70 bg-white/95 backdrop-blur lg:hidden">
           <Container>
             <div className="py-4">
               <nav className="space-y-1">
@@ -458,7 +458,7 @@ export function SiteHeader() {
                               activeSubmenu === item.label ? null : item.label,
                             )
                           }
-                          className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                          className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
                         >
                           {item.label}
                           <ChevronDown
@@ -473,7 +473,7 @@ export function SiteHeader() {
                               <Link
                                 key={sub.href}
                                 href={sub.href}
-                                className="block rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 hover:text-amber-600"
+                                className="block rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#1f4569]"
                                 onClick={() => {
                                   setMobileMenuOpen(false);
                                   setActiveSubmenu(null);
@@ -488,7 +488,7 @@ export function SiteHeader() {
                     ) : (
                       <Link
                         href={item.href}
-                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-amber-600"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#1f4569]"
                         onClick={() => {
                           setMobileMenuOpen(false);
                           setActiveSubmenu(null);

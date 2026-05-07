@@ -205,7 +205,7 @@ Complete schema definition for the Project content type with field descriptions 
 - **Required:** ❌ No
 - **Max length:** 60 characters (for Google)
 - **Description:** SEO page title
-- **Example:** "Penthouse Skyline | Thiết kế nội thất cao cấp | ICEP"
+- **Example:** "Penthouse Skyline | Thiết kế nội thất cao cấp | HEI"
 - **Fallback:** Uses `title` if not set
 
 #### 19. **seoDescription**

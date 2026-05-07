@@ -1,5 +1,5 @@
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
+import { ensureDbSchema } from "@/lib/db/schema";
+import { getDbPool } from "@/lib/db/neon";
 
 export type HotBlogTopicSettings = {
   topicSlug: string;
@@ -9,40 +9,24 @@ export type HotBlogTopicSettings = {
   updatedAt: string;
 };
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "hot-blog-topic.json");
-
-async function ensureDataDir() {
-  await mkdir(DATA_DIR, { recursive: true });
-}
-
 export async function readHotBlogTopicSettings(): Promise<HotBlogTopicSettings | null> {
+  await ensureDbSchema();
+  const pool = getDbPool();
   try {
-    const raw = await readFile(DATA_FILE, "utf8");
-    const parsed = JSON.parse(raw) as Record<string, unknown>;
-    if (!parsed.topicSlug || !parsed.topicLabel) return null;
-    // backward compat: old format used bannerImageUrl (single string)
-    let urls: string[] = [];
-    if (Array.isArray(parsed.bannerImageUrls)) {
-      urls = (parsed.bannerImageUrls as unknown[]).filter(
-        (u): u is string => typeof u === "string" && u.length > 0,
-      );
-    } else if (
-      typeof parsed.bannerImageUrl === "string" &&
-      parsed.bannerImageUrl
-    ) {
-      urls = [parsed.bannerImageUrl];
-    }
+    const res = (await pool.query(
+      `SELECT topic_slug, topic_label, banner_image_urls, updated_at FROM homepage_hot_topics ORDER BY id DESC LIMIT 1`
+    )) as { rows: any[] };
+
+    if (!res.rows[0]) return null;
+    const row = res.rows[0];
     return {
-      topicSlug: String(parsed.topicSlug),
-      topicLabel: String(parsed.topicLabel),
-      bannerImageUrls: urls,
-      updatedAt:
-        typeof parsed.updatedAt === "string"
-          ? parsed.updatedAt
-          : new Date().toISOString(),
+      topicSlug: row.topic_slug || "",
+      topicLabel: row.topic_label || "",
+      bannerImageUrls: Array.isArray(row.banner_image_urls) ? row.banner_image_urls : [],
+      updatedAt: row.updated_at ? new Date(row.updated_at).toISOString() : new Date().toISOString(),
     };
-  } catch {
+  } catch (error) {
+    console.warn("Error reading hot topic from DB:", error);
     return null;
   }
 }
@@ -50,18 +34,25 @@ export async function readHotBlogTopicSettings(): Promise<HotBlogTopicSettings |
 export async function saveHotBlogTopicSettings(
   input: Omit<HotBlogTopicSettings, "updatedAt">,
 ): Promise<HotBlogTopicSettings> {
-  await ensureDataDir();
-  const payload: HotBlogTopicSettings = {
-    topicSlug: input.topicSlug,
-    topicLabel: input.topicLabel,
-    bannerImageUrls: input.bannerImageUrls ?? [],
-    updatedAt: new Date().toISOString(),
-  };
-  await writeFile(DATA_FILE, JSON.stringify(payload, null, 2), "utf8");
-  return payload;
+  await ensureDbSchema();
+  const pool = getDbPool();
+  await pool.query("BEGIN");
+  try {
+    await pool.query("TRUNCATE TABLE homepage_hot_topics RESTART IDENTITY");
+    await pool.query(
+      `INSERT INTO homepage_hot_topics (topic_slug, topic_label, banner_image_urls, updated_at) VALUES ($1, $2, $3, $4)`,
+      [input.topicSlug, input.topicLabel, input.bannerImageUrls || [], new Date().toISOString()],
+    );
+    await pool.query("COMMIT");
+    return { ...input, updatedAt: new Date().toISOString() };
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    throw error;
+  }
 }
 
 export async function clearHotBlogTopicSettings(): Promise<void> {
-  await ensureDataDir();
-  await writeFile(DATA_FILE, "{}", "utf8");
+  await ensureDbSchema();
+  const pool = getDbPool();
+  await pool.query("TRUNCATE TABLE homepage_hot_topics RESTART IDENTITY");
 }

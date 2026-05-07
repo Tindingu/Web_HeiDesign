@@ -78,7 +78,7 @@ export function About() {
           <div className="relative h-96 overflow-hidden rounded-2xl md:h-[450px]">
             <Image
               src="/upload/about/image.png"
-              alt="ICEP Team"
+              alt="HEI Team"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"

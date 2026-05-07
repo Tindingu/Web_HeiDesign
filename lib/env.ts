@@ -11,7 +11,7 @@ const envSchema = z.object({
   DISABLE_DB_DURING_BUILD: z.string().optional(),
   STRAPI_URL: z.string().url().default("http://localhost:1337"),
   STRAPI_TOKEN: z.string().optional().default(""),
-  NEXT_PUBLIC_SITE_URL: z.string().url().default("https://icepdesign.vn"),
+  NEXT_PUBLIC_SITE_URL: z.string().url().default("https://HEIdesign.vn"),
   RATE_LIMIT_WINDOW_MS: z.coerce.number().optional().default(60000),
   RATE_LIMIT_MAX: z.coerce.number().optional().default(120),
 });

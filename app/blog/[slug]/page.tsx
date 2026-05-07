@@ -62,9 +62,9 @@ export default async function BlogDetailPage({
   const headings = extractHeadings(post.content);
   const jsonLd = buildArticleJsonLd(post);
   const breadcrumb = buildBreadcrumbJsonLd([
-    { name: "Home", url: "https://icepdesign.vn" },
-    { name: "Blog", url: "https://icepdesign.vn/blog" },
-    { name: post.title, url: `https://icepdesign.vn/blog/${post.slug}` },
+    { name: "Home", url: "https://HEIdesign.vn" },
+    { name: "Blog", url: "https://HEIdesign.vn/blog" },
+    { name: post.title, url: `https://HEIdesign.vn/blog/${post.slug}` },
   ]);
 
   return (
