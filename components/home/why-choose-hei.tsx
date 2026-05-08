@@ -25,10 +25,10 @@ const reasons = [
 
 export function WhyChooseHei() {
   return (
-    <section className="bg-[#f8f9fa] py-24 text-slate-900">
-      <Container className="space-y-16">
+    <section className="bg-[#f8f9fa] py-12 sm:py-14 md:py-16 text-slate-900">
+      <Container className="space-y-10 md:space-y-12">
         {/* Main Grid */}
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div className="grid gap-8 md:gap-10 lg:grid-cols-2 lg:items-center">
           {/* Image Left */}
           <div className="overflow-hidden rounded-2xl">
             {/* eslint-disable-next-line @next/next/no-img-element */}

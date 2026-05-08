@@ -108,11 +108,11 @@ export function CompletedProjects({
 
   return (
     <section
-      className={`py-12 sm:py-20 ${
+      className={`py-8 md:py-10 ${
         isLight ? "bg-background text-foreground" : "bg-[#070d1f] text-white"
       }`}
     >
-      <Container className="space-y-8 sm:space-y-10">
+      <Container className="space-y-6 sm:space-y-8">
         <h2 className="text-lg font-bold uppercase text-[#1f4569] sm:text-xl md:text-2xl">
           Dự Án Hoàn Thiện
         </h2>

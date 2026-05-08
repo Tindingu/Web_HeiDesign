@@ -9,9 +9,17 @@ interface ProjectGalleryGridProps {
   images: ImageAsset[];
 }
 
+const INITIAL_VISIBLE_COUNT = 6;
+const LOAD_MORE_STEP = 6;
+
 export function ProjectGalleryGrid({ images }: ProjectGalleryGridProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_COUNT);
+  const [revealStartIndex, setRevealStartIndex] = useState(0);
+
+  const visibleImages = images.slice(0, visibleCount);
+  const hasMoreImages = visibleCount < images.length;
 
   const openLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -28,6 +36,11 @@ export function ProjectGalleryGrid({ images }: ProjectGalleryGridProps) {
 
   const lightboxNext = () => {
     setLightboxIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleLoadMore = () => {
+    setRevealStartIndex(visibleCount);
+    setVisibleCount((prev) => Math.min(prev + LOAD_MORE_STEP, images.length));
   };
 
   // Keyboard navigation
@@ -52,35 +65,66 @@ export function ProjectGalleryGrid({ images }: ProjectGalleryGridProps) {
     };
   }, [lightboxOpen, lightboxIndex]);
 
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_COUNT);
+    setRevealStartIndex(0);
+  }, [images.length]);
+
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {images.map((image, idx) => (
-          <button
-            key={idx}
-            onClick={() => openLightbox(idx)}
-            className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 shadow-md transition-all hover:shadow-xl"
-          >
-            <Image
-              src={image.url}
-              alt={image.alt}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
-            <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
+        {visibleImages.map((image, idx) => {
+          const isNewlyRevealed =
+            idx >= revealStartIndex && revealStartIndex > 0;
 
-            {/* Overlay text on hover */}
-            {image.alt && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/0 p-4 opacity-0 transition-all duration-300 group-hover:bg-black/60 group-hover:opacity-100">
-                <p className="text-center text-sm font-medium text-white">
-                  {image.alt}
-                </p>
-              </div>
-            )}
-          </button>
-        ))}
+          return (
+            <button
+              key={`${image.url}-${idx}`}
+              onClick={() => openLightbox(idx)}
+              className={`group relative aspect-[4/3] overflow-hidden  bg-gray-100 shadow-md transition-all hover:shadow-xl ${
+                isNewlyRevealed ? "hei-gallery-reveal" : ""
+              }`}
+              style={
+                isNewlyRevealed
+                  ? {
+                      animationDelay: `${(idx - revealStartIndex) * 70}ms`,
+                    }
+                  : undefined
+              }
+            >
+              <Image
+                src={image.url}
+                alt={image.alt}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                loading={idx < 2 ? "eager" : "lazy"}
+              />
+              <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/10" />
+
+              {/* Overlay text on hover */}
+              {image.alt && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 p-4 opacity-0 transition-all duration-300 group-hover:bg-black/60 group-hover:opacity-100">
+                  <p className="text-center text-sm font-medium text-white">
+                    {image.alt}
+                  </p>
+                </div>
+              )}
+            </button>
+          );
+        })}
       </div>
+
+      {hasMoreImages && (
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={handleLoadMore}
+            className="rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-800 transition-colors hover:border-gray-900 hover:bg-gray-900 hover:text-white"
+          >
+            Xem thêm ({images.length - visibleCount} ảnh)
+          </button>
+        </div>
+      )}
 
       {/* Lightbox Modal */}
       {lightboxOpen && (

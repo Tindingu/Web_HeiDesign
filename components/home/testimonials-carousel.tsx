@@ -132,8 +132,8 @@ export function TestimonialsCarousel({
   };
 
   return (
-    <section className="border-y border-slate-200 bg-[#f8f9fa] py-20 text-slate-900">
-      <Container className="space-y-10">
+    <section className="border-y border-slate-200 bg-[#f8f9fa] py-12 sm:py-14 md:py-16 text-slate-900">
+      <Container className="space-y-8">
         <div className="space-y-8">
           <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
             NHẬN XÉT KHÁCH HÀNG
@@ -163,7 +163,8 @@ export function TestimonialsCarousel({
               onTouchEnd={onTouchEnd}
               onMouseEnter={() => setPauseTimer()}
               onMouseLeave={() => {
-                if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+                if (pauseTimeoutRef.current)
+                  clearTimeout(pauseTimeoutRef.current);
                 setIsPaused(false);
               }}
               className="overflow-hidden px-2 py-8 md:px-16 select-none"

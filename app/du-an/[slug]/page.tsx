@@ -58,9 +58,9 @@ export default async function ProjectDetailPage({
 
   const jsonLd = buildProjectJsonLd(project);
   const breadcrumb = buildBreadcrumbJsonLd([
-    { name: "Home", url: "https://HEIdesign.vn" },
-    { name: "Portfolio", url: "https://HEIdesign.vn/du-an" },
-    { name: project.title, url: `https://HEIdesign.vn/du-an/${project.slug}` },
+    { name: "Home", url: "https://heidesign.vn" },
+    { name: "Portfolio", url: "https://heidesign.vn/du-an" },
+    { name: project.title, url: `https://heidesign.vn/du-an/${project.slug}` },
   ]);
 
   return (

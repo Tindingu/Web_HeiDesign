@@ -153,8 +153,8 @@ export function BlogHighlights({
   if (filteredPosts.length === 0) return null;
 
   return (
-    <section className="border-y border-slate-200 bg-white py-20 text-slate-900">
-      <Container className="space-y-10">
+    <section className="border-y border-slate-200 bg-white py-12 sm:py-14 md:py-16 text-slate-900">
+      <Container className="space-y-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-3xl space-y-3">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-400">

@@ -73,9 +73,9 @@ export function HotTopicSection({ settings, posts }: HotTopicSectionProps) {
   );
 
   return (
-    <section className="border-y border-slate-200 bg-gradient-to-b from-slate-50 to-white py-20 text-slate-900">
+    <section className="border-y border-slate-200 bg-gradient-to-b from-slate-50 to-white py-12 sm:py-14 md:py-16 text-slate-900">
       {/* ── Header ────────────────────────────────────────── */}
-      <Container className="mb-10">
+      <Container className="mb-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="space-y-2">
             {/* <span className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-amber-700">
@@ -97,7 +97,7 @@ export function HotTopicSection({ settings, posts }: HotTopicSectionProps) {
 
       {/* ── Banner images — contained width, stacked, no rounding ── */}
       {validBanners.length > 0 && (
-        <div className="mb-10 mx-auto w-full max-w-6xl px-6">
+        <div className="mb-8 mx-auto w-full max-w-6xl px-6">
           {validBanners.map((url, i) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img

@@ -174,13 +174,13 @@ export function ArchitectureStyles({
   };
 
   return (
-    <section className="bg-white py-20 text-slate-900">
-      <Container className="space-y-12">
+    <section className="bg-white py-8 md:py-10 text-slate-900">
+      <Container className="space-y-7 sm:space-y-8">
         <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
           KIẾN TRÚC NHÀ PHỐ
         </h2>
 
-        <div className="flex flex-wrap gap-6 border-b border-slate-200 pb-6">
+        <div className="flex flex-wrap gap-4 border-b border-slate-200 pb-4">
           {styleTabs.map((style) => (
             <button
               key={style.id}
