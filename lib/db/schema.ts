@@ -171,12 +171,6 @@ async function createSchema() {
     ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS image_urls TEXT[];
     ALTER TABLE homepage_hero_banners ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ;
 
-    CREATE TABLE IF NOT EXISTS homepage_banners_config (
-      id SERIAL PRIMARY KEY,
-      banner_items JSONB NOT NULL DEFAULT '[]'::JSONB,
-      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
-
     DO $$
     DECLARE
       constraint_name TEXT;
