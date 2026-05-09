@@ -102,12 +102,12 @@ export function About() {
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
               {/* Experience badge */}
-              <div className="absolute bottom-5 left-5 rounded-xl bg-[#0a1628]/85 px-4 py-3 text-white backdrop-blur-sm">
+              {/* <div className="absolute bottom-5 left-5 rounded-xl bg-[#0a1628]/85 px-4 py-3 text-white backdrop-blur-sm">
                 <p className="text-2xl font-bold text-amber-400">10+</p>
                 <p className="text-xs uppercase tracking-[0.2em] text-slate-300">
                   Năm kinh nghiệm
                 </p>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

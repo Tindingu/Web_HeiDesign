@@ -3,7 +3,7 @@ import type { Service } from "@/lib/strapi";
 import { CheckCircle2 } from "lucide-react";
 
 const BG_IMAGE =
-  "https://res.cloudinary.com/dfazfoh2l/image/upload/v1777104620/Rectangle-8_dptgar.jpg";
+  "/upload/about/team.jpg";
 
 export function Services({ services }: { services: Service[] }) {
   return (

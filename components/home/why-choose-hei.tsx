@@ -33,7 +33,7 @@ export function WhyChooseHei() {
           <div className="overflow-hidden rounded-2xl">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://res.cloudinary.com/dfazfoh2l/image/upload/v1777104620/Rectangle-8_dptgar.jpg"
+              src="/upload/about/team.jpg"
               alt="Đội ngũ HEI Design"
               className="h-full w-full object-cover"
               loading="lazy"
