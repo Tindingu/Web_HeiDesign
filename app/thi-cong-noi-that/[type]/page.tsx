@@ -5,7 +5,8 @@ import {
   readProjectStyles,
 } from "@/lib/taxonomy-storage";
 import { CompletedProjects } from "@/components/home/completed-projects";
-import { ArchitectureShowcase } from "@/components/portfolio/architecture-showcase";
+import { ArchitectureStyles } from "@/components/home/architecture-styles";
+import { readArchitectureGallery } from "@/lib/architecture-gallery-storage";
 import { readArticles } from "@/lib/article-storage";
 import {
   getConstructionTargetLabel,
@@ -42,6 +43,7 @@ export default async function InteriorConstructionTypePage({
     readProjectStyles(),
     readArticles(),
   ]);
+  const architectureGallery = await readArchitectureGallery();
   const matchedArticles = articles
     .filter(
       (article) =>
@@ -104,15 +106,21 @@ export default async function InteriorConstructionTypePage({
         categories={categories}
         maxItemsPerTab={null}
         showViewMoreButton={false}
-        initialTab={params.type}
         theme="light"
       />
 
-      <ArchitectureShowcase
+      <ArchitectureStyles
         projects={projects}
         styles={styles}
-        initialTab={params.type}
-        theme="light"
+        curatedItems={architectureGallery.map((item) => ({
+          styleSlug: item.styleSlug,
+          projectSlug: item.projectSlug,
+          projectTitle: item.projectTitle,
+          slotIndex: item.slotIndex,
+          orientation: item.orientation,
+          imageUrl: item.imageUrl,
+          imageAlt: item.imageAlt,
+        }))}
       />
 
       {latestArticle?.mainContent && (

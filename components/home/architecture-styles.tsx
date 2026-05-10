@@ -21,6 +21,7 @@ type ArchitectureStylesProps = {
     imageAlt: string;
   }>;
   initialTab?: string;
+  theme?: "light" | "dark";
 };
 
 type StyleTab = {
@@ -83,6 +84,7 @@ export function ArchitectureStyles({
   styles = [],
   curatedItems = [],
   initialTab,
+  theme = "light",
 }: ArchitectureStylesProps) {
   const styleTabs = useMemo<StyleTab[]>(() => {
     const source =
@@ -173,9 +175,17 @@ export function ArchitectureStyles({
     640: 2,
   };
 
+  const isLight = theme === "light";
+
   return (
-    <section className="bg-white py-8 md:py-10 text-slate-900">
-      <Container className="space-y-7 sm:space-y-8">
+    <section
+      className={
+        isLight
+          ? "bg-[#f3f6fa] py-20 text-slate-900"
+          : "py-20 bg-[#070d1f] text-white"
+      }
+    >
+      <Container className="space-y-12">
         <h2 className="text-xl font-bold uppercase text-[#1f4569] md:text-2xl">
           KIẾN TRÚC NHÀ PHỐ
         </h2>
