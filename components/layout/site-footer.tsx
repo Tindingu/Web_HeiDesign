@@ -137,6 +137,9 @@ export function SiteFooter() {
               <Link href="/bao-gia" className="transition hover:text-amber-300">
                 Báo giá
               </Link>
+              <Link href="/thuoc-lo-ban" className="transition hover:text-amber-300">
+                Thước Lỗ Ban
+              </Link>
             </div>
           </div>
 
