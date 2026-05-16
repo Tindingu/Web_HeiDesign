@@ -22,6 +22,8 @@ import { readHeroBannerSettings } from "@/lib/hero-banner-storage";
 import { HotTopicSection } from "@/components/home/hot-topic-section";
 import { readActiveHomepageTestimonials } from "@/lib/homepage-testimonial-storage";
 import { WhyChooseHei } from "@/components/home/why-choose-hei";
+import { ScrollReveal } from "@/components/home/scroll-reveal";
+import { StrategicPartners } from "@/components/home/strategic-partners";
 
 export const revalidate = 120;
 
@@ -82,36 +84,75 @@ export default async function HomePage() {
   const jsonLd = buildBusinessJsonLd();
 
   return (
-    <main className="bg-background">
-      <Hero hero={hero} />
-      <About />
+    <main className="bg-background overflow-x-clip">
+      <ScrollReveal className="relative" distance={0}>
+        <Hero hero={hero} />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <About />
+      </ScrollReveal>
+
       {/* <FeaturedProjects projects={projects} /> */}
-      <CompletedProjects
-        projects={projects}
-        categories={categories}
-        theme="light"
-      />
-      <ArchitectureStyles
-        projects={projects}
-        styles={styles}
-        curatedItems={architectureGallery.map((item) => ({
-          styleSlug: item.styleSlug,
-          projectSlug: item.projectSlug,
-          projectTitle: item.projectTitle,
-          slotIndex: item.slotIndex,
-          orientation: item.orientation,
-          imageUrl: item.imageUrl,
-          imageAlt: item.imageAlt,
-        }))}
-      />
-      <VideoSection videos={videos} />
-      <BlogHighlights posts={posts} />
-      <WhyChooseHei />
-      <TestimonialsCarousel testimonials={testimonials} />
-      {hotTopic && <HotTopicSection settings={hotTopic} posts={posts} />}
-      <Services services={content.services} />
-      <ProcessTimeline steps={content.processSteps} />
-      <CtaStrip />
+      <ScrollReveal delay={0.08}>
+        <CompletedProjects
+          projects={projects}
+          categories={categories}
+          theme="light"
+        />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.08}>
+        <ArchitectureStyles
+          projects={projects}
+          styles={styles}
+          curatedItems={architectureGallery.map((item) => ({
+            styleSlug: item.styleSlug,
+            projectSlug: item.projectSlug,
+            projectTitle: item.projectTitle,
+            slotIndex: item.slotIndex,
+            orientation: item.orientation,
+            imageUrl: item.imageUrl,
+            imageAlt: item.imageAlt,
+          }))}
+        />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <VideoSection videos={videos} />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <BlogHighlights posts={posts} />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <WhyChooseHei />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <TestimonialsCarousel testimonials={testimonials} />
+      </ScrollReveal>
+
+      {hotTopic && (
+        <ScrollReveal delay={0.05}>
+          <HotTopicSection settings={hotTopic} posts={posts} />
+        </ScrollReveal>
+      )}
+
+      <ScrollReveal delay={0.05}>
+        <Services services={content.services} />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <ProcessTimeline steps={content.processSteps} />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <StrategicPartners />
+      </ScrollReveal>
+      <ScrollReveal delay={0.05}>
+        <CtaStrip />
+      </ScrollReveal>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

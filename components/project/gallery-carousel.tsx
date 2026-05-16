@@ -11,12 +11,15 @@ export function GalleryCarousel({ project }: { project: Project }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [isMainDragging, setIsMainDragging] = useState(false);
-  const [mainDragOffset, setMainDragOffset] = useState(0);
   const thumbnailsRef = useRef<HTMLDivElement>(null);
+  const mainImageWrapperRef = useRef<HTMLDivElement>(null);
   const mainDragStartXRef = useRef(0);
   const mainDragDistanceRef = useRef(0);
   const isMainDragActiveRef = useRef(false);
   const mainPointerIdRef = useRef<number | null>(null);
+  const mainDragOffsetRef = useRef(0);
+  const mainDragFrameRef = useRef<number | null>(null);
+  const [mainDragOffset, setMainDragOffset] = useState(0);
   const isDraggingThumbRef = useRef(false);
   const thumbDragStartXRef = useRef(0);
   const thumbDragStartScrollLeftRef = useRef(0);
@@ -37,6 +40,27 @@ export function GalleryCarousel({ project }: { project: Project }) {
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
     scrollThumbnailIntoView(index);
+  };
+
+  const updateMainDragOffset = (offset: number) => {
+    mainDragOffsetRef.current = offset;
+
+    if (mainDragFrameRef.current !== null) return;
+
+    mainDragFrameRef.current = window.requestAnimationFrame(() => {
+      setMainDragOffset(mainDragOffsetRef.current);
+      mainDragFrameRef.current = null;
+    });
+  };
+
+  const resetMainDragOffset = () => {
+    if (mainDragFrameRef.current !== null) {
+      window.cancelAnimationFrame(mainDragFrameRef.current);
+      mainDragFrameRef.current = null;
+    }
+
+    mainDragOffsetRef.current = 0;
+    setMainDragOffset(0);
   };
 
   const scrollThumbnailIntoView = (index: number) => {
@@ -89,7 +113,7 @@ export function GalleryCarousel({ project }: { project: Project }) {
     event.currentTarget.setPointerCapture(event.pointerId);
     mainDragStartXRef.current = event.clientX;
     mainDragDistanceRef.current = 0;
-    setMainDragOffset(0);
+    resetMainDragOffset();
     setIsMainDragging(true);
   };
 
@@ -99,7 +123,7 @@ export function GalleryCarousel({ project }: { project: Project }) {
     if (!isMainDragActiveRef.current) return;
     const delta = event.clientX - mainDragStartXRef.current;
     mainDragDistanceRef.current = delta;
-    setMainDragOffset(delta * 0.35);
+    updateMainDragOffset(delta);
   };
 
   const stopMainDragging = (target?: HTMLDivElement | null) => {
@@ -117,15 +141,17 @@ export function GalleryCarousel({ project }: { project: Project }) {
     mainPointerIdRef.current = null;
     mainDragDistanceRef.current = 0;
     setIsMainDragging(false);
-    setMainDragOffset(0);
-
     if (dragDistance > MAIN_SWIPE_THRESHOLD) {
       goToPrevious();
+      resetMainDragOffset();
       return;
     }
     if (dragDistance < -MAIN_SWIPE_THRESHOLD) {
       goToNext();
+      resetMainDragOffset();
+      return;
     }
+    resetMainDragOffset();
   };
 
   const openLightbox = (index: number) => {
@@ -182,6 +208,7 @@ export function GalleryCarousel({ project }: { project: Project }) {
                       : "cursor-grab"
                     : ""
                 }`}
+                style={{ touchAction: "pan-y" }}
                 onPointerDown={onMainPointerDown}
                 onPointerMove={onMainPointerMove}
                 onPointerUp={(event) => stopMainDragging(event.currentTarget)}
@@ -189,17 +216,32 @@ export function GalleryCarousel({ project }: { project: Project }) {
                   stopMainDragging(event.currentTarget)
                 }
               >
-                <Image
-                  src={allImages[currentIndex].url}
-                  alt={allImages[currentIndex].alt}
-                  fill
-                  priority
-                  className={`object-contain transition-transform hover:scale-[1.02] ${
-                    isMainDragging ? "duration-75" : "duration-500"
+                <div
+                  ref={mainImageWrapperRef}
+                  className={`flex h-full will-change-transform ${
+                    isMainDragging
+                      ? "transition-none"
+                      : "transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
                   }`}
-                  style={{ transform: `translateX(${mainDragOffset}px)` }}
-                  sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1024px) calc(100vw - 3rem), 70vw"
-                />
+                  style={{
+                    transform: `translate3d(calc(${-currentIndex * 100}% + ${mainDragOffset}px), 0, 0)`,
+                  }}
+                >
+                  {allImages.map((image, idx) => (
+                    <div key={idx} className="relative h-full w-full shrink-0">
+                      <Image
+                        src={image.url}
+                        alt={image.alt}
+                        fill
+                        priority={idx === currentIndex}
+                        draggable={false}
+                        onDragStart={(event) => event.preventDefault()}
+                        className="object-contain transition-transform duration-300 ease-out hover:scale-[1.02]"
+                        sizes="(max-width: 768px) calc(100vw - 2rem), (max-width: 1024px) calc(100vw - 3rem), 70vw"
+                      />
+                    </div>
+                  ))}
+                </div>
 
                 {/* Navigation Arrows */}
                 {allImages.length > 1 && (
@@ -242,6 +284,7 @@ export function GalleryCarousel({ project }: { project: Project }) {
                   <div
                     ref={thumbnailsRef}
                     className="flex gap-3 overflow-x-auto pb-2 scroll-smooth scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 cursor-grab active:cursor-grabbing"
+                    style={{ touchAction: "pan-x" }}
                     onMouseDown={onThumbMouseDown}
                     onMouseMove={onThumbMouseMove}
                     onMouseUp={stopThumbDragging}
@@ -268,6 +311,8 @@ export function GalleryCarousel({ project }: { project: Project }) {
                           src={image.url}
                           alt={image.alt}
                           fill
+                          draggable={false}
+                          onDragStart={(event) => event.preventDefault()}
                           className="object-cover"
                           sizes="96px"
                         />

@@ -5,9 +5,15 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { Container } from "@/components/shared/container";
-import { Button } from "@/components/ui/button";
 import { Search, Menu, ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+
+type MenuItem = {
+  label: string;
+  href: string;
+  description?: string;
+  submenu?: MenuItem[];
+};
 
 const topCategories = [
   {
@@ -78,7 +84,7 @@ const defaultInteriorSubmenu = [
 
 const defaultConstructionSubmenu = [
   {
-    label: "Thị công nội thất biệt thự",
+    label: "Thi công nội thất biệt thự",
     href: "/thi-cong-noi-that/biet-thu",
   },
   {
@@ -95,7 +101,42 @@ const defaultConstructionSubmenu = [
   },
 ];
 
-const baseMenuItems = [
+const designUtilitySubmenu: MenuItem[] = [
+  {
+    label: "Phối màu nội thất",
+    href: "/phoimau-bep",
+    description: "Thử màu và vật liệu cho từng không gian",
+    submenu: [
+      {
+        label: "Phối màu phòng bếp",
+        href: "/phoimau-bep",
+        description: "Demo đã hoạt động",
+      },
+      {
+        label: "Phối màu phòng khách",
+        href: "/phoimau-phong-khach",
+        description: "Đang phát triển",
+      },
+      {
+        label: "Phối màu phòng ngủ",
+        href: "/phoimau-phong-ngu",
+        description: "Đang phát triển",
+      },
+    ],
+  },
+  {
+    label: "Thước Lỗ Ban",
+    href: "/thuoc-lo-ban",
+    description: "Tra cứu kích thước phong thủy",
+  },
+   {
+    label: "Báo giá",
+    href: "/bao-gia",
+    description: "Tra cứu báo giá dịch vụ",
+  }
+];
+
+const baseMenuItems: MenuItem[] = [
   { label: "Trang chủ", href: "/" },
   {
     label: "Thiết Kế Nội Thất",
@@ -110,6 +151,11 @@ const baseMenuItems = [
   { label: "Dự án", href: "/du-an" },
 
   { label: "Kinh Nghiệm Hay", href: "/blog" },
+  {
+    label: "Tiện ích thiết kế",
+    href: "/phoimau-bep",
+    submenu: designUtilitySubmenu,
+  },
   { label: "Liên hệ", href: "/lien-he" },
   { label: "Giới thiệu", href: "/gioi-thieu" },
 ];
@@ -122,11 +168,14 @@ export function SiteHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [activeNestedSubmenu, setActiveNestedSubmenu] = useState<string | null>(
+    null,
+  );
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [interiorSubmenu, setInteriorSubmenu] = useState(
+  const [interiorSubmenu, setInteriorSubmenu] = useState<MenuItem[]>(
     defaultInteriorSubmenu,
   );
-  const [constructionSubmenu, setConstructionSubmenu] = useState(
+  const [constructionSubmenu, setConstructionSubmenu] = useState<MenuItem[]>(
     defaultConstructionSubmenu,
   );
   const topCategoriesRef = useRef<HTMLDivElement>(null);
@@ -153,6 +202,7 @@ export function SiteHeader() {
     setMobileSearchOpen(false);
     setMobileMenuOpen(false);
     setActiveSubmenu(null);
+    setActiveNestedSubmenu(null);
     const keyword = searchKeyword.trim();
     if (!keyword) {
       router.push("/tim-kiem");
@@ -165,6 +215,7 @@ export function SiteHeader() {
     setMobileSearchOpen(false);
     setMobileMenuOpen(false);
     setActiveSubmenu(null);
+    setActiveNestedSubmenu(null);
   }, [pathname, searchParams]);
 
   useEffect(() => {
@@ -178,10 +229,7 @@ export function SiteHeader() {
           return;
         }
 
-        const sectionMap = new Map<
-          string,
-          Array<{ label: string; href: string }>
-        >();
+        const sectionMap = new Map<string, MenuItem[]>();
         for (const section of payload.data) {
           if (!section?.code || !Array.isArray(section.types)) continue;
           sectionMap.set(
@@ -245,6 +293,64 @@ export function SiteHeader() {
     isDraggingTopRef.current = false;
   };
 
+  const renderDesktopSubmenu = (item: MenuItem) => {
+    if (!item.submenu) return null;
+
+    if (item.label !== "Tiện ích thiết kế") {
+      return (
+        <div className="absolute left-0 top-full z-50 hidden w-56 rounded-2xl border border-slate-200 bg-white/95 pt-2 shadow-xl backdrop-blur group-hover:block">
+          {item.submenu.map((sub) => (
+            <Link
+              key={sub.href}
+              href={sub.href}
+              className="block px-4 py-2 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D] first:rounded-t-2xl last:rounded-b-2xl"
+            >
+              {sub.label}
+            </Link>
+          ))}
+        </div>
+      );
+    }
+
+    return (
+      <div className="absolute left-0 top-full z-50 hidden w-64 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-xl backdrop-blur group-hover:block">
+        {item.submenu.map((sub) =>
+          sub.submenu ? (
+            <div key={sub.href} className="group/nested relative after:absolute after:left-full after:top-0 after:h-full after:w-3">
+              <Link
+                href={sub.href}
+                className="flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D]"
+              >
+                <span>{sub.label}</span>
+                <ChevronDown className="-rotate-90 h-3.5 w-3.5" />
+              </Link>
+
+              <div className="absolute left-[calc(100%+0.5rem)] top-0 z-50 hidden w-56 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-xl backdrop-blur group-hover/nested:block">
+                {sub.submenu.map((nested) => (
+                  <Link
+                    key={nested.href}
+                    href={nested.href}
+                    className="block rounded-xl px-4 py-2.5 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D]"
+                  >
+                    {nested.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <Link
+              key={sub.href}
+              href={sub.href}
+              className="block rounded-xl px-4 py-2.5 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D]"
+            >
+              {sub.label}
+            </Link>
+          ),
+        )}
+      </div>
+    );
+  };
+
   return (
     <header
       className={`z-50 border-b border-white/60 bg-white/85 shadow-[0_8px_30px_rgba(15,23,42,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/75 ${
@@ -253,7 +359,7 @@ export function SiteHeader() {
     >
       {/* Top Bar: Logo + Search + Category Icons */}
       <Container>
-        <div className="flex min-h-[4.5rem] items-center justify-between gap-3 py-2 sm:min-h-[5rem] sm:gap-4">
+        <div className="flex min-h-[5rem] items-center justify-between gap-3 py-2.5 sm:min-h-[5.5rem] sm:gap-4">
           {/* Logo */}
           <Link href="/" className="flex min-w-0 items-center gap-2">
             <Image
@@ -262,7 +368,7 @@ export function SiteHeader() {
               width={120}
               height={120}
               priority
-              className="h-10 w-auto sm:h-12"
+              className="h-11 w-auto sm:h-[3.3rem]"
             />
             {/* <div className="hidden flex-col md:flex">
               <span className="text-xl font-bold tracking-wider">
@@ -280,7 +386,7 @@ export function SiteHeader() {
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
                 placeholder="Bạn đang tìm gì?"
-                className="w-full rounded-full border border-slate-200 bg-white py-2.5 pl-4 pr-10 text-sm text-slate-800 outline-none transition-all focus:border-[#1f4569] focus:ring-2 focus:ring-[#1f4569]/15"
+                className="w-full rounded-full border border-slate-200 bg-white py-3 pl-4 pr-10 text-[15px] text-slate-800 outline-none transition-all focus:border-[#1f4569] focus:ring-2 focus:ring-[#1f4569]/15"
               />
               <button
                 type="submit"
@@ -304,16 +410,16 @@ export function SiteHeader() {
               <Link
                 key={cat.href}
                 href={cat.href}
-                className="group flex min-w-fit flex-col items-center gap-1 transition-transform transition-colors hover:-translate-y-0.5 hover:text-[#1f4569]"
+                className="group flex min-w-fit flex-col items-center gap-1 transition-transform transition-colors hover:-translate-y-0.5 hover:text-[#C6A77D]"
               >
                 <Image
                   src={cat.src}
                   alt={cat.label}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 transition-transform group-hover:scale-110"
+                  width={44}
+                  height={44}
+                  className="h-11 w-11 transition-transform group-hover:scale-110"
                 />
-                <span className="max-w-[60px] whitespace-nowrap text-center text-[8px] font-semibold uppercase tracking-wide text-slate-500">
+                <span className="max-w-[66px] whitespace-nowrap text-center text-[9px] font-semibold uppercase tracking-wide text-slate-500">
                   {cat.label}
                 </span>
               </Link>
@@ -372,7 +478,7 @@ export function SiteHeader() {
                   height={32}
                   className="h-8 w-8 transition-transform group-hover:scale-110"
                 />
-                <span className="text-[10px] font-semibold uppercase leading-4 tracking-wide text-slate-700">
+                <span className="text-[10px] font-semibold uppercase leading-4 tracking-wide text-neutral-900">
                   {cat.label}
                 </span>
               </Link>
@@ -391,28 +497,17 @@ export function SiteHeader() {
                   <>
                     <Link
                       href={item.href}
-                      className="flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-white hover:text-[#1f4569] hover:shadow-sm"
+                      className="flex items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2.5 text-[15px] font-medium text-neutral-900 transition-all hover:bg-white hover:text-[#C6A77D] hover:shadow-sm"
                     >
                       {item.label}
                       <ChevronDown className="h-3 w-3" />
                     </Link>
-                    {/* Submenu Dropdown */}
-                    <div className="absolute left-0 top-full z-50 hidden w-56 rounded-2xl border border-slate-200 bg-white/95 pt-2 shadow-xl backdrop-blur group-hover:block">
-                      {item.submenu.map((sub) => (
-                        <Link
-                          key={sub.href}
-                          href={sub.href}
-                          className="block px-4 py-2 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-[#1f4569] first:rounded-t-2xl last:rounded-b-2xl"
-                        >
-                          {sub.label}
-                        </Link>
-                      ))}
-                    </div>
+                    {renderDesktopSubmenu(item)}
                   </>
                 ) : (
                   <Link
                     href={item.href}
-                    className="whitespace-nowrap rounded-full px-3 py-2 text-sm font-medium text-slate-700 transition-all hover:bg-white hover:text-[#1f4569] hover:shadow-sm"
+                    className="whitespace-nowrap rounded-full px-3.5 py-2.5 text-[15px] font-medium text-neutral-900 transition-all hover:bg-white hover:text-[#C6A77D] hover:shadow-sm"
                   >
                     {item.label}
                   </Link>
@@ -437,7 +532,7 @@ export function SiteHeader() {
               />
               <button
                 type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full p-2 text-slate-500 transition-colors hover:text-[#1f4569]"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full p-2 text-slate-500 transition-colors hover:text-[#C6A77D]"
                 aria-label="Tìm kiếm"
               >
                 <Search className="h-4 w-4" />
@@ -459,11 +554,12 @@ export function SiteHeader() {
                       <>
                         <button
                           onClick={() =>
-                            setActiveSubmenu(
-                              activeSubmenu === item.label ? null : item.label,
-                            )
+                            setActiveSubmenu((current) => {
+                              setActiveNestedSubmenu(null);
+                              return current === item.label ? null : item.label;
+                            })
                           }
-                          className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50"
+                          className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-neutral-900 shadow-sm hover:bg-slate-50"
                         >
                           {item.label}
                           <ChevronDown
@@ -473,27 +569,71 @@ export function SiteHeader() {
                           />
                         </button>
                         {activeSubmenu === item.label && (
-                          <div className="space-y-1 pl-4">
-                            {item.submenu.map((sub) => (
-                              <Link
-                                key={sub.href}
-                                href={sub.href}
-                                className="block rounded-lg px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-[#1f4569]"
-                                onClick={() => {
-                                  setMobileMenuOpen(false);
-                                  setActiveSubmenu(null);
-                                }}
-                              >
-                                {sub.label}
-                              </Link>
-                            ))}
+                          <div className="mt-1 space-y-1 rounded-2xl bg-slate-50 p-2">
+                            {item.submenu.map((sub) =>
+                              sub.submenu ? (
+                                <div key={sub.href}>
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      setActiveNestedSubmenu((current) =>
+                                        current === sub.label
+                                          ? null
+                                          : sub.label,
+                                      )
+                                    }
+                                    className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-white hover:text-[#C6A77D]"
+                                  >
+                                    <span>{sub.label}</span>
+                                    <ChevronDown
+                                      className={`h-4 w-4 transition-transform ${
+                                        activeNestedSubmenu === sub.label
+                                          ? "rotate-180"
+                                          : ""
+                                      }`}
+                                    />
+                                  </button>
+                                  {activeNestedSubmenu === sub.label && (
+                                    <div className="ml-3 mt-1 space-y-1 border-l border-slate-200 pl-3">
+                                      {sub.submenu.map((nested) => (
+                                        <Link
+                                          key={nested.href}
+                                          href={nested.href}
+                                          className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-white hover:text-[#C6A77D]"
+                                          onClick={() => {
+                                            setMobileMenuOpen(false);
+                                            setActiveSubmenu(null);
+                                            setActiveNestedSubmenu(null);
+                                          }}
+                                        >
+                                          {nested.label}
+                                        </Link>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <Link
+                                  key={sub.href}
+                                  href={sub.href}
+                                  className="block rounded-xl px-3 py-2.5 text-sm text-slate-600 hover:bg-white hover:text-[#C6A77D]"
+                                  onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    setActiveSubmenu(null);
+                                    setActiveNestedSubmenu(null);
+                                  }}
+                                >
+                                  {sub.label}
+                                </Link>
+                              ),
+                            )}
                           </div>
                         )}
                       </>
                     ) : (
                       <Link
                         href={item.href}
-                        className="block rounded-lg px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#1f4569]"
+                        className="block rounded-lg px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-slate-50 hover:text-[#C6A77D]"
                         onClick={() => {
                           setMobileMenuOpen(false);
                           setActiveSubmenu(null);

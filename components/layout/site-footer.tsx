@@ -140,6 +140,9 @@ export function SiteFooter() {
               <Link href="/thuoc-lo-ban" className="transition hover:text-amber-300">
                 Thước Lỗ Ban
               </Link>
+              <Link href="/phoimau-bep" className="transition hover:text-amber-300">
+                Phối Màu Phòng Bếp
+              </Link>
             </div>
           </div>
 

@@ -48,46 +48,50 @@ export function LeadCapturePopup() {
     <AnimatePresence>
       {isOpen ? (
         <motion.div
-          className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/60 px-4 py-6 backdrop-blur-sm"
+          className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-slate-950/62 px-3 py-4 backdrop-blur-sm sm:items-center sm:px-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
           <motion.div
-            initial={{ opacity: 0, y: 28, scale: 0.98 }}
+            initial={{ opacity: 0, y: 26, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 18, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 260, damping: 26 }}
-            className="relative w-full max-w-md rounded-3xl border border-slate-200 bg-white p-4 shadow-2xl"
+            className="relative w-full max-w-[31rem] overflow-hidden rounded-[1.35rem] border border-white/70 bg-[linear-gradient(135deg,#ffffff_0%,#fbfaf8_52%,#f3eee8_100%)] p-3 shadow-[0_28px_80px_rgba(15,23,42,0.28)] sm:rounded-[1.75rem] sm:p-4"
           >
+            <div className="pointer-events-none absolute -left-16 top-0 h-56 w-56 rounded-full bg-[#f5f2ee]/80 blur-3xl" />
+            <div className="pointer-events-none absolute bottom-[-5rem] right-[-5rem] h-64 w-64 rounded-full bg-[#d2bca7]/26 blur-3xl" />
+
             <button
               type="button"
               onClick={closeAndScheduleNext}
               aria-label="Đóng form"
-              className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-slate-950 text-white transition hover:bg-[#1f4569]"
+              className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1220] text-white shadow-lg transition hover:bg-[#1f4569]"
             >
               <X className="h-4 w-4" />
             </button>
 
-            <div className="space-y-5 rounded-2xl border border-slate-200 bg-slate-50 p-5">
-              <div className="space-y-2 pr-8">
-                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
+            <div className="relative rounded-[1.1rem] border border-slate-200/80 bg-white/90 p-5 shadow-[0_18px_48px_rgba(63,46,34,0.12)] backdrop-blur-xl sm:rounded-[1.45rem] sm:p-7">
+              <div className="max-w-sm pr-9">
+                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#6f5948]">
                   Liên hệ nhanh
                 </p>
-                <h2 className="text-xl font-bold uppercase leading-tight text-[#1f4569]">
-                  Để lại thông tin để HEI liên hệ
+                <h2 className="mt-3 text-2xl font-bold tracking-tight text-[#111827] sm:text-3xl">
+                  Bạn cần hỗ trợ?
                 </h2>
-                <p className="text-sm leading-6 text-slate-600">
-                  Chúng tôi sẽ liên hệ và tư vấn phương án phù hợp trong thời
-                  gian sớm nhất.
+                <p className="mt-2 text-sm leading-6 text-[#3a2d24]/75">
+                  Để lại thông tin, HEI sẽ tư vấn phương án phù hợp.
                 </p>
               </div>
 
               <LeadCaptureForm
                 pageUrl={pageUrl}
                 source="Popup liên hệ"
-                submitLabel="Gửi ngay"
+                submitLabel="Nhận tư vấn ngay"
                 onSuccess={closeAndScheduleNext}
+                variant="luxury"
+                className="mt-5"
               />
             </div>
           </motion.div>

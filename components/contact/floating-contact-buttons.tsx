@@ -12,37 +12,137 @@ export function FloatingContactButtons() {
     return null;
   }
 
+  const baseButtonClass =
+    "relative inline-flex h-11 w-11 items-center justify-center rounded-full text-white shadow-[0_10px_24px_rgba(15,23,42,0.28)] transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:shadow-[0_16px_34px_rgba(15,23,42,0.38)] active:scale-95 md:h-13 md:w-13";
+
   return (
-    <div className="fixed bottom-16 right-2 z-40 flex flex-col gap-2 md:bottom-auto md:right-3 md:top-1/2 md:-translate-y-1/2">
-      <a
-        href={`tel:${siteConfig.phone}`}
-        aria-label="Gọi hotline"
-        title="Gọi hotline"
-        className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#52b7a4] text-white shadow-[0_8px_20px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_12px_24px_rgba(15,23,42,0.3)] active:scale-95 md:h-12 md:w-12"
-      >
-        <Phone className="h-5 w-5 md:h-6 md:w-6" />
-      </a>
+    <>
+      <style jsx>{`
+        @keyframes phoneRing {
+          0%,
+          100% {
+            transform: rotate(0deg);
+          }
+          8% {
+            transform: rotate(-14deg);
+          }
+          16% {
+            transform: rotate(12deg);
+          }
+          24% {
+            transform: rotate(-10deg);
+          }
+          32% {
+            transform: rotate(8deg);
+          }
+          40% {
+            transform: rotate(0deg);
+          }
+        }
 
-      <a
-        href={siteConfig.facebookUrl}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Facebook"
-        title="Facebook"
-        className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#2d6be4] text-white shadow-[0_8px_20px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_12px_24px_rgba(15,23,42,0.3)] active:scale-95 md:h-12 md:w-12"
-      >
-        <Facebook className="h-5 w-5 md:h-6 md:w-6" />
-      </a>
+        @keyframes sonarWave {
+          0% {
+            transform: scale(0.75);
+            opacity: 0.75;
+          }
+          80% {
+            transform: scale(1.75);
+            opacity: 0;
+          }
+          100% {
+            transform: scale(1.75);
+            opacity: 0;
+          }
+        }
 
-      <Link
-        href={siteConfig.zaloUrl}
-        target="_blank"
-        aria-label="Chat Zalo"
-        title="Chat Zalo"
-        className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#2d78c8] text-[10px] font-semibold uppercase tracking-wide text-white shadow-[0_8px_20px_rgba(15,23,42,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-105 hover:shadow-[0_12px_24px_rgba(15,23,42,0.3)] active:scale-95 md:h-12 md:w-12 md:text-[12px]"
-      >
-        Zalo
-      </Link>
-    </div>
+        @keyframes softBounce {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        @keyframes iconPop {
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.12);
+          }
+        }
+
+        .phone-icon {
+          animation: phoneRing 1.6s ease-in-out infinite;
+          transform-origin: center;
+        }
+
+        .sonar::before,
+        .sonar::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 9999px;
+          border: 1px solid rgba(82, 183, 164, 0.75);
+          animation: sonarWave 2s ease-out infinite;
+        }
+
+        .sonar::after {
+          animation-delay: 0.8s;
+        }
+
+        .social-float {
+          animation: softBounce 2.8s ease-in-out infinite;
+        }
+
+        .social-float svg,
+        .social-float span {
+          animation: iconPop 2.2s ease-in-out infinite;
+        }
+
+        .delay-1 {
+          animation-delay: 0.25s;
+        }
+
+        .delay-2 {
+          animation-delay: 0.5s;
+        }
+      `}</style>
+
+      <div className="fixed bottom-6 right-3 z-40 flex flex-col gap-3 md:bottom-8 md:right-5">
+  <a
+    href={`tel:${siteConfig.phone}`}
+    aria-label="Gọi hotline"
+    title="Gọi hotline"
+    className={`${baseButtonClass} sonar bg-[#52b7a4]`}
+  >
+    <Phone className="phone-icon relative z-10 h-5 w-5 md:h-6 md:w-6" />
+  </a>
+
+  <a
+    href={siteConfig.facebookUrl}
+    target="_blank"
+    rel="noreferrer"
+    aria-label="Facebook"
+    title="Facebook"
+    className={`${baseButtonClass} social-float delay-1 bg-[#2d6be4]`}
+  >
+    <Facebook className="h-5 w-5 md:h-6 md:w-6" />
+  </a>
+
+  <Link
+    href={siteConfig.zaloUrl}
+    target="_blank"
+    aria-label="Chat Zalo"
+    title="Chat Zalo"
+    className={`${baseButtonClass} social-float delay-2 bg-[#2d78c8] text-[10px] font-semibold uppercase tracking-wide md:text-[12px]`}
+  >
+    <span>Zalo</span>
+  </Link>
+</div>
+    </>
   );
 }

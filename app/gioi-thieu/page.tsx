@@ -9,6 +9,7 @@ import {
   HeartHandshake,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
+import { ScrollReveal } from "@/components/home/scroll-reveal";
 import { buildMetadata } from "@/lib/seo";
 
 export const revalidate = 120;
@@ -94,113 +95,125 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#0a1628]/92 via-[#0a1628]/78 to-[#0a1628]/62" />
         <Container className="relative z-10 py-24 md:py-32">
           <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-            <div className="space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-amber-300">
-                Hồ sơ doanh nghiệp
-              </p>
-              <h1 className="max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl">
-                Giới thiệu về HEI Design
-              </h1>
-              <p className="max-w-3xl text-base leading-8 text-slate-200">
-                HEI Design là đơn vị tư vấn thiết kế và thi công nội thất trọn
-                gói, tập trung vào giải pháp phù hợp thực tế sử dụng của từng
-                gia đình. Chúng tôi xây dựng trải nghiệm dịch vụ rõ ràng, từ
-                khảo sát đến bàn giao và hậu mãi.
-              </p>
-              <div className="flex flex-wrap gap-3 pt-1">
-                <Link
-                  href="/lien-he"
-                  className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-900 transition hover:bg-amber-400"
-                >
-                  <span>Liên hệ tư vấn</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/du-an"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300 hover:text-amber-200"
-                >
-                  <span>Xem dự án tiêu biểu</span>
-                </Link>
-              </div>
-            </div>
-
-            <aside className="rounded-[24px] border border-white/20 bg-white/10 p-6 text-white backdrop-blur-sm md:p-7">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300">
-                Dấu mốc nổi bật
-              </p>
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                {quickStats.map((item) => (
-                  <article
-                    key={item.label}
-                    className="rounded-xl border border-white/15 bg-white/5 px-4 py-3"
+            <ScrollReveal distance={22} delay={0.02}>
+              <div className="space-y-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.26em] text-amber-300">
+                  Hồ sơ doanh nghiệp
+                </p>
+                <h1 className="max-w-4xl text-3xl font-semibold leading-tight text-white md:text-5xl">
+                  Giới thiệu về HEI Design
+                </h1>
+                <p className="max-w-3xl text-base leading-8 text-slate-200">
+                  HEI Design là đơn vị tư vấn thiết kế và thi công nội thất trọn
+                  gói, tập trung vào giải pháp phù hợp thực tế sử dụng của từng
+                  gia đình. Chúng tôi xây dựng trải nghiệm dịch vụ rõ ràng, từ
+                  khảo sát đến bàn giao và hậu mãi.
+                </p>
+                <div className="flex flex-wrap gap-3 pt-1">
+                  <Link
+                    href="/lien-he"
+                    className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-900 transition hover:bg-amber-400"
                   >
-                    <p className="text-2xl font-bold text-amber-300">
-                      {item.value}
-                    </p>
-                    <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-slate-300">
-                      {item.label}
-                    </p>
-                  </article>
-                ))}
+                    <span>Liên hệ tư vấn</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    href="/du-an"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300 hover:text-amber-200"
+                  >
+                    <span>Xem dự án tiêu biểu</span>
+                  </Link>
+                </div>
               </div>
-            </aside>
+            </ScrollReveal>
+
+            <ScrollReveal distance={18} delay={0.08}>
+              <aside className="rounded-[24px] border border-white/20 bg-white/10 p-6 text-white backdrop-blur-sm md:p-7">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300">
+                  Dấu mốc nổi bật
+                </p>
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  {quickStats.map((item) => (
+                    <article
+                      key={item.label}
+                      className="rounded-xl border border-white/15 bg-white/5 px-4 py-3"
+                    >
+                      <p className="text-2xl font-bold text-amber-300">
+                        {item.value}
+                      </p>
+                      <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-slate-300">
+                        {item.label}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </aside>
+            </ScrollReveal>
           </div>
         </Container>
       </section>
 
       <section className="py-12 md:py-16">
         <Container className="space-y-6 md:space-y-8">
-          <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
-              Chúng tôi là ai
-            </p>
-            <h2 className="max-w-3xl text-3xl font-semibold leading-tight text-[#1f4569] md:text-[2.1rem]">
-              Đơn vị thiết kế thi công nội thất theo định hướng cá nhân hóa
-            </h2>
-            <p className="max-w-3xl text-base leading-8 text-slate-600">
-              Mỗi dự án tại HEI Design được triển khai dựa trên 3 lớp nghiên
-              cứu: nhu cầu sinh hoạt thực tế, đặc điểm không gian và khả năng
-              đầu tư của gia chủ.
-            </p>
-          </div>
+          <ScrollReveal distance={18} delay={0.03}>
+            <div className="space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                Chúng tôi là ai
+              </p>
+              <h2 className="max-w-3xl text-3xl font-semibold leading-tight text-[#1f4569] md:text-[2.1rem]">
+                Đơn vị thiết kế thi công nội thất theo định hướng cá nhân hóa
+              </h2>
+              <p className="max-w-3xl text-base leading-8 text-slate-600">
+                Mỗi dự án tại HEI Design được triển khai dựa trên 3 lớp nghiên
+                cứu: nhu cầu sinh hoạt thực tế, đặc điểm không gian và khả năng
+                đầu tư của gia chủ.
+              </p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid gap-8 rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm md:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-            <div className="relative min-h-[340px] overflow-hidden rounded-[22px] border border-slate-200">
-              <Image
-                src="/upload/about/image.png"
-                alt="Đội ngũ tư vấn thiết kế nội thất"
-                fill
-                sizes="(max-width: 1024px) 100vw, 42vw"
-                className="object-cover"
-              />
-            </div>
+            <ScrollReveal distance={16} delay={0.04}>
+              <div className="relative min-h-[340px] overflow-hidden rounded-[22px] border border-slate-200">
+                <Image
+                  src="/upload/about/image.png"
+                  alt="Đội ngũ tư vấn thiết kế nội thất"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 42vw"
+                  className="object-cover"
+                />
+              </div>
+            </ScrollReveal>
 
             <div className="grid gap-6 md:grid-cols-2">
-              <article className="rounded-[22px] border border-slate-200 bg-slate-50 p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Định hướng dịch vụ
-                </p>
-                <h3 className="mt-2 text-xl font-semibold text-slate-900">
-                  Dễ hiểu - Dễ kiểm soát - Dễ đồng hành
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">
-                  Lộ trình dự án theo từng giai đoạn, có checklist nghiệm thu và
-                  đầu mối phụ trách rõ ràng.
-                </p>
-              </article>
+              <ScrollReveal distance={14} delay={0.06}>
+                <article className="rounded-[22px] border border-slate-200 bg-slate-50 p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    Định hướng dịch vụ
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                    Dễ hiểu - Dễ kiểm soát - Dễ đồng hành
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    Lộ trình dự án theo từng giai đoạn, có checklist nghiệm thu
+                    và đầu mối phụ trách rõ ràng.
+                  </p>
+                </article>
+              </ScrollReveal>
 
-              <article className="rounded-[22px] border border-slate-200 bg-white p-6">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Cam kết chất lượng
-                </p>
-                <h3 className="mt-2 text-xl font-semibold text-slate-900">
-                  Đặt trải nghiệm sống làm trung tâm
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">
-                  Đồng bộ từ thiết kế đến hiện trường, ưu tiên khả năng vận hành
-                  bền vững cho sinh hoạt dài hạn.
-                </p>
-              </article>
+              <ScrollReveal distance={14} delay={0.1}>
+                <article className="rounded-[22px] border border-slate-200 bg-white p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    Cam kết chất lượng
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold text-slate-900">
+                    Đặt trải nghiệm sống làm trung tâm
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    Đồng bộ từ thiết kế đến hiện trường, ưu tiên khả năng vận
+                    hành bền vững cho sinh hoạt dài hạn.
+                  </p>
+                </article>
+              </ScrollReveal>
             </div>
           </div>
         </Container>
@@ -208,34 +221,39 @@ export default function AboutPage() {
 
       <section className="pt-8 pb-14 md:pt-10 md:pb-20">
         <Container className="space-y-8">
-          <div className="max-w-3xl space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
-              Tầm nhìn - Sứ mệnh - Giá trị
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#1f4569] md:text-4xl">
-              Triết lý vận hành của HEI Design
-            </h2>
-          </div>
+          <ScrollReveal distance={18} delay={0.03}>
+            <div className="max-w-3xl space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+                Tầm nhìn - Sứ mệnh - Giá trị
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold leading-tight text-[#1f4569] md:text-4xl">
+                Triết lý vận hành của HEI Design
+              </h2>
+            </div>
+          </ScrollReveal>
 
           <div className="grid gap-5 md:grid-cols-3">
-            {coreBlocks.map((item) => {
+            {coreBlocks.map((item, index) => {
               const Icon = item.icon;
 
               return (
-                <article
+                <ScrollReveal
                   key={item.title}
-                  className="group rounded-[22px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-200 hover:shadow-lg"
+                  distance={14}
+                  delay={0.05 + index * 0.04}
                 >
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 text-[#1f4569] transition group-hover:bg-amber-100 group-hover:text-amber-700">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-4 text-lg font-semibold text-slate-900">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-600">
-                    {item.description}
-                  </p>
-                </article>
+                  <article className="group rounded-[22px] border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-200 hover:shadow-lg">
+                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-slate-100 text-[#1f4569] transition group-hover:bg-amber-100 group-hover:text-amber-700">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <h3 className="mt-4 text-lg font-semibold text-slate-900">
+                      {item.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-7 text-slate-600">
+                      {item.description}
+                    </p>
+                  </article>
+                </ScrollReveal>
               );
             })}
           </div>
@@ -244,39 +262,43 @@ export default function AboutPage() {
 
       <section className="pb-14 md:pb-20">
         <Container className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-          <div className="relative min-h-[420px] overflow-hidden rounded-[26px] border border-slate-200">
-            <Image
-              src="/upload/about/image.png"
-              alt="Đội ngũ tư vấn thiết kế nội thất"
-              fill
-              sizes="(max-width: 1024px) 100vw, 56vw"
-              className="object-cover"
-            />
-          </div>
-
-          <aside className="space-y-5 rounded-[26px] border border-slate-200 bg-white p-6 md:p-8">
-            <h3 className="text-2xl font-semibold leading-tight text-[#1f4569] md:text-3xl">
-              Hành trình phát triển
-            </h3>
-            <div className="space-y-4">
-              {timeline.map((item) => (
-                <article
-                  key={item.year}
-                  className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    {item.year}
-                  </p>
-                  <h4 className="mt-1 text-base font-semibold text-slate-900">
-                    {item.title}
-                  </h4>
-                  <p className="mt-1 text-sm leading-7 text-slate-600">
-                    {item.description}
-                  </p>
-                </article>
-              ))}
+          <ScrollReveal distance={18} delay={0.04}>
+            <div className="relative min-h-[420px] overflow-hidden rounded-[26px] border border-slate-200">
+              <Image
+                src="/upload/about/image.png"
+                alt="Đội ngũ tư vấn thiết kế nội thất"
+                fill
+                sizes="(max-width: 1024px) 100vw, 56vw"
+                className="object-cover"
+              />
             </div>
-          </aside>
+          </ScrollReveal>
+
+          <ScrollReveal distance={18} delay={0.08}>
+            <aside className="space-y-5 rounded-[26px] border border-slate-200 bg-white p-6 md:p-8">
+              <h3 className="text-2xl font-semibold leading-tight text-[#1f4569] md:text-3xl">
+                Hành trình phát triển
+              </h3>
+              <div className="space-y-4">
+                {timeline.map((item) => (
+                  <article
+                    key={item.year}
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      {item.year}
+                    </p>
+                    <h4 className="mt-1 text-base font-semibold text-slate-900">
+                      {item.title}
+                    </h4>
+                    <p className="mt-1 text-sm leading-7 text-slate-600">
+                      {item.description}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </aside>
+          </ScrollReveal>
         </Container>
       </section>
 
@@ -291,40 +313,42 @@ export default function AboutPage() {
       >
         <div className="absolute inset-0 bg-[#0a1628]/82" />
         <Container>
-          <div className="relative z-10 rounded-[28px] border border-white/20 bg-white/10 p-8 text-white backdrop-blur-sm md:p-12">
-            <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
-              <div className="space-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300">
-                  Đồng hành dài hạn
-                </p>
-                <h2 className="text-3xl font-semibold leading-tight md:text-4xl">
-                  HEI Design sẵn sàng đồng hành trong toàn bộ vòng đời không
-                  gian sống của bạn
-                </h2>
-                <p className="max-w-2xl text-sm leading-7 text-slate-100 md:text-base">
-                  Từ tư vấn ý tưởng ban đầu đến bảo trì sau bàn giao, đội ngũ
-                  luôn giữ vai trò đối tác đồng hành đáng tin cậy, giúp không
-                  gian duy trì chất lượng sử dụng và giá trị thẩm mỹ lâu dài.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
-                <Link
-                  href="/lien-he"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-900 transition hover:bg-amber-400"
-                >
-                  <HeartHandshake className="h-4 w-4" />
-                  <span>Nhận tư vấn</span>
-                </Link>
-                <Link
-                  href="/du-an"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/70 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300 hover:text-amber-200"
-                >
-                  <Building2 className="h-4 w-4" />
-                  <span>Xem dự án</span>
-                </Link>
+          <ScrollReveal distance={18} delay={0.05}>
+            <div className="relative z-10 rounded-[28px] border border-white/20 bg-white/10 p-8 text-white backdrop-blur-sm md:p-12">
+              <div className="grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.28em] text-amber-300">
+                    Đồng hành dài hạn
+                  </p>
+                  <h2 className="text-3xl font-semibold leading-tight md:text-4xl">
+                    HEI Design sẵn sàng đồng hành trong toàn bộ vòng đời không
+                    gian sống của bạn
+                  </h2>
+                  <p className="max-w-2xl text-sm leading-7 text-slate-100 md:text-base">
+                    Từ tư vấn ý tưởng ban đầu đến bảo trì sau bàn giao, đội ngũ
+                    luôn giữ vai trò đối tác đồng hành đáng tin cậy, giúp không
+                    gian duy trì chất lượng sử dụng và giá trị thẩm mỹ lâu dài.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row md:flex-col">
+                  <Link
+                    href="/lien-he"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-900 transition hover:bg-amber-400"
+                  >
+                    <HeartHandshake className="h-4 w-4" />
+                    <span>Nhận tư vấn</span>
+                  </Link>
+                  <Link
+                    href="/du-an"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/70 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300 hover:text-amber-200"
+                  >
+                    <Building2 className="h-4 w-4" />
+                    <span>Xem dự án</span>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </Container>
       </section>
     </main>

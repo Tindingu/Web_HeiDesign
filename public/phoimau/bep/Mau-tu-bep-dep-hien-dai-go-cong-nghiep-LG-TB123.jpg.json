@@ -1,0 +1,858 @@
+{
+  "description": "",
+  "tags": [],
+  "size": {
+    "height": 1224,
+    "width": 1600
+  },
+  "objects": [
+    {
+      "id": 1778066888,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:16:06.520Z",
+      "updatedAt": "2026-05-14T16:16:11.823Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [106, 238],
+          [266, 490]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778066908,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:16:45.233Z",
+      "updatedAt": "2026-05-14T16:16:45.233Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [269, 238],
+          [429, 490]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778066956,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:17:51.530Z",
+      "updatedAt": "2026-05-14T16:17:51.530Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [106, 222],
+          [429, 236]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778066996,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:18:57.740Z",
+      "updatedAt": "2026-05-14T16:18:57.740Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [471, 257],
+          [1444, 268]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067013,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:19:19.253Z",
+      "updatedAt": "2026-05-14T16:19:19.253Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [471, 272],
+          [675, 383]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067022,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:19:35.301Z",
+      "updatedAt": "2026-05-14T16:19:35.301Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [679, 272],
+          [914, 382]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067033,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:19:52.074Z",
+      "updatedAt": "2026-05-14T16:19:52.074Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [917, 272],
+          [1121, 383]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067039,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:20:06.021Z",
+      "updatedAt": "2026-05-14T16:20:12.280Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [1124, 272],
+          [1340, 383]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067057,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:20:29.289Z",
+      "updatedAt": "2026-05-14T16:20:29.289Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [1343, 272],
+          [1444, 383]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067069,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:20:47.036Z",
+      "updatedAt": "2026-05-14T16:20:47.036Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [472, 391],
+          [571, 603]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067073,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:20:58.870Z",
+      "updatedAt": "2026-05-14T16:20:58.870Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [575, 392],
+          [675, 603]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067085,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:21:17.651Z",
+      "updatedAt": "2026-05-14T16:21:17.651Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [917, 391],
+          [1018, 603]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067327,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:21:28.231Z",
+      "updatedAt": "2026-05-14T16:21:28.231Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [1021, 391],
+          [1121, 603]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067332,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:21:37.101Z",
+      "updatedAt": "2026-05-14T16:21:37.101Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [1124, 390],
+          [1231, 584]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067335,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:21:44.382Z",
+      "updatedAt": "2026-05-14T16:21:44.382Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [1234, 390],
+          [1340, 584]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067346,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "polygon",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:22:19.755Z",
+      "updatedAt": "2026-05-14T16:22:43.580Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [1343, 390],
+          [1444, 391],
+          [1443, 602],
+          [1352, 601],
+          [1352, 586],
+          [1343, 586],
+          [1343, 530]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067583,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:28:40.092Z",
+      "updatedAt": "2026-05-14T16:28:40.092Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [678, 392],
+          [914, 409]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067592,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:28:53.136Z",
+      "updatedAt": "2026-05-14T16:28:53.136Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [678, 410],
+          [695, 495]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067596,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:28:58.591Z",
+      "updatedAt": "2026-05-14T16:28:58.591Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [696, 478],
+          [915, 495]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067600,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:29:04.836Z",
+      "updatedAt": "2026-05-14T16:29:04.836Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [897, 409],
+          [915, 477]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067608,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:29:14.946Z",
+      "updatedAt": "2026-05-14T16:29:14.946Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [678, 498],
+          [915, 515]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067612,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:29:21.112Z",
+      "updatedAt": "2026-05-14T16:29:21.112Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [898, 516],
+          [915, 603]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067621,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:29:29.699Z",
+      "updatedAt": "2026-05-14T16:29:29.699Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [678, 584],
+          [897, 603]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778067624,
+      "classId": 14376097,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-14T16:29:34.346Z",
+      "updatedAt": "2026-05-14T16:29:34.346Z",
+      "tags": [],
+      "classTitle": "cabinet_top",
+      "points": {
+        "exterior": [
+          [678, 516],
+          [695, 583]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099696,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:24:23.950Z",
+      "updatedAt": "2026-05-15T03:24:23.950Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [444, 836],
+          [664, 962]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099697,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:24:43.082Z",
+      "updatedAt": "2026-05-15T03:24:43.082Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [444, 966],
+          [665, 1090]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099700,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:24:51.366Z",
+      "updatedAt": "2026-05-15T03:24:51.366Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [668, 836],
+          [795, 1090]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099702,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:25:04.721Z",
+      "updatedAt": "2026-05-15T03:25:04.721Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [797, 836],
+          [924, 1090]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099705,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:25:19.767Z",
+      "updatedAt": "2026-05-15T03:25:19.767Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [927, 836],
+          [1036, 1090]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099708,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:25:31.096Z",
+      "updatedAt": "2026-05-15T03:25:31.096Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [1038, 837],
+          [1147, 1091]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099711,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:25:47.527Z",
+      "updatedAt": "2026-05-15T03:25:47.527Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [1150, 837],
+          [1384, 852]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099715,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:26:02.822Z",
+      "updatedAt": "2026-05-15T03:26:02.822Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [1150, 854],
+          [1174, 971]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099746,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:26:14.536Z",
+      "updatedAt": "2026-05-15T03:26:14.536Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [1361, 854],
+          [1385, 971]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099750,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:26:25.661Z",
+      "updatedAt": "2026-05-15T03:26:25.661Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [1150, 973],
+          [1384, 1090]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099753,
+      "classId": 14376098,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:26:41.066Z",
+      "updatedAt": "2026-05-15T03:26:41.066Z",
+      "tags": [],
+      "classTitle": "cabinet_down",
+      "points": {
+        "exterior": [
+          [1387, 837],
+          [1497, 1089]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099765,
+      "classId": 14376096,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:27:43.981Z",
+      "updatedAt": "2026-05-15T03:27:43.981Z",
+      "tags": [],
+      "classTitle": "floor",
+      "points": {
+        "exterior": [
+          [0, 1049],
+          [97, 1118]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099767,
+      "classId": 14376096,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:28:01.934Z",
+      "updatedAt": "2026-05-15T03:28:01.934Z",
+      "tags": [],
+      "classTitle": "floor",
+      "points": {
+        "exterior": [
+          [0, 1119],
+          [445, 1223]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099769,
+      "classId": 14376096,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:28:12.978Z",
+      "updatedAt": "2026-05-15T03:28:12.978Z",
+      "tags": [],
+      "classTitle": "floor",
+      "points": {
+        "exterior": [
+          [116, 1110],
+          [427, 1118]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099775,
+      "classId": 14376096,
+      "objectId": null,
+      "description": "",
+      "geometryType": "rectangle",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:28:43.972Z",
+      "updatedAt": "2026-05-15T03:28:43.972Z",
+      "tags": [],
+      "classTitle": "floor",
+      "points": {
+        "exterior": [
+          [447, 1116],
+          [1499, 1223]
+        ],
+        "interior": []
+      }
+    },
+    {
+      "id": 1778099788,
+      "classId": 14376096,
+      "objectId": null,
+      "description": "",
+      "geometryType": "polygon",
+      "nnCreated": false,
+      "nnUpdated": false,
+      "labelerLogin": "thanhtin95123@gmail.com",
+      "createdAt": "2026-05-15T03:30:01.053Z",
+      "updatedAt": "2026-05-15T03:30:15.117Z",
+      "tags": [],
+      "classTitle": "floor",
+      "points": {
+        "exterior": [
+          [1500, 1119],
+          [1598, 1175],
+          [1599, 1223],
+          [1500, 1223],
+          [1500, 1145]
+        ],
+        "interior": []
+      }
+    }
+  ]
+}

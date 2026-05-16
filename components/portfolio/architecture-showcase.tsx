@@ -180,7 +180,7 @@ export function ArchitectureShowcase({
     <section
       className={
         isLight
-          ? "bg-[#f3f6fa] py-20 text-slate-900"
+          ? "bg-white py-20 text-slate-900"
           : "py-20 bg-[#070d1f] text-white"
       }
     >
