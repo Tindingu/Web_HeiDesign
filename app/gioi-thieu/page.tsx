@@ -79,7 +79,7 @@ const timeline = [
 ];
 
 const ABOUT_BG_IMAGE =
-  "https://res.cloudinary.com/dfazfoh2l/image/upload/v1777536424/3_nxuqht.png";
+  "https://res.cloudinary.com/dfazfoh2l/image/upload/v1778338289/z7096078087886_e35c6300a8d17958200bd4bc112584a3_copy_p7v3py.webp";
 
 export default function AboutPage() {
   return (

@@ -18,27 +18,27 @@ type MenuItem = {
 const topCategories = [
   {
     label: "MẪU NHÀ ĐẸP",
-    src: "/upload/iconheading/nha-dep.png",
+    src: "/upload/iconheading/nha-dep.svg",
     href: "/khong-gian/mau-nha-dep",
   },
   {
     label: "PHÒNG KHÁCH",
-    src: "/upload/iconheading/phong-khach.png",
+    src: "/upload/iconheading/phong-khach.svg",
     href: "/khong-gian/phong-khach",
   },
   {
     label: "PHÒNG BẾP",
-    src: "/upload/iconheading/phong-bep.png",
+    src: "/upload/iconheading/phong-bep.svg",
     href: "/khong-gian/phong-bep",
   },
   {
     label: "PHÒNG NGỦ",
-    src: "/upload/iconheading/phong-ngu.png",
+    src: "/upload/iconheading/phong-ngu.svg",
     href: "/khong-gian/phong-ngu",
   },
   {
     label: "PHÒNG TẮM",
-    src: "/upload/iconheading/phong-tam.png",
+    src: "/upload/iconheading/phong-tam.svg",
     href: "/khong-gian/phong-tam",
   },
 ];
@@ -298,12 +298,12 @@ export function SiteHeader() {
 
     if (item.label !== "Tiện ích thiết kế") {
       return (
-        <div className="absolute left-0 top-full z-50 hidden w-56 rounded-2xl border border-slate-200 bg-white/95 pt-2 shadow-xl backdrop-blur group-hover:block">
+        <div className="absolute left-0 top-full z-50 hidden w-60 rounded-[1.15rem] border border-[#D8C3A5]/70 bg-[#FBF6F2] p-2 shadow-[0_18px_45px_rgba(31,31,31,0.12)] backdrop-blur group-hover:block">
           {item.submenu.map((sub) => (
             <Link
               key={sub.href}
               href={sub.href}
-              className="block px-4 py-2 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D] first:rounded-t-2xl last:rounded-b-2xl"
+              className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
             >
               {sub.label}
             </Link>
@@ -313,24 +313,24 @@ export function SiteHeader() {
     }
 
     return (
-      <div className="absolute left-0 top-full z-50 hidden w-64 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-xl backdrop-blur group-hover:block">
+      <div className="absolute left-0 top-full z-50 hidden w-72 rounded-[1.15rem] border border-[#D8C3A5]/70 bg-[#FBF6F2] p-2 shadow-[0_18px_45px_rgba(31,31,31,0.12)] backdrop-blur group-hover:block">
         {item.submenu.map((sub) =>
           sub.submenu ? (
             <div key={sub.href} className="group/nested relative after:absolute after:left-full after:top-0 after:h-full after:w-3">
               <Link
                 href={sub.href}
-                className="flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D]"
+                className="flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
               >
                 <span>{sub.label}</span>
-                <ChevronDown className="-rotate-90 h-3.5 w-3.5" />
+                <ChevronDown className="h-3.5 w-3.5 -rotate-90 text-[#B88732]" />
               </Link>
 
-              <div className="absolute left-[calc(100%+0.5rem)] top-0 z-50 hidden w-56 rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-xl backdrop-blur group-hover/nested:block">
+              <div className="absolute left-[calc(100%+0.5rem)] top-0 z-50 hidden w-60 rounded-[1.15rem] border border-[#D8C3A5]/70 bg-[#FBF6F2] p-2 shadow-[0_18px_45px_rgba(31,31,31,0.12)] backdrop-blur group-hover/nested:block">
                 {sub.submenu.map((nested) => (
                   <Link
                     key={nested.href}
                     href={nested.href}
-                    className="block rounded-xl px-4 py-2.5 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D]"
+                    className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
                   >
                     {nested.label}
                   </Link>
@@ -341,7 +341,7 @@ export function SiteHeader() {
             <Link
               key={sub.href}
               href={sub.href}
-              className="block rounded-xl px-4 py-2.5 text-sm text-neutral-900 transition-colors hover:bg-slate-50 hover:text-[#C6A77D]"
+              className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
             >
               {sub.label}
             </Link>
@@ -353,22 +353,22 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`z-50 border-b border-white/60 bg-white/85 shadow-[0_8px_30px_rgba(15,23,42,0.06)] backdrop-blur-xl supports-[backdrop-filter]:bg-white/75 ${
+      className={`z-50 border-b border-[#D8C3A5]/80 border-t border-t-[#C8922E]/70 bg-[#FBF6F2] shadow-[0_10px_28px_rgba(31,31,31,0.07)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FBF6F2] ${
         isProjectPage ? "relative" : "sticky top-0"
       }`}
     >
       {/* Top Bar: Logo + Search + Category Icons */}
-      <Container>
-        <div className="flex min-h-[5rem] items-center justify-between gap-3 py-2.5 sm:min-h-[5.5rem] sm:gap-4">
+      <Container className="max-w-[88rem]">
+        <div className="flex min-h-[6.25rem] items-center justify-between gap-5 py-3 sm:min-h-[6.5rem] sm:gap-7 lg:gap-9">
           {/* Logo */}
-          <Link href="/" className="flex min-w-0 items-center gap-2">
+          <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2 pr-2">
             <Image
               src="/upload/logo/hei-logo.svg"
               alt="HEI"
               width={120}
               height={120}
               priority
-              className="h-11 w-auto sm:h-[3.3rem]"
+              className="h-12 w-auto sm:h-14 lg:h-[3.75rem]"
             />
             {/* <div className="hidden flex-col md:flex">
               <span className="text-xl font-bold tracking-wider">
@@ -379,20 +379,21 @@ export function SiteHeader() {
           </Link>
 
           {/* Search Bar */}
-          <div className="hidden max-w-sm flex-1 md:block lg:max-w-md">
+          <div className="hidden max-w-sm flex-[0.9_1_20rem] md:block lg:max-w-[32rem]">
             <form className="relative" onSubmit={handleSearchSubmit}>
               <input
                 type="text"
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
                 placeholder="Bạn đang tìm gì?"
-                className="w-full rounded-full border border-slate-200 bg-white py-3 pl-4 pr-10 text-[15px] text-slate-800 outline-none transition-all focus:border-[#1f4569] focus:ring-2 focus:ring-[#1f4569]/15"
+                className="h-12 w-full rounded-full border border-[#D8C3A5] bg-white/80 pl-5 pr-12 text-[15px] font-medium text-[#1F1F1F] outline-none transition-all placeholder:text-[#7B6B57] focus:border-[#C8922E] focus:bg-white focus:ring-2 focus:ring-[#C8922E]/15"
               />
               <button
                 type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-2 transition-colors hover:bg-[#FBF6F2]"
+                aria-label="TÃ¬m kiáº¿m"
               >
-                <Search className="h-4 w-4 text-slate-400" />
+                <Search className="h-4 w-4 text-[#B88732]" />
               </button>
             </form>
           </div>
@@ -400,7 +401,7 @@ export function SiteHeader() {
           {/* Desktop Category Icons */}
           <div
             ref={topCategoriesRef}
-            className="hidden flex-1 items-center justify-center gap-4 overflow-x-auto cursor-grab scrollbar-hide active:cursor-grabbing lg:flex"
+            className="hidden min-w-0 flex-[1.35_1_33rem] cursor-grab items-center justify-center gap-3 overflow-x-auto scrollbar-hide active:cursor-grabbing lg:flex xl:gap-4"
             onMouseDown={onTopCategoriesMouseDown}
             onMouseMove={onTopCategoriesMouseMove}
             onMouseLeave={stopTopCategoriesDragging}
@@ -410,16 +411,16 @@ export function SiteHeader() {
               <Link
                 key={cat.href}
                 href={cat.href}
-                className="group flex min-w-fit flex-col items-center gap-1 transition-transform transition-colors hover:-translate-y-0.5 hover:text-[#C6A77D]"
+                className="group flex min-w-[5.15rem] flex-col items-center justify-start gap-2 rounded-xl px-1 py-1.5 text-center transition-all hover:-translate-y-0.5"
               >
                 <Image
                   src={cat.src}
                   alt={cat.label}
-                  width={44}
-                  height={44}
-                  className="h-11 w-11 transition-transform group-hover:scale-110"
+                  width={60}
+                  height={60}
+                  className="h-14 w-14 bg-transparent object-contain transition-transform group-hover:scale-105 xl:h-16 xl:w-16"
                 />
-                <span className="max-w-[66px] whitespace-nowrap text-center text-[9px] font-semibold uppercase tracking-wide text-slate-500">
+                <span className="whitespace-nowrap text-center text-[11px] font-semibold uppercase leading-4 tracking-[0.08em] text-[#2A2A2A] transition-colors group-hover:text-[#B88732]">
                   {cat.label}
                 </span>
               </Link>
@@ -434,10 +435,10 @@ export function SiteHeader() {
                 setMobileSearchOpen((prev) => !prev);
                 setMobileMenuOpen(false);
               }}
-              className="rounded-full border border-slate-200 bg-white p-2.5 shadow-sm transition hover:bg-slate-50 md:hidden"
+              className="rounded-full border border-[#D8C3A5] bg-white/80 p-2.5 shadow-sm transition hover:border-[#C8922E] hover:bg-white md:hidden"
               aria-label="Tìm kiếm"
             >
-              <Search className="h-5 w-5 text-slate-600" />
+              <Search className="h-5 w-5 text-[#B88732]" />
             </button>
 
             {/* Mobile Menu Button */}
@@ -446,20 +447,20 @@ export function SiteHeader() {
                 setMobileMenuOpen(!mobileMenuOpen);
                 setMobileSearchOpen(false);
               }}
-              className="rounded-lg border border-slate-200 bg-white p-2.5 shadow-sm transition hover:bg-slate-50 lg:hidden"
+              className="rounded-full border border-[#D8C3A5] bg-white/80 p-2.5 shadow-sm transition hover:border-[#C8922E] hover:bg-white lg:hidden"
               aria-label="Mở menu"
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5 text-[#2A2A2A]" />
             </button>
           </div>
         </div>
       </Container>
 
-      <div className="border-t border-slate-200/70 bg-white/90 backdrop-blur md:hidden">
+      <div className="border-t border-[#D8C3A5]/70 bg-[#FBF6F2] backdrop-blur md:hidden">
         <Container>
           <div
             ref={topCategoriesRef}
-            className="-mx-4 flex gap-3 overflow-x-auto px-4 py-3 cursor-grab scrollbar-hide active:cursor-grabbing"
+            className="-mx-4 flex cursor-grab gap-3 overflow-x-auto px-4 py-3 scrollbar-hide active:cursor-grabbing"
             onMouseDown={onTopCategoriesMouseDown}
             onMouseMove={onTopCategoriesMouseMove}
             onMouseLeave={stopTopCategoriesDragging}
@@ -469,16 +470,16 @@ export function SiteHeader() {
               <Link
                 key={cat.href}
                 href={cat.href}
-                className="group flex w-20 shrink-0 flex-col items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-2 py-2 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-[#1f4569]/25 hover:bg-slate-50"
+                className="group flex w-[5.4rem] shrink-0 flex-col items-center gap-1.5 rounded-xl border border-[#D8C3A5]/75 bg-[#FBF6F2] px-2 py-2.5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-[#C8922E]"
               >
                 <Image
                   src={cat.src}
                   alt={cat.label}
                   width={32}
                   height={32}
-                  className="h-8 w-8 transition-transform group-hover:scale-110"
+                  className="h-9 w-9 bg-transparent object-contain transition-transform group-hover:scale-105"
                 />
-                <span className="text-[10px] font-semibold uppercase leading-4 tracking-wide text-neutral-900">
+                <span className="text-[10px] font-semibold uppercase leading-4 tracking-[0.06em] text-[#2A2A2A] group-hover:text-[#B88732]">
                   {cat.label}
                 </span>
               </Link>
@@ -488,26 +489,26 @@ export function SiteHeader() {
       </div>
 
       {/* Main Navigation Menu */}
-      <div className="border-t border-slate-200/70 bg-slate-50/70">
+      <div className="border-t border-[#D8C3A5]/70 bg-[#FBF6F2]">
         <Container>
-          <nav className="hidden flex-1 items-center justify-center gap-2 py-3 lg:flex xl:gap-3">
+          <nav className="hidden flex-1 items-center justify-center gap-1.5 py-3.5 lg:flex xl:gap-2.5">
             {menuItems.map((item) => (
               <div key={item.href} className="relative group">
                 {item.submenu ? (
                   <>
                     <Link
                       href={item.href}
-                      className="flex items-center gap-1 whitespace-nowrap rounded-full px-3.5 py-2.5 text-[15px] font-medium text-neutral-900 transition-all hover:bg-white hover:text-[#C6A77D] hover:shadow-sm"
+                      className="flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2.5 text-[14px] font-semibold text-[#1F1F1F] transition-all hover:bg-white/75 hover:text-[#B88732] hover:shadow-sm xl:px-4 xl:text-[15px]"
                     >
                       {item.label}
-                      <ChevronDown className="h-3 w-3" />
+                      <ChevronDown className="h-3.5 w-3.5 text-[#B88732]" />
                     </Link>
                     {renderDesktopSubmenu(item)}
                   </>
                 ) : (
                   <Link
                     href={item.href}
-                    className="whitespace-nowrap rounded-full px-3.5 py-2.5 text-[15px] font-medium text-neutral-900 transition-all hover:bg-white hover:text-[#C6A77D] hover:shadow-sm"
+                    className="whitespace-nowrap rounded-full px-3 py-2.5 text-[14px] font-semibold text-[#1F1F1F] transition-all hover:bg-white/75 hover:text-[#B88732] hover:shadow-sm xl:px-4 xl:text-[15px]"
                   >
                     {item.label}
                   </Link>
@@ -519,7 +520,7 @@ export function SiteHeader() {
       </div>
 
       {mobileSearchOpen && (
-        <div className="border-t border-slate-200/70 bg-white/95 backdrop-blur md:hidden">
+        <div className="border-t border-[#D8C3A5]/70 bg-[#FBF6F2] backdrop-blur md:hidden">
           <Container>
             <form className="relative py-2.5" onSubmit={handleSearchSubmit}>
               <input
@@ -528,11 +529,11 @@ export function SiteHeader() {
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
                 placeholder="Bạn đang tìm gì?"
-                className="h-10 w-full max-w-full rounded-full border border-slate-200 bg-white py-2 pl-3.5 pr-11 text-base text-slate-800 outline-none transition-all duration-200 focus:border-[#1f4569] focus:ring-2 focus:ring-[#1f4569]/15"
+                className="h-11 w-full max-w-full rounded-full border border-[#D8C3A5] bg-white/85 py-2 pl-4 pr-11 text-base font-medium text-[#1F1F1F] outline-none transition-all duration-200 placeholder:text-[#7B6B57] focus:border-[#C8922E] focus:bg-white focus:ring-2 focus:ring-[#C8922E]/15"
               />
               <button
                 type="submit"
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full p-2 text-slate-500 transition-colors hover:text-[#C6A77D]"
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-full p-2 text-[#B88732] transition-colors hover:bg-[#FBF6F2]"
                 aria-label="Tìm kiếm"
               >
                 <Search className="h-4 w-4" />
@@ -544,7 +545,7 @@ export function SiteHeader() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-slate-200/70 bg-white/95 backdrop-blur lg:hidden">
+        <div className="border-t border-[#D8C3A5]/70 bg-[#FBF6F2] backdrop-blur lg:hidden">
           <Container>
             <div className="py-4">
               <nav className="space-y-1">
@@ -559,17 +560,17 @@ export function SiteHeader() {
                               return current === item.label ? null : item.label;
                             })
                           }
-                          className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-neutral-900 shadow-sm hover:bg-slate-50"
+                          className="flex w-full items-center justify-between rounded-xl border border-[#D8C3A5]/75 bg-white/85 px-4 py-3 text-sm font-semibold text-[#1F1F1F] shadow-sm transition hover:border-[#C8922E] hover:bg-white hover:text-[#B88732]"
                         >
                           {item.label}
                           <ChevronDown
-                            className={`h-4 w-4 transition-transform ${
+                            className={`h-4 w-4 text-[#B88732] transition-transform ${
                               activeSubmenu === item.label ? "rotate-180" : ""
                             }`}
                           />
                         </button>
                         {activeSubmenu === item.label && (
-                          <div className="mt-1 space-y-1 rounded-2xl bg-slate-50 p-2">
+                          <div className="mt-1 space-y-1 rounded-2xl border border-[#D8C3A5]/45 bg-[#FBF6F2] p-2">
                             {item.submenu.map((sub) =>
                               sub.submenu ? (
                                 <div key={sub.href}>
@@ -582,11 +583,11 @@ export function SiteHeader() {
                                           : sub.label,
                                       )
                                     }
-                                    className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-white hover:text-[#C6A77D]"
+                                    className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-medium text-[#2A2A2A] transition hover:bg-white hover:text-[#B88732]"
                                   >
                                     <span>{sub.label}</span>
                                     <ChevronDown
-                                      className={`h-4 w-4 transition-transform ${
+                                      className={`h-4 w-4 text-[#B88732] transition-transform ${
                                         activeNestedSubmenu === sub.label
                                           ? "rotate-180"
                                           : ""
@@ -594,12 +595,12 @@ export function SiteHeader() {
                                     />
                                   </button>
                                   {activeNestedSubmenu === sub.label && (
-                                    <div className="ml-3 mt-1 space-y-1 border-l border-slate-200 pl-3">
+                                    <div className="ml-3 mt-1 space-y-1 border-l border-[#D8C3A5] pl-3">
                                       {sub.submenu.map((nested) => (
                                         <Link
                                           key={nested.href}
                                           href={nested.href}
-                                          className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-white hover:text-[#C6A77D]"
+                                          className="block rounded-lg px-3 py-2 text-sm font-medium text-[#4A4035] transition hover:bg-white hover:text-[#B88732]"
                                           onClick={() => {
                                             setMobileMenuOpen(false);
                                             setActiveSubmenu(null);
@@ -616,7 +617,7 @@ export function SiteHeader() {
                                 <Link
                                   key={sub.href}
                                   href={sub.href}
-                                  className="block rounded-xl px-3 py-2.5 text-sm text-slate-600 hover:bg-white hover:text-[#C6A77D]"
+                                  className="block rounded-xl px-3 py-2.5 text-sm font-medium text-[#4A4035] transition hover:bg-white hover:text-[#B88732]"
                                   onClick={() => {
                                     setMobileMenuOpen(false);
                                     setActiveSubmenu(null);
@@ -633,7 +634,7 @@ export function SiteHeader() {
                     ) : (
                       <Link
                         href={item.href}
-                        className="block rounded-lg px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-slate-50 hover:text-[#C6A77D]"
+                        className="block rounded-xl px-4 py-2.5 text-sm font-semibold text-[#1F1F1F] transition hover:bg-white hover:text-[#B88732]"
                         onClick={() => {
                           setMobileMenuOpen(false);
                           setActiveSubmenu(null);

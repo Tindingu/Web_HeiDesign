@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, MapPin, Phone, Mail } from "lucide-react";
+import { Facebook, Instagram, MapPin, Phone, Mail, YoutubeIcon } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { siteConfig } from "@/lib/constants";
 
@@ -18,19 +18,28 @@ function TikTokIcon({ className }: { className?: string }) {
 }
 
 export function SiteFooter() {
+  const messengerMatch = siteConfig.facebookUrl.match(/m\.me\/([^/?#]+)/i);
+  const facebookPageHref = messengerMatch?.[1]
+    ? `https://www.facebook.com/${messengerMatch[1]}`
+    : siteConfig.facebookUrl;
+
+  const facebookEmbedUrl = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(
+    facebookPageHref,
+  )}&tabs=timeline&width=620&height=210&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true`;
+
   return (
     <footer className="relative overflow-hidden border-t border-slate-800 bg-[#0a1220] text-slate-100">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(31,69,105,0.32),transparent_40%),radial-gradient(circle_at_85%_0%,rgba(245,158,11,0.18),transparent_32%)]" />
 
       <Container className="relative space-y-10 py-14 md:py-16">
-        <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-[1.25fr_0.9fr_0.9fr_1.15fr]">
+        <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-[1fr_0.68fr_0.74fr_0.88fr_1.7fr]">
           <div className="space-y-6">
             <Link href="/" className="inline-flex items-center">
               <Image
                 src="/upload/logo/hei-logo.svg"
                 alt="HEI Design"
                 width={140}
-                height={52}
+                height={52} 
                 className="h-12 w-auto rounded-sm bg-white/95 p-1 md:h-14"
               />
             </Link>
@@ -48,6 +57,15 @@ export function SiteFooter() {
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-white/5 text-slate-200 transition hover:border-amber-400 hover:text-amber-300"
               >
                 <Facebook className="h-4 w-4" />
+              </a>
+              <a
+                href={siteConfig.youtubeUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="YouTube"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-white/5 text-slate-200 transition hover:border-amber-400 hover:text-amber-300"
+              >
+                <YoutubeIcon className="h-4 w-4" />
               </a>
               <a
                 href={siteConfig.instagramUrl}
@@ -184,6 +202,39 @@ export function SiteFooter() {
                   </span>
                 </span>
               </p>
+            </div>
+          </div>
+
+          <div className="space-y-4 text-sm">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
+              Facebook
+            </p>
+            <div className="overflow-hidden border border-slate-700 bg-white shadow-lg">
+              <iframe
+                src={facebookEmbedUrl}
+                title="Facebook page HEI Design"
+                className="h-[210px] w-[700px]"
+                loading="lazy"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <a
+                href="https://online.gov.vn/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Đã thông báo Bộ Công Thương"
+                className="inline-flex items-center justify-center  bg-transparent p-2"
+              >
+                <img
+                  src="/upload/about/chungnhanbocongthuong.png"
+                  alt="Đã thông báo Bộ Công Thương"
+                  className="h-14 w-auto"
+                  loading="lazy"
+                />
+              </a>
             </div>
           </div>
         </div>

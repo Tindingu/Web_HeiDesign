@@ -17,6 +17,7 @@ export const siteConfig = {
   instagramUrl:
     process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://instagram.com",
   tiktokUrl: process.env.NEXT_PUBLIC_TIKTOK_URL ?? "https://tiktok.com",
+  youtubeUrl: process.env.NEXT_PUBLIC_YOUTUBE_URL ?? "https://www.youtube.com/@HeiDesign-N%E1%BB%99iTh%E1%BA%A5tThiC%C3%B4ng"
 };
 
 export const defaultBlurDataURL =

@@ -54,7 +54,7 @@ const officeHours = [
 ];
 
 const CONTACT_BG_IMAGE =
-  "https://res.cloudinary.com/dfazfoh2l/image/upload/v1777536424/3_nxuqht.png";
+  "https://res.cloudinary.com/dfazfoh2l/image/upload/v1778941313/a_vuflqe.webp";
 
 export default function ContactPage() {
   return (
