@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -10,6 +9,25 @@ type BannerItem = {
   alt?: string;
   isActive?: boolean;
 };
+
+async function parseApiResponse(response: Response) {
+  const text = await response.text();
+  if (!text) {
+    return {
+      ok: false,
+      error: `API trả về body rỗng (${response.status})`,
+    };
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {
+      ok: false,
+      error: "API trả về dữ liệu không phải JSON hợp lệ",
+    };
+  }
+}
 
 export function HomepageBannerManager() {
   const [loading, setLoading] = useState(true);
@@ -25,7 +43,7 @@ export function HomepageBannerManager() {
       setLoading(true);
       try {
         const res = await fetch("/api/homepage-banners", { cache: "no-store" });
-        const payload = await res.json();
+        const payload = await parseApiResponse(res);
         if (!res.ok || !payload.ok)
           throw new Error(payload.error || "Không thể tải banners");
         const data = Array.isArray(payload.data) ? payload.data : [];
@@ -76,9 +94,10 @@ export function HomepageBannerManager() {
       const res = await fetch("/api/homepage-banners", {
         method: "PUT",
         headers: { "content-type": "application/json" },
+        cache: "no-store",
         body: JSON.stringify({ items: cleaned }),
       });
-      const payload = await res.json();
+      const payload = await parseApiResponse(res);
       if (!res.ok || !payload.ok)
         throw new Error(payload.error || "Không thể lưu banners");
       setSuccess("Đã lưu banners.");
@@ -92,7 +111,14 @@ export function HomepageBannerManager() {
   const handleClear = async () => {
     if (!confirm("Xóa tất cả banners?")) return;
     try {
-      await fetch("/api/homepage-banners", { method: "DELETE" });
+      const res = await fetch("/api/homepage-banners", {
+        method: "DELETE",
+        cache: "no-store",
+      });
+      const payload = await parseApiResponse(res);
+      if (!res.ok || !payload.ok) {
+        throw new Error(payload.error || "KhÃ´ng thá»ƒ xÃ³a banners.");
+      }
       setItems([{ imageUrl: "", alt: "", isActive: true }]);
       setSuccess("Đã xóa banners.");
     } catch {

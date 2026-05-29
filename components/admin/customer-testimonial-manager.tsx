@@ -24,6 +24,27 @@ type ApiResponse = {
   error?: string;
 };
 
+async function parseApiResponse<T extends { ok: boolean; error?: string }>(
+  response: Response,
+): Promise<T> {
+  const text = await response.text();
+  if (!text) {
+    return {
+      ok: false,
+      error: `API trả về body rỗng (${response.status})`,
+    } as T;
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return {
+      ok: false,
+      error: "API trả về dữ liệu không phải JSON hợp lệ",
+    } as T;
+  }
+}
+
 function createEmptyItem(): AdminTestimonial {
   return {
     id: crypto.randomUUID(),
@@ -49,7 +70,7 @@ export function CustomerTestimonialManager() {
         const response = await fetch("/api/homepage-testimonials", {
           cache: "no-store",
         });
-        const payload = (await response.json()) as ApiResponse;
+        const payload = await parseApiResponse<ApiResponse>(response);
 
         if (!response.ok || !payload.ok || !Array.isArray(payload.data)) {
           throw new Error(payload.error || "Không thể tải nhận xét khách hàng");
@@ -133,10 +154,13 @@ export function CustomerTestimonialManager() {
       const response = await fetch("/api/homepage-testimonials", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        cache: "no-store",
         body: JSON.stringify({ items: cleaned }),
       });
 
-      const payload = await response.json();
+      const payload = await parseApiResponse<{ ok: boolean; error?: string }>(
+        response,
+      );
       if (!response.ok || !payload.ok) {
         throw new Error(payload.error || "Không thể lưu nhận xét");
       }
