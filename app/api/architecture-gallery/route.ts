@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import {
   readArchitectureGallery,
   readProjectLinkOptions,
@@ -7,7 +8,18 @@ import {
 import { readProjectStyles } from "@/lib/taxonomy-storage";
 import { ARCHITECTURE_GALLERY_SLOTS } from "@/lib/architecture-gallery";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+const noCacheHeaders = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+  Pragma: "no-cache",
+  Expires: "0",
+};
+
 export async function GET() {
+  noStore();
+
   try {
     const [styles, projects, items] = await Promise.all([
       readProjectStyles(),
@@ -22,26 +34,34 @@ export async function GET() {
       return acc;
     }, {});
 
-    return NextResponse.json({
-      ok: true,
-      data: {
-        styles,
-        projects,
-        slots: ARCHITECTURE_GALLERY_SLOTS,
-        grouped,
+    return NextResponse.json(
+      {
+        ok: true,
+        data: {
+          styles,
+          projects,
+          slots: ARCHITECTURE_GALLERY_SLOTS,
+          grouped,
+        },
       },
-    });
+      { headers: noCacheHeaders },
+    );
   } catch (error) {
     console.error("GET /api/architecture-gallery error", error);
     const message =
       error instanceof Error
         ? error.message
         : "Failed to load architecture gallery";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: message },
+      { status: 500, headers: noCacheHeaders },
+    );
   }
 }
 
 export async function PUT(request: NextRequest) {
+  noStore();
+
   try {
     const body = await request.json();
     const styleId = Number(body.styleId);
@@ -50,18 +70,32 @@ export async function PUT(request: NextRequest) {
     if (!styleId) {
       return NextResponse.json(
         { ok: false, error: "styleId is required" },
-        { status: 400 },
+        { status: 400, headers: noCacheHeaders },
       );
     }
 
     await saveArchitectureGalleryForStyle(styleId, entries);
-    return NextResponse.json({ ok: true });
+    const savedItems = (await readArchitectureGallery()).filter(
+      (item) => item.styleId === styleId,
+    );
+
+    return NextResponse.json(
+      {
+        ok: true,
+        message: "Cập nhật gallery thành công",
+        data: savedItems,
+      },
+      { headers: noCacheHeaders },
+    );
   } catch (error) {
     console.error("PUT /api/architecture-gallery error", error);
     const message =
       error instanceof Error
         ? error.message
         : "Failed to save architecture gallery";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: message },
+      { status: 500, headers: noCacheHeaders },
+    );
   }
 }

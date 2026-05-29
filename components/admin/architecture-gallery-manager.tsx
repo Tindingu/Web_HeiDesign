@@ -39,6 +39,27 @@ type ApiResponse = {
   error?: string;
 };
 
+async function parseApiResponse<T extends { ok: boolean; error?: string }>(
+  response: Response,
+): Promise<T> {
+  const text = await response.text();
+  if (!text) {
+    return {
+      ok: false,
+      error: `API trả về body rỗng (${response.status})`,
+    } as T;
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return {
+      ok: false,
+      error: "API trả về dữ liệu không phải JSON hợp lệ",
+    } as T;
+  }
+}
+
 function emptyDraft(slots: SlotTemplate[]): DraftEntry[] {
   return slots.map((slot) => ({
     slotIndex: slot.slotIndex,
@@ -73,7 +94,7 @@ export function ArchitectureGalleryManager() {
         const response = await fetch("/api/architecture-gallery", {
           cache: "no-store",
         });
-        const payload = (await response.json()) as ApiResponse;
+        const payload = await parseApiResponse<ApiResponse>(response);
         if (!response.ok || !payload.ok || !payload.data) {
           throw new Error(payload.error || "Không thể tải dữ liệu gallery");
         }
@@ -160,6 +181,7 @@ export function ArchitectureGalleryManager() {
       const response = await fetch("/api/architecture-gallery", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        cache: "no-store",
         body: JSON.stringify({
           styleId: selectedStyleId,
           entries: selectedEntries.map((entry) => ({
@@ -171,7 +193,9 @@ export function ArchitectureGalleryManager() {
         }),
       });
 
-      const payload = await response.json();
+      const payload = await parseApiResponse<{ ok: boolean; error?: string }>(
+        response,
+      );
       if (!response.ok || !payload.ok) {
         throw new Error(payload.error || "Không thể lưu gallery");
       }
