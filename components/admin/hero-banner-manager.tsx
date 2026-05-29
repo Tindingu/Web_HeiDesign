@@ -11,6 +11,27 @@ type ApiPayload = {
   error?: string;
 };
 
+async function parseApiResponse<T extends { ok: boolean; error?: string }>(
+  response: Response,
+): Promise<T> {
+  const text = await response.text();
+  if (!text) {
+    return {
+      ok: false,
+      error: `API trả về body rỗng (${response.status})`,
+    } as T;
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return {
+      ok: false,
+      error: "API trả về dữ liệu không phải JSON hợp lệ",
+    } as T;
+  }
+}
+
 export function HeroBannerManager() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -29,7 +50,7 @@ export function HeroBannerManager() {
         const response = await fetch("/api/hero-banner", {
           cache: "no-store",
         });
-        const payload = (await response.json()) as ApiPayload;
+        const payload = await parseApiResponse<ApiPayload>(response);
         if (!response.ok || !payload.ok) {
           throw new Error(payload.error || "Không thể tải cấu hình");
         }
@@ -66,18 +87,23 @@ export function HeroBannerManager() {
         body: formData,
       });
 
-      const result = await response.json();
-      if (!response.ok || !result.ok) {
+      const result = await parseApiResponse<{
+        ok: boolean;
+        data?: { url: string };
+        error?: string;
+      }>(response);
+      if (!response.ok || !result.ok || !result.data?.url) {
         throw new Error(result.error || "Upload failed");
       }
+      const uploadedUrl = result.data.url;
 
       // Add to list
       setImageUrls((prev) => {
         const last = prev[prev.length - 1];
         if (last === "") {
-          return [...prev.slice(0, -1), result.data.url];
+          return [...prev.slice(0, -1), uploadedUrl];
         } else {
-          return [...prev, result.data.url];
+          return [...prev, uploadedUrl];
         }
       });
 
@@ -122,6 +148,7 @@ export function HeroBannerManager() {
       const response = await fetch("/api/hero-banner", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        cache: "no-store",
         body: JSON.stringify({
           title: "Nội thất cao cấp",
           subtitle: "Thiết kế, thi công và hoàn thiện trọn gói",
@@ -130,7 +157,7 @@ export function HeroBannerManager() {
           imageUrls: filteredUrls,
         }),
       });
-      const payload = await response.json();
+      const payload = await parseApiResponse<ApiPayload>(response);
       if (!response.ok || !payload.ok) {
         throw new Error(payload.error || "Không thể lưu cấu hình");
       }
