@@ -5,7 +5,7 @@ import { getArticleBySlug, readArticles } from "@/lib/article-storage";
 import { buildMetadata } from "@/lib/seo";
 import Image from "next/image";
 
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const articles = await readArticles();

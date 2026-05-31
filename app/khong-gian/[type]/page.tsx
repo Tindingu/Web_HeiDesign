@@ -21,7 +21,7 @@ import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
 import { BlogToc } from "@/components/blog/toc";
 import { extractHeadings } from "@/lib/mdx";
 
-export const revalidate = 120;
+export const revalidate = 86400;
 
 const defaultType = DU_AN_TARGET_OPTIONS[0]?.value ?? "nha-dep";
 

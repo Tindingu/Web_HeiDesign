@@ -9,7 +9,7 @@ import { ArchitectureShowcase } from "@/components/portfolio/architecture-showca
 import { DualFileWordUploader } from "@/components/portfolio/dual-file-word-uploader";
 import { Container } from "@/components/shared/container";
 
-export const revalidate = 120;
+export const revalidate = 86400;
 
 export const generateMetadata = () =>
   buildMetadata({

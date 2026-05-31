@@ -5,6 +5,7 @@ import {
   saveHomepageBanners,
   clearHomepageBanners,
 } from "@/lib/homepage-banner-storage";
+import { revalidateHomepageContent } from "@/lib/revalidate-public-paths";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -41,6 +42,7 @@ export async function PUT(request: NextRequest) {
     const items = Array.isArray(body.items) ? body.items : [];
     await saveHomepageBanners(items);
     const savedItems = await readHomepageBanners();
+    revalidateHomepageContent();
     return NextResponse.json(
       { ok: true, data: savedItems },
       { headers: noCacheHeaders },
@@ -61,6 +63,7 @@ export async function DELETE() {
 
   try {
     await clearHomepageBanners();
+    revalidateHomepageContent();
     return NextResponse.json(
       { ok: true, data: [] },
       { headers: noCacheHeaders },

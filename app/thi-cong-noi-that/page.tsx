@@ -8,7 +8,7 @@ import { readArchitectureGallery } from "@/lib/architecture-gallery-storage";
 import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureStyles } from "@/components/home/architecture-styles";
 
-export const revalidate = 120;
+export const revalidate = 86400;
 
 export const generateMetadata = () =>
   buildMetadata({

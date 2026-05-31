@@ -18,7 +18,7 @@ import Link from "next/link";
 import { toCategorySlug } from "@/lib/post-category";
 import { RelatedPostsCarousel } from "@/components/blog/related-posts-carousel";
 
-export const revalidate = 120;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const slugs = await getPostSlugs();

@@ -4,6 +4,7 @@ import {
   readHomepageTestimonials,
   saveHomepageTestimonials,
 } from "@/lib/homepage-testimonial-storage";
+import { revalidateHomepageContent } from "@/lib/revalidate-public-paths";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -42,6 +43,7 @@ export async function PUT(request: NextRequest) {
     await saveHomepageTestimonials(items);
 
     const savedItems = await readHomepageTestimonials();
+    revalidateHomepageContent();
     return NextResponse.json(
       { ok: true, data: savedItems },
       { headers: noCacheHeaders },

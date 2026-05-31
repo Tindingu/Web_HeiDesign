@@ -4,6 +4,7 @@ import {
   readHeroBannerSettings,
   saveHeroBannerSettings,
 } from "@/lib/hero-banner-storage";
+import { revalidateHomepageContent } from "@/lib/revalidate-public-paths";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -70,6 +71,7 @@ export async function PUT(request: NextRequest) {
       ctaSecondary,
       imageUrls,
     });
+    revalidateHomepageContent();
 
     return NextResponse.json(
       { ok: true, data: saved },

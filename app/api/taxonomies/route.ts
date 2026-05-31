@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
+  type ArticleTypeItem,
+  type TaxonomyItem,
   createBlogCategory,
   createProjectCategory,
   createProjectStyle,
@@ -18,6 +20,10 @@ import {
   updateProjectCategory,
   updateProjectStyle,
 } from "@/lib/taxonomy-storage";
+import { revalidateTaxonomyContent } from "@/lib/revalidate-public-paths";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 type TaxonomyKind =
   | "blog-category"
@@ -31,6 +37,41 @@ function parseKind(value: string | null): TaxonomyKind | null {
   if (value === "project-style") return value;
   if (value === "article-type") return value;
   return null;
+}
+
+async function findTaxonomyItem(kind: TaxonomyKind, id: number) {
+  if (kind === "blog-category") {
+    return (await readBlogCategories()).find((item) => item.id === id) ?? null;
+  }
+  if (kind === "project-category") {
+    return (await readProjectCategories()).find((item) => item.id === id) ?? null;
+  }
+  if (kind === "project-style") {
+    return (await readProjectStyles()).find((item) => item.id === id) ?? null;
+  }
+  return (await readArticleTypes()).find((item) => item.id === id) ?? null;
+}
+
+function revalidateCreatedTaxonomy(
+  kind: TaxonomyKind,
+  item: TaxonomyItem | ArticleTypeItem,
+) {
+  revalidateTaxonomyContent(kind, item);
+}
+
+function revalidateUpdatedTaxonomy(
+  kind: TaxonomyKind,
+  item: TaxonomyItem | ArticleTypeItem,
+  previousItem: TaxonomyItem | ArticleTypeItem | null,
+) {
+  revalidateTaxonomyContent(kind, item, previousItem);
+}
+
+function revalidateDeletedTaxonomy(
+  kind: TaxonomyKind,
+  previousItem: TaxonomyItem | ArticleTypeItem | null,
+) {
+  revalidateTaxonomyContent(kind, previousItem, previousItem);
 }
 
 export async function GET() {
@@ -87,6 +128,7 @@ export async function POST(request: NextRequest) {
         );
       }
       const item = await createBlogCategory(String(body.name));
+      revalidateCreatedTaxonomy(kind, item);
       return NextResponse.json({ ok: true, data: item }, { status: 201 });
     }
 
@@ -98,6 +140,7 @@ export async function POST(request: NextRequest) {
         );
       }
       const item = await createProjectCategory(String(body.name));
+      revalidateCreatedTaxonomy(kind, item);
       return NextResponse.json({ ok: true, data: item }, { status: 201 });
     }
 
@@ -109,6 +152,7 @@ export async function POST(request: NextRequest) {
         );
       }
       const item = await createProjectStyle(String(body.name));
+      revalidateCreatedTaxonomy(kind, item);
       return NextResponse.json({ ok: true, data: item }, { status: 201 });
     }
 
@@ -124,6 +168,7 @@ export async function POST(request: NextRequest) {
       code: body.code ? String(body.code) : undefined,
       sectionId: Number(body.sectionId),
     });
+    revalidateCreatedTaxonomy(kind, item);
     return NextResponse.json({ ok: true, data: item }, { status: 201 });
   } catch (error) {
     const message =
@@ -145,6 +190,8 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    const previousItem = await findTaxonomyItem(kind, id);
+
     if (kind === "blog-category") {
       const updated = await updateBlogCategory(id, String(body.name || ""));
       if (!updated) {
@@ -153,6 +200,7 @@ export async function PUT(request: NextRequest) {
           { status: 404 },
         );
       }
+      revalidateUpdatedTaxonomy(kind, updated, previousItem);
       return NextResponse.json({ ok: true, data: updated });
     }
 
@@ -164,6 +212,7 @@ export async function PUT(request: NextRequest) {
           { status: 404 },
         );
       }
+      revalidateUpdatedTaxonomy(kind, updated, previousItem);
       return NextResponse.json({ ok: true, data: updated });
     }
 
@@ -175,6 +224,7 @@ export async function PUT(request: NextRequest) {
           { status: 404 },
         );
       }
+      revalidateUpdatedTaxonomy(kind, updated, previousItem);
       return NextResponse.json({ ok: true, data: updated });
     }
 
@@ -191,6 +241,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    revalidateUpdatedTaxonomy(kind, updated, previousItem);
     return NextResponse.json({ ok: true, data: updated });
   } catch (error) {
     const message =
@@ -212,6 +263,8 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    const previousItem = await findTaxonomyItem(kind, id);
+
     let deleted = false;
     if (kind === "blog-category") deleted = await deleteBlogCategory(id);
     if (kind === "project-category") deleted = await deleteProjectCategory(id);
@@ -225,6 +278,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    revalidateDeletedTaxonomy(kind, previousItem);
     return NextResponse.json({ ok: true });
   } catch (error) {
     const message =

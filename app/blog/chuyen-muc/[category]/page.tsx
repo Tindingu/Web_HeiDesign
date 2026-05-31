@@ -6,7 +6,7 @@ import { Container } from "@/components/shared/container";
 import { PostCard } from "@/components/blog/post-card";
 import { toCategoryLabel } from "@/lib/post-category";
 
-export const revalidate = 120;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const categories = await getPostCategories();

@@ -7,6 +7,7 @@ import {
 } from "@/lib/architecture-gallery-storage";
 import { readProjectStyles } from "@/lib/taxonomy-storage";
 import { ARCHITECTURE_GALLERY_SLOTS } from "@/lib/architecture-gallery";
+import { revalidateArchitectureGalleryContent } from "@/lib/revalidate-public-paths";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -78,6 +79,7 @@ export async function PUT(request: NextRequest) {
     const savedItems = (await readArchitectureGallery()).filter(
       (item) => item.styleId === styleId,
     );
+    revalidateArchitectureGalleryContent();
 
     return NextResponse.json(
       {

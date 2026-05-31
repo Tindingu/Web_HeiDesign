@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { unstable_noStore as noStore } from "next/cache";
 import { readBlogCategories } from "@/lib/taxonomy-storage";
 import {
   clearHotBlogTopicSettings,
@@ -6,8 +7,14 @@ import {
   saveHotBlogTopicSettings,
 } from "@/lib/hot-blog-topic-storage";
 import { toCategorySlug } from "@/lib/post-category";
+import { revalidateHomepageContent } from "@/lib/revalidate-public-paths";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET() {
+  noStore();
+
   try {
     const [settings, categories] = await Promise.all([
       readHotBlogTopicSettings(),
@@ -34,6 +41,8 @@ export async function GET() {
 }
 
 export async function PUT(request: NextRequest) {
+  noStore();
+
   try {
     const body = await request.json();
     const topicSlug = String(body.topicSlug || "").trim();
@@ -57,6 +66,7 @@ export async function PUT(request: NextRequest) {
       topicLabel,
       bannerImageUrls,
     });
+    revalidateHomepageContent();
 
     return NextResponse.json({ ok: true, data: saved });
   } catch (error) {
@@ -69,8 +79,11 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE() {
+  noStore();
+
   try {
     await clearHotBlogTopicSettings();
+    revalidateHomepageContent();
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("DELETE /api/hot-blog-topic error", error);

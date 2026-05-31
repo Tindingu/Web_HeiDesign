@@ -17,7 +17,7 @@ import { RelatedProjectsCarousel } from "@/components/project/related-projects-c
 import { BlogToc } from "@/components/blog/toc";
 import { extractHeadings } from "@/lib/mdx";
 
-export const revalidate = 0; // Always fresh from storage
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();

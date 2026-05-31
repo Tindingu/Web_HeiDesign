@@ -7,6 +7,10 @@ import {
   deleteProject,
 } from "@/lib/project-storage";
 import type { Project } from "@/lib/strapi";
+import { revalidateProjectContent } from "@/lib/revalidate-public-paths";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -43,6 +47,7 @@ export async function POST(request: NextRequest) {
     >;
 
     const project = await createProject(body);
+    revalidateProjectContent(project);
     return NextResponse.json(project, { status: 201 });
   } catch (error) {
     const message =
@@ -65,12 +70,14 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
+    const previousProject = await getProjectById(parseInt(id));
     const project = await updateProject(parseInt(id), body);
 
     if (!project) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
+    revalidateProjectContent(project, previousProject);
     return NextResponse.json(project);
   } catch (error) {
     const message =
@@ -92,12 +99,14 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    const previousProject = await getProjectById(parseInt(id));
     const success = await deleteProject(parseInt(id));
 
     if (!success) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
 
+    revalidateProjectContent(previousProject, previousProject);
     return NextResponse.json({ success: true });
   } catch (error) {
     const message =

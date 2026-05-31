@@ -25,7 +25,7 @@ import { WhyChooseHei } from "@/components/home/why-choose-hei";
 import { ScrollReveal } from "@/components/home/scroll-reveal";
 import { StrategicPartners } from "@/components/home/strategic-partners";
 
-export const revalidate = 120;
+export const revalidate = 3600;
 
 export const generateMetadata = () =>
   buildMetadata({

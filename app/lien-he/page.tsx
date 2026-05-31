@@ -13,7 +13,7 @@ import { ScrollReveal } from "@/components/home/scroll-reveal";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/constants";
 
-export const revalidate = 120;
+export const revalidate = 86400;
 
 export const generateMetadata = () =>
   buildMetadata({

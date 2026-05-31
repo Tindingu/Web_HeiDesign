@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   createBlogPost,
   deleteBlogPost,
+  getBlogPostById,
   getBlogPostBySlug,
   updateBlogPost,
 } from "@/lib/blog-post-storage";
 import { defaultBlurDataURL } from "@/lib/constants";
+import { revalidateBlogContent } from "@/lib/revalidate-public-paths";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,6 +41,7 @@ export async function POST(request: NextRequest) {
       },
       publishedAt: data.publishedAt || new Date().toISOString(),
     });
+    revalidateBlogContent(newPost);
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {
@@ -56,6 +62,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const data = await request.json();
+    const previousPost = await getBlogPostById(id);
 
     const updated = await updateBlogPost(id, {
       slug: data.slug,
@@ -75,6 +82,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
+    revalidateBlogContent(updated, previousPost);
     return NextResponse.json(updated);
   } catch (error) {
     const message =
@@ -93,12 +101,14 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
+    const previousPost = await getBlogPostById(id);
     const deleted = await deleteBlogPost(id);
 
     if (!deleted) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
+    revalidateBlogContent(previousPost, previousPost);
     return NextResponse.json({ success: true });
   } catch (error) {
     const message =

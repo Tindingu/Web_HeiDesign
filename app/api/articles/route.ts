@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   deleteArticle,
+  getArticleById,
   upsertArticleByTargetType,
   updateArticle,
 } from "@/lib/article-storage";
+import { revalidateArticleContent } from "@/lib/revalidate-public-paths";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,6 +46,7 @@ export async function POST(request: NextRequest) {
         mainContent: data.mainContent,
       },
     );
+    revalidateArticleContent(newArticle);
 
     return NextResponse.json(newArticle, { status: 200 });
   } catch (error) {
@@ -61,6 +67,7 @@ export async function PUT(request: NextRequest) {
     }
 
     const data = await request.json();
+    const previousArticle = await getArticleById(parseInt(id));
     const updated = await updateArticle(parseInt(id), {
       slug: data.slug,
       targetSection: data.targetSection,
@@ -77,6 +84,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
 
+    revalidateArticleContent(updated, previousArticle);
     return NextResponse.json(updated);
   } catch (error) {
     console.error("PUT /api/articles error", error);
@@ -95,12 +103,14 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
+    const previousArticle = await getArticleById(parseInt(id));
     const deleted = await deleteArticle(parseInt(id));
 
     if (!deleted) {
       return NextResponse.json({ error: "Article not found" }, { status: 404 });
     }
 
+    revalidateArticleContent(previousArticle, previousArticle);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("DELETE /api/articles error", error);

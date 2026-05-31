@@ -6,7 +6,7 @@ import { buildMetadata } from "@/lib/seo";
 import { categoryToTypeSlug, toSlug } from "@/lib/article-path";
 import Image from "next/image";
 
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export async function generateMetadata({
   params,

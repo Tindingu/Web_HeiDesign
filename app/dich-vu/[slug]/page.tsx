@@ -4,7 +4,7 @@ import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
 import { WordUploader } from "@/components/shared/word-uploader";
 import { getServiceBySlug, getAllServices } from "@/lib/services";
 
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   const services = await getAllServices();
