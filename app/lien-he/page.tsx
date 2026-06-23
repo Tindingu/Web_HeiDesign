@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   ArrowRight,
   Building2,
@@ -12,6 +11,7 @@ import { LeadCaptureForm } from "@/components/contact/lead-capture-form";
 import { ScrollReveal } from "@/components/home/scroll-reveal";
 import { buildMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/constants";
+import { TrackedLink } from "@/components/tracking/tracked-link";
 
 export const revalidate = 86400;
 
@@ -84,20 +84,31 @@ export default function ContactPage() {
                   khai và ngân sách dự kiến theo từng giai đoạn thực hiện.
                 </p>
                 <div className="flex flex-wrap gap-3 pt-1">
-                  <Link
+                  <TrackedLink
                     href={`tel:${siteConfig.phone}`}
                     className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-slate-900 transition hover:bg-amber-400"
+                    eventName="Contact"
+                    customData={{
+                      channel: "phone",
+                      location: "contact_page_hero",
+                      content_name: "Contact page hero call",
+                    }}
                   >
                     <Phone className="h-4 w-4" />
                     <span>Gọi ngay</span>
-                  </Link>
-                  <Link
+                  </TrackedLink>
+                  <TrackedLink
                     href="/bao-gia"
                     className="inline-flex items-center gap-2 rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300 hover:text-amber-200"
+                    eventName="RequestQuoteClick"
+                    customData={{
+                      location: "contact_page_hero",
+                      content_name: "Contact page hero quote",
+                    }}
                   >
                     <span>Nhận báo giá</span>
                     <ArrowRight className="h-4 w-4" />
-                  </Link>
+                  </TrackedLink>
                 </div>
               </div>
             </ScrollReveal>
@@ -108,12 +119,18 @@ export default function ContactPage() {
                   Thông tin nhanh
                 </p>
                 <div className="mt-4 space-y-3">
-                  <a
+                  <TrackedLink
                     href={`tel:${siteConfig.phone}`}
                     className="block rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm hover:border-amber-300/60"
+                    eventName="Contact"
+                    customData={{
+                      channel: "phone",
+                      location: "contact_page_quick_info",
+                      content_name: "Contact page quick hotline",
+                    }}
                   >
                     Hotline: {siteConfig.phone}
-                  </a>
+                  </TrackedLink>
                   <a
                     href={`mailto:${siteConfig.email}`}
                     className="block rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm hover:border-amber-300/60"

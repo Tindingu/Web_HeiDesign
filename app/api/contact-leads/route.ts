@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { siteConfig } from "@/lib/constants";
 import { sendContactLeadMail } from "@/lib/contact-mail";
+import { sendMetaConversionEvent } from "@/lib/meta-conversions";
 
 const contactLeadSchema = z.object({
   fullName: z.string().trim().min(2).max(120),
@@ -74,6 +75,21 @@ export async function POST(request: Request) {
       ...smtpSettings,
       subject,
       text,
+    });
+
+    await sendMetaConversionEvent({
+      eventName: "Lead",
+      eventSourceUrl: pageUrl || siteConfig.url,
+      customData: {
+        content_name: source,
+        lead_source: source,
+        page_url: pageUrl || siteConfig.url,
+      },
+      userData: {
+        fullName,
+        phone,
+      },
+      request,
     });
 
     return Response.json({ ok: true });

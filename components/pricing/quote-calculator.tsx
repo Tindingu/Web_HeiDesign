@@ -7,6 +7,7 @@ import {
   type MaterialTier,
 } from "@/lib/pricing";
 import { Button } from "@/components/ui/button";
+import { trackMetaEvent } from "@/lib/meta-client";
 
 const formatCurrency = (value: number) =>
   new Intl.NumberFormat("vi-VN", {
@@ -108,7 +109,26 @@ export function QuoteCalculator() {
       </div>
 
       <Button asChild size="lg" className="w-full">
-        <a href="https://zalo.me/0904465448" target="_blank" rel="noreferrer">
+        <a
+          href="https://zalo.me/0904465448"
+          target="_blank"
+          rel="noreferrer"
+          onClick={() =>
+            trackMetaEvent({
+              eventName: "Lead",
+              customData: {
+                channel: "zalo",
+                location: "quote_calculator",
+                content_name: "Quote calculator Zalo lead",
+                area,
+                material,
+                finish,
+                value: breakdown.total,
+                currency: "VND",
+              },
+            })
+          }
+        >
           Nhận báo giá qua Zalo
         </a>
       </Button>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getAllServices } from "@/lib/services";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { TrackedLink } from "@/components/tracking/tracked-link";
 
 export const metadata = {
   title: "Dịch Vụ Thiết Kế Nội Thất | HEI Design",
@@ -104,14 +105,33 @@ export default async function ServicesPage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button asChild className="bg-amber-600 hover:bg-amber-700">
-                <Link href="/bao-gia">Nhận Báo Giá</Link>
+                <TrackedLink
+                  href="/bao-gia"
+                  eventName="RequestQuoteClick"
+                  customData={{
+                    location: "services_page_cta",
+                    content_name: "Services page request quote",
+                  }}
+                >
+                  Nhận Báo Giá
+                </TrackedLink>
               </Button>
               <Button
                 asChild
                 variant="outline"
                 className="border-white text-white hover:bg-white hover:text-gray-900"
               >
-                <a href="tel:0904465448">Gọi Tư Vấn: 0795 743 429</a>
+                <TrackedLink
+                  href="tel:0904465448"
+                  eventName="Contact"
+                  customData={{
+                    channel: "phone",
+                    location: "services_page_cta",
+                    content_name: "Services page call",
+                  }}
+                >
+                  Gọi Tư Vấn: 0795 743 429
+                </TrackedLink>
               </Button>
             </div>
           </div>

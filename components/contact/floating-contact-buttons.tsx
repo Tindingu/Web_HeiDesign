@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Facebook, Phone } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { siteConfig } from "@/lib/constants";
+import { trackMetaEvent } from "@/lib/meta-client";
 
 export function FloatingContactButtons() {
   const pathname = usePathname();
@@ -14,6 +15,17 @@ export function FloatingContactButtons() {
 
   const baseButtonClass =
     "relative inline-flex h-11 w-11 items-center justify-center rounded-full text-white shadow-[0_10px_24px_rgba(15,23,42,0.28)] transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:shadow-[0_16px_34px_rgba(15,23,42,0.38)] active:scale-95 md:h-13 md:w-13";
+
+  const trackContact = (channel: "phone" | "facebook" | "zalo") => {
+    trackMetaEvent({
+      eventName: "Contact",
+      customData: {
+        channel,
+        location: "floating_button",
+        content_name: `Floating ${channel} contact`,
+      },
+    });
+  };
 
   return (
     <>
@@ -115,6 +127,7 @@ export function FloatingContactButtons() {
       <div className="fixed bottom-6 right-3 z-40 flex flex-col gap-3 md:bottom-8 md:right-5">
   <a
     href={`tel:${siteConfig.phone}`}
+    onClick={() => trackContact("phone")}
     aria-label="Gọi hotline"
     title="Gọi hotline"
     className={`${baseButtonClass} sonar bg-[#52b7a4]`}
@@ -124,6 +137,7 @@ export function FloatingContactButtons() {
 
   <a
     href={siteConfig.facebookUrl}
+    onClick={() => trackContact("facebook")}
     target="_blank"
     rel="noreferrer"
     aria-label="Facebook"
@@ -135,6 +149,7 @@ export function FloatingContactButtons() {
 
   <Link
     href={siteConfig.zaloUrl}
+    onClick={() => trackContact("zalo")}
     target="_blank"
     aria-label="Chat Zalo"
     title="Chat Zalo"

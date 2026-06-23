@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { Search, Menu, ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { trackMetaEvent } from "@/lib/meta-client";
 
 type MenuItem = {
   label: string;
@@ -160,6 +161,23 @@ const baseMenuItems: MenuItem[] = [
   { label: "Giới thiệu", href: "/gioi-thieu" },
 ];
 
+const trackedHeaderHrefs = new Set([
+  "/thiet-ke-noi-that",
+  "/thi-cong-noi-that",
+  "/du-an",
+  "/bao-gia",
+  "/lien-he",
+]);
+
+function shouldTrackHeaderNavigation(href: string) {
+  return (
+    trackedHeaderHrefs.has(href) ||
+    href.startsWith("/thiet-ke-noi-that/") ||
+    href.startsWith("/thi-cong-noi-that/") ||
+    href.startsWith("/khong-gian/")
+  );
+}
+
 export function SiteHeader() {
   const router = useRouter();
   const pathname = usePathname();
@@ -293,6 +311,32 @@ export function SiteHeader() {
     isDraggingTopRef.current = false;
   };
 
+  const trackCategoryInterest = (cat: (typeof topCategories)[number]) => {
+    trackMetaEvent({
+      eventName: "CategoryInterest",
+      customData: {
+        category_name: cat.label,
+        category_href: cat.href,
+        location: "header_category_icons",
+      },
+    });
+  };
+
+  const trackHeaderNavigation = (
+    item: Pick<MenuItem, "label" | "href">,
+    location: string,
+  ) => {
+    if (!shouldTrackHeaderNavigation(item.href)) return;
+    trackMetaEvent({
+      eventName: "NavigationClick",
+      customData: {
+        nav_item: item.label,
+        nav_href: item.href,
+        location,
+      },
+    });
+  };
+
   const renderDesktopSubmenu = (item: MenuItem) => {
     if (!item.submenu) return null;
 
@@ -300,11 +344,12 @@ export function SiteHeader() {
       return (
         <div className="absolute left-0 top-full z-50 hidden w-60 rounded-[1.15rem] border border-[#D8C3A5]/70 bg-[#FBF6F2] p-2 shadow-[0_18px_45px_rgba(31,31,31,0.12)] backdrop-blur group-hover:block">
           {item.submenu.map((sub) => (
-            <Link
-              key={sub.href}
-              href={sub.href}
-              className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
-            >
+              <Link
+                key={sub.href}
+                href={sub.href}
+                onClick={() => trackHeaderNavigation(sub, "header_dropdown")}
+                className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
+              >
               {sub.label}
             </Link>
           ))}
@@ -319,6 +364,7 @@ export function SiteHeader() {
             <div key={sub.href} className="group/nested relative after:absolute after:left-full after:top-0 after:h-full after:w-3">
               <Link
                 href={sub.href}
+                onClick={() => trackHeaderNavigation(sub, "header_dropdown")}
                 className="flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
               >
                 <span>{sub.label}</span>
@@ -329,9 +375,12 @@ export function SiteHeader() {
                 {sub.submenu.map((nested) => (
                   <Link
                     key={nested.href}
-                    href={nested.href}
-                    className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
-                  >
+                  href={nested.href}
+                  onClick={() =>
+                    trackHeaderNavigation(nested, "header_nested_dropdown")
+                  }
+                  className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
+                >
                     {nested.label}
                   </Link>
                 ))}
@@ -341,6 +390,7 @@ export function SiteHeader() {
             <Link
               key={sub.href}
               href={sub.href}
+              onClick={() => trackHeaderNavigation(sub, "header_dropdown")}
               className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
             >
               {sub.label}
@@ -411,6 +461,7 @@ export function SiteHeader() {
               <Link
                 key={cat.href}
                 href={cat.href}
+                onClick={() => trackCategoryInterest(cat)}
                 className="group flex min-w-[5.15rem] flex-col items-center justify-start gap-2 rounded-xl px-1 py-1.5 text-center transition-all hover:-translate-y-0.5"
               >
                 <Image
@@ -470,6 +521,7 @@ export function SiteHeader() {
               <Link
                 key={cat.href}
                 href={cat.href}
+                onClick={() => trackCategoryInterest(cat)}
                 className="group flex w-[5.4rem] shrink-0 flex-col items-center gap-1.5 rounded-xl border border-[#D8C3A5]/75 bg-[#FBF6F2] px-2 py-2.5 text-center shadow-sm transition hover:-translate-y-0.5 hover:border-[#C8922E]"
               >
                 <Image
@@ -498,6 +550,9 @@ export function SiteHeader() {
                   <>
                     <Link
                       href={item.href}
+                      onClick={() =>
+                        trackHeaderNavigation(item, "header_desktop")
+                      }
                       className="flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2.5 text-[14px] font-semibold text-[#1F1F1F] transition-all hover:bg-white/75 hover:text-[#B88732] hover:shadow-sm xl:px-4 xl:text-[15px]"
                     >
                       {item.label}
@@ -508,6 +563,9 @@ export function SiteHeader() {
                 ) : (
                   <Link
                     href={item.href}
+                    onClick={() =>
+                      trackHeaderNavigation(item, "header_desktop")
+                    }
                     className="whitespace-nowrap rounded-full px-3 py-2.5 text-[14px] font-semibold text-[#1F1F1F] transition-all hover:bg-white/75 hover:text-[#B88732] hover:shadow-sm xl:px-4 xl:text-[15px]"
                   >
                     {item.label}
@@ -602,6 +660,10 @@ export function SiteHeader() {
                                           href={nested.href}
                                           className="block rounded-lg px-3 py-2 text-sm font-medium text-[#4A4035] transition hover:bg-white hover:text-[#B88732]"
                                           onClick={() => {
+                                            trackHeaderNavigation(
+                                              nested,
+                                              "header_mobile_nested_dropdown",
+                                            );
                                             setMobileMenuOpen(false);
                                             setActiveSubmenu(null);
                                             setActiveNestedSubmenu(null);
@@ -619,6 +681,10 @@ export function SiteHeader() {
                                   href={sub.href}
                                   className="block rounded-xl px-3 py-2.5 text-sm font-medium text-[#4A4035] transition hover:bg-white hover:text-[#B88732]"
                                   onClick={() => {
+                                    trackHeaderNavigation(
+                                      sub,
+                                      "header_mobile_dropdown",
+                                    );
                                     setMobileMenuOpen(false);
                                     setActiveSubmenu(null);
                                     setActiveNestedSubmenu(null);
@@ -636,6 +702,7 @@ export function SiteHeader() {
                         href={item.href}
                         className="block rounded-xl px-4 py-2.5 text-sm font-semibold text-[#1F1F1F] transition hover:bg-white hover:text-[#B88732]"
                         onClick={() => {
+                          trackHeaderNavigation(item, "header_mobile");
                           setMobileMenuOpen(false);
                           setActiveSubmenu(null);
                         }}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Facebook, Instagram, MapPin, Phone, Mail, YoutubeIcon } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { siteConfig } from "@/lib/constants";
+import { TrackedLink } from "@/components/tracking/tracked-link";
 
 function TikTokIcon({ className }: { className?: string }) {
   return (
@@ -49,15 +50,21 @@ export function SiteFooter() {
             </p>
 
             <div className="flex items-center gap-2">
-              <a
+              <TrackedLink
                 href={siteConfig.facebookUrl}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Facebook"
+                ariaLabel="Facebook"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-white/5 text-slate-200 transition hover:border-amber-400 hover:text-amber-300"
+                eventName="Contact"
+                customData={{
+                  channel: "facebook",
+                  location: "footer_social",
+                  content_name: "Footer Facebook contact",
+                }}
               >
                 <Facebook className="h-4 w-4" />
-              </a>
+              </TrackedLink>
               <a
                 href={siteConfig.youtubeUrl}
                 target="_blank"
@@ -88,12 +95,17 @@ export function SiteFooter() {
             </div>
 
             <div className="flex flex-wrap gap-3 pt-1">
-              <Link
+              <TrackedLink
                 href="/bao-gia"
                 className="rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-amber-400"
+                eventName="RequestQuoteClick"
+                customData={{
+                  location: "footer_primary_cta",
+                  content_name: "Footer request quote",
+                }}
               >
                 Nhận báo giá
-              </Link>
+              </TrackedLink>
               <Link
                 href="/du-an"
                 className="rounded-full border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-white hover:text-white"
@@ -152,9 +164,17 @@ export function SiteFooter() {
               >
                 Không gian
               </Link>
-              <Link href="/bao-gia" className="transition hover:text-amber-300">
+              <TrackedLink
+                href="/bao-gia"
+                className="transition hover:text-amber-300"
+                eventName="RequestQuoteClick"
+                customData={{
+                  location: "footer_service_menu",
+                  content_name: "Footer service quote link",
+                }}
+              >
                 Báo giá
-              </Link>
+              </TrackedLink>
               <Link href="/thuoc-lo-ban" className="transition hover:text-amber-300">
                 Thước Lỗ Ban
               </Link>
@@ -173,12 +193,18 @@ export function SiteFooter() {
                 <Phone className="mt-1 h-5 w-5 shrink-0 text-amber-300" />
                 <span>
                   <span className="block text-sm text-slate-400">Hotline</span>
-                  <a
+                  <TrackedLink
                     href={`tel:${siteConfig.phone}`}
                     className="block pt-0.5 text-base font-medium transition hover:text-amber-300"
+                    eventName="Contact"
+                    customData={{
+                      channel: "phone",
+                      location: "footer_contact",
+                      content_name: "Footer hotline",
+                    }}
                   >
                     {siteConfig.phone}
-                  </a>
+                  </TrackedLink>
                 </span>
               </p>
               <p className="flex items-start gap-3">
@@ -247,9 +273,17 @@ export function SiteFooter() {
             <Link href="/lien-he" className="transition hover:text-white">
               Liên hệ
             </Link>
-            <Link href="/bao-gia" className="transition hover:text-white">
+            <TrackedLink
+              href="/bao-gia"
+              className="transition hover:text-white"
+              eventName="RequestQuoteClick"
+              customData={{
+                location: "footer_bottom",
+                content_name: "Footer bottom quote link",
+              }}
+            >
               Báo giá
-            </Link>
+            </TrackedLink>
             <Link href="/du-an" className="transition hover:text-white">
               Dự án
             </Link>

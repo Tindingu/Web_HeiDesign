@@ -41,7 +41,10 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const facebookPixelId = "27265110099809235";
+const facebookPixelId =
+  process.env.NEXT_PUBLIC_META_PIXEL_ID ||
+  process.env.META_PIXEL_ID ||
+  "27265110099809235";
 
 export default function RootLayout({
   children,
