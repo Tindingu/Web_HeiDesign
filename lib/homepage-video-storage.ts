@@ -2,6 +2,8 @@ import { ensureDbSchema } from "@/lib/db/schema";
 import { getDbPool } from "@/lib/db/neon";
 import { buildYouTubeThumbnailUrl, extractYouTubeId } from "@/lib/youtube";
 
+export type HomepageVideoDisplayType = "standard" | "short";
+
 export type HomepageVideoItem = {
   id: number;
   title: string;
@@ -10,6 +12,7 @@ export type HomepageVideoItem = {
   thumbnailUrl: string;
   sortOrder: number;
   isActive: boolean;
+  displayType: HomepageVideoDisplayType;
 };
 
 export type HomepageVideoInput = {
@@ -17,6 +20,7 @@ export type HomepageVideoInput = {
   youtubeUrl: string;
   sortOrder?: number;
   isActive?: boolean;
+  displayType?: HomepageVideoDisplayType;
 };
 
 type HomepageVideoRow = {
@@ -27,6 +31,7 @@ type HomepageVideoRow = {
   thumbnail_url: string;
   sort_order: number;
   is_active: boolean;
+  display_type: HomepageVideoDisplayType;
 };
 
 async function ensureHomepageVideosTable() {
@@ -40,14 +45,17 @@ async function ensureHomepageVideosTable() {
       thumbnail_url TEXT NOT NULL DEFAULT '',
       sort_order INTEGER NOT NULL DEFAULT 0,
       is_active BOOLEAN NOT NULL DEFAULT TRUE,
+      display_type TEXT NOT NULL DEFAULT 'standard',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
 
     ALTER TABLE homepage_videos DROP COLUMN IF EXISTS description;
+    ALTER TABLE homepage_videos ADD COLUMN IF NOT EXISTS display_type TEXT NOT NULL DEFAULT 'standard';
 
     CREATE INDEX IF NOT EXISTS idx_homepage_videos_sort_order ON homepage_videos(sort_order, id);
     CREATE INDEX IF NOT EXISTS idx_homepage_videos_is_active ON homepage_videos(is_active);
+    CREATE INDEX IF NOT EXISTS idx_homepage_videos_display_type ON homepage_videos(display_type, sort_order, id);
   `);
 }
 
@@ -60,6 +68,7 @@ function mapRow(row: HomepageVideoRow): HomepageVideoItem {
     thumbnailUrl: row.thumbnail_url,
     sortOrder: Number(row.sort_order),
     isActive: Boolean(row.is_active),
+    displayType: row.display_type === "short" ? "short" : "standard",
   };
 }
 
@@ -80,6 +89,7 @@ function normalizeItem(
     youtubeUrl: item.youtubeUrl.trim(),
     sortOrder,
     isActive: item.isActive ?? true,
+    displayType: item.displayType ?? "standard",
     youtubeId,
     thumbnailUrl: buildYouTubeThumbnailUrl(youtubeId),
   };
@@ -98,34 +108,52 @@ export async function readHomepageVideos(): Promise<HomepageVideoItem[]> {
         youtube_id,
         thumbnail_url,
         sort_order,
-        is_active
+        is_active,
+        CASE
+          WHEN display_type = 'short' THEN 'short'
+          ELSE 'standard'
+        END AS display_type
       FROM homepage_videos
-      ORDER BY sort_order ASC, id ASC
+      ORDER BY display_type ASC, sort_order ASC, id ASC
     `,
   )) as { rows: HomepageVideoRow[] };
 
   return result.rows.map(mapRow);
 }
 
-export async function readActiveHomepageVideos(): Promise<HomepageVideoItem[]> {
+export async function readActiveHomepageVideos(
+  displayType?: HomepageVideoDisplayType,
+): Promise<HomepageVideoItem[]> {
   const videos = await readHomepageVideos();
-  return videos.filter((video) => video.isActive);
+  return videos.filter(
+    (video) =>
+      video.isActive && (!displayType || video.displayType === displayType),
+  );
 }
 
 export async function saveHomepageVideos(
   items: HomepageVideoInput[],
+  shortItems: HomepageVideoInput[] = [],
 ): Promise<void> {
   await ensureDbSchema();
   await ensureHomepageVideosTable();
   const pool = getDbPool();
 
-  if (items.length === 0) {
+  if (items.length === 0 && shortItems.length === 0) {
     throw new Error("Cần ít nhất 1 video để hiển thị trên trang chủ.");
   }
 
-  const normalized = items.map((item, index) =>
-    normalizeItem(item, item.sortOrder ?? index),
-  );
+  const normalized = [
+    ...items.map((item, index) =>
+      normalizeItem(
+        { ...item, displayType: "standard" },
+        item.sortOrder ?? index,
+      ),
+    ),
+    ...shortItems.map((item, index) =>
+      normalizeItem({ ...item, displayType: "short" }, item.sortOrder ?? index),
+    ),
+  ];
   const activeCount = normalized.filter((item) => item.isActive).length;
   if (activeCount === 0) {
     throw new Error("Ít nhất 1 video phải được bật để hiển thị.");
@@ -145,17 +173,19 @@ export async function saveHomepageVideos(
             youtube_id,
             thumbnail_url,
             sort_order,
-            is_active
+            is_active,
+            display_type
           )
-          VALUES ($1, $2, $3, $4, $5, $6)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)
         `,
         [
           item.title,
           item.youtubeUrl,
           item.youtubeId,
           item.thumbnailUrl,
-          index,
+          item.sortOrder ?? index,
           item.isActive ?? true,
+          item.displayType ?? "standard",
         ],
       );
     }

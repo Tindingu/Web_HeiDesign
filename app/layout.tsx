@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import React, { Suspense } from "react";
@@ -40,6 +41,8 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const facebookPixelId = "27265110099809235";
+
 export default function RootLayout({
   children,
 }: {
@@ -48,6 +51,33 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${facebookPixelId}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
+        <Script
+          id="facebook-pixel"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${facebookPixelId}');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
         <Suspense fallback={null}>
           <SiteHeader />
         </Suspense>

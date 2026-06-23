@@ -30,8 +30,9 @@ export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
     const items = Array.isArray(body.items) ? body.items : [];
+    const shortItems = Array.isArray(body.shortItems) ? body.shortItems : [];
 
-    await saveHomepageVideos(items);
+    await saveHomepageVideos(items, shortItems);
     revalidateHomepageContent();
 
     return NextResponse.json({ ok: true });

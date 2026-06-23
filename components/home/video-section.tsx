@@ -202,3 +202,191 @@ export function VideoSection({
     </section>
   );
 }
+
+type ShortVideoSectionProps = {
+  videos: HomepageVideoItem[];
+  title?: string;
+  subtitle?: string;
+};
+
+export function ShortVideoSection({
+  videos,
+  title = "SHORT VIDEO",
+  subtitle = "Xem thêm tại Youtube Shorts",
+}: ShortVideoSectionProps) {
+  const [playingVideoId, setPlayingVideoId] = useState<number | null>(null);
+  const railRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const startScrollLeftRef = useRef(0);
+  const dragDistanceRef = useRef(0);
+  const visibleVideos = useMemo(
+    () =>
+      videos.filter(
+        (video) => video.isActive && extractYouTubeId(video.youtubeUrl),
+      ),
+    [videos],
+  );
+
+  if (visibleVideos.length === 0) return null;
+
+  const scrollByStep = (direction: "left" | "right") => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const step = Math.max(rail.clientWidth, 320);
+    rail.scrollBy({
+      left: direction === "left" ? -step : step,
+      behavior: "smooth",
+    });
+  };
+
+  const onMouseDown: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    isDraggingRef.current = true;
+    dragDistanceRef.current = 0;
+    startXRef.current = event.pageX - rail.offsetLeft;
+    startScrollLeftRef.current = rail.scrollLeft;
+  };
+
+  const onMouseMove: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    if (!isDraggingRef.current) return;
+    const rail = railRef.current;
+    if (!rail) return;
+    event.preventDefault();
+    const x = event.pageX - rail.offsetLeft;
+    const walk = (x - startXRef.current) * 1.15;
+    dragDistanceRef.current = Math.max(dragDistanceRef.current, Math.abs(walk));
+    rail.scrollLeft = startScrollLeftRef.current - walk;
+  };
+
+  const stopDragging = () => {
+    isDraggingRef.current = false;
+  };
+
+  const openVideo = (video: HomepageVideoItem) => {
+    if (dragDistanceRef.current > 8) return;
+    setPlayingVideoId(video.id);
+  };
+
+  return (
+    <section className="overflow-x-clip bg-[#f8f9fa] py-12 text-slate-900 md:py-14">
+      <Container>
+        <div className="group mx-auto grid max-w-[1060px] gap-8 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-start">
+          <div className="space-y-5 lg:pt-10">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-slate-400">
+              Youtube Shorts
+            </p>
+            <h2 className="text-2xl font-bold uppercase text-[#1f4569] md:text-3xl">
+              {title}
+            </h2>
+            <p className="text-sm text-slate-500">{subtitle}</p>
+            <a
+              href={visibleVideos[0]?.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 transition duration-300 hover:border-[#c8922e] hover:bg-[#c8922e] hover:text-white"
+              aria-label="Xem thêm tại Youtube Shorts"
+            >
+              <ArrowRight className="h-5 w-5" />
+            </a>
+          </div>
+
+          <div className="relative min-w-0">
+            {visibleVideos.length > 4 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => scrollByStep("left")}
+                  className="absolute left-0 top-[42%] z-10 hidden h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 opacity-0 shadow-md transition duration-300 hover:border-[#c8922e] hover:text-[#c8922e] group-hover:opacity-100 lg:flex"
+                  aria-label="Lướt short video sang trái"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollByStep("right")}
+                  className="absolute right-0 top-[42%] z-10 hidden h-10 w-10 translate-x-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 opacity-0 shadow-md transition duration-300 hover:border-[#c8922e] hover:text-[#c8922e] group-hover:opacity-100 lg:flex"
+                  aria-label="Lướt short video sang phải"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </>
+            )}
+
+            <div
+              ref={railRef}
+              className="flex snap-x snap-mandatory cursor-grab gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] active:cursor-grabbing [&::-webkit-scrollbar]:hidden"
+              onMouseDown={onMouseDown}
+              onMouseMove={onMouseMove}
+              onMouseLeave={stopDragging}
+              onMouseUp={stopDragging}
+            >
+              {visibleVideos.map((video) => {
+                const videoId =
+                  video.youtubeId || extractYouTubeId(video.youtubeUrl);
+                const thumb =
+                  video.thumbnailUrl ||
+                  (videoId ? buildYouTubeThumbnailUrl(videoId) : "");
+                const isPlaying = playingVideoId === video.id && videoId;
+
+                return (
+                  <article
+                    key={video.id}
+                    className="group/card min-w-0 shrink-0 basis-[68%] snap-start sm:basis-[calc((100%-1rem)/2)] md:basis-[calc((100%-2rem)/3)] lg:basis-[calc((100%-3rem)/4)]"
+                  >
+                    <div className="relative aspect-[9/16] w-full overflow-hidden rounded bg-neutral-900 shadow-sm">
+                      {isPlaying ? (
+                        <iframe
+                          src={`${buildYouTubeEmbedUrl(videoId)}&autoplay=1`}
+                          title={video.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="absolute inset-0 h-full w-full border-0"
+                        />
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => openVideo(video)}
+                          className="absolute inset-0 block h-full w-full text-left"
+                          aria-label={`Xem short video: ${video.title}`}
+                        >
+                          {thumb ? (
+                            <img
+                              src={thumb}
+                              alt={video.title}
+                              className="h-full w-full object-cover transition duration-700 group-hover/card:scale-105"
+                            />
+                          ) : (
+                            <div className="h-full w-full bg-neutral-200" />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/0 to-black/45" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition duration-300 group-hover/card:scale-110 group-hover/card:bg-red-600">
+                              <Play
+                                className="ml-1 h-6 w-6"
+                                fill="currentColor"
+                              />
+                            </span>
+                          </div>
+                        </button>
+                      )}
+                    </div>
+                    <a
+                      href={video.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 block line-clamp-3 text-sm font-semibold leading-6 text-slate-700 transition hover:text-[#c8922e]"
+                    >
+                      {video.title}
+                    </a>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}

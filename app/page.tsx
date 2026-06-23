@@ -4,7 +4,7 @@ import { About } from "@/components/home/about";
 import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureStyles } from "@/components/home/architecture-styles";
 import { BlogHighlights } from "@/components/home/blog-highlights";
-import { VideoSection } from "@/components/home/video-section";
+import { ShortVideoSection, VideoSection } from "@/components/home/video-section";
 import { Services } from "@/components/home/services";
 import { ProcessTimeline } from "@/components/home/process-timeline";
 import { TestimonialsCarousel } from "@/components/home/testimonials-carousel";
@@ -43,6 +43,7 @@ export default async function HomePage() {
     styles,
     architectureGallery,
     videos,
+    shortVideos,
     heroBanner,
   ] = await Promise.all([
     getProjects(),
@@ -50,7 +51,8 @@ export default async function HomePage() {
     readProjectCategories(),
     readProjectStyles(),
     readArchitectureGallery(),
-    readActiveHomepageVideos(),
+    readActiveHomepageVideos("standard"),
+    readActiveHomepageVideos("short"),
     readHeroBannerSettings(),
   ]);
   const [posts, hotTopic, managedTestimonials] = await Promise.all([
@@ -120,6 +122,10 @@ export default async function HomePage() {
 
       <ScrollReveal delay={0.05}>
         <VideoSection videos={videos} />
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <ShortVideoSection videos={shortVideos} />
       </ScrollReveal>
 
       <ScrollReveal delay={0.05}>
