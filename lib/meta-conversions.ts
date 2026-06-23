@@ -142,6 +142,9 @@ export async function sendMetaConversionEvent(input: MetaConversionInput) {
         custom_data: input.customData || {},
       },
     ],
+    ...(process.env.META_TEST_EVENT_CODE
+      ? { test_event_code: process.env.META_TEST_EVENT_CODE }
+      : {}),
   };
 
   try {
