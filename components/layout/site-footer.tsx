@@ -26,7 +26,7 @@ export function SiteFooter() {
 
   const facebookEmbedUrl = `https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(
     facebookPageHref,
-  )}&tabs=timeline&width=620&height=210&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true`;
+  )}&tabs=timeline&width=300&height=200&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true`;
 
   return (
     <footer className="relative overflow-hidden border-t border-slate-800 bg-[#0a1220] text-slate-100">
@@ -235,11 +235,11 @@ export function SiteFooter() {
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
               Facebook
             </p>
-            <div className="overflow-hidden border border-slate-700 bg-white shadow-lg">
+            <div className="h-[200px] w-full max-w-[300px] overflow-hidden border border-slate-700 bg-white shadow-lg">
               <iframe
                 src={facebookEmbedUrl}
                 title="Facebook page HEI Design"
-                className="h-[210px] w-[700px]"
+                className="h-[200px] w-full border-0"
                 loading="lazy"
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                 referrerPolicy="strict-origin-when-cross-origin"

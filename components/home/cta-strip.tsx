@@ -64,7 +64,10 @@ export function CtaStrip() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(135deg,#f5f2ee_0%,#d2bca7_50%,#c3aa91_100%)] py-10 sm:py-14 lg:py-[4.5rem]">
+    <section
+      id="nhan-bao-gia"
+      className="relative scroll-mt-28 overflow-hidden bg-[linear-gradient(135deg,#f5f2ee_0%,#d2bca7_50%,#c3aa91_100%)] py-10 sm:scroll-mt-36 sm:py-14 lg:py-[4.5rem]"
+    >
       <div className="pointer-events-none absolute -left-28 top-10 h-80 w-80 rounded-full bg-white/40 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[-8rem] right-[-6rem] h-[28rem] w-[28rem] rounded-full bg-[#5d412f]/25 blur-3xl" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_68%_24%,rgba(255,255,255,0.42),transparent_30%),radial-gradient(circle_at_14%_84%,rgba(36,52,72,0.16),transparent_34%)]" />
@@ -87,7 +90,7 @@ export function CtaStrip() {
           </p>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#111827] sm:text-4xl">
-            Bạn cần hỗ trợ?
+            Nhận Miễn Phí Thiết Kế
           </h2>
 
           <p className="mt-3 text-sm leading-6 text-[#3a2d24]/75">
@@ -120,7 +123,7 @@ export function CtaStrip() {
               onChange={(event) => updateField("need", event.target.value)}
               required
               rows={4}
-              placeholder="Bạn muốn tư vấn hạng mục nào?"
+              placeholder="Thông tin công trình cần tư vấn"
               className="min-h-32 w-full rounded-xl border border-white/55 bg-white/72 px-4 py-4 text-sm text-[#17120e] shadow-sm outline-none transition duration-300 placeholder:text-[#75685f]/65 focus:border-[#1f4569]/55 focus:bg-white/95 focus:ring-4 focus:ring-white/35"
             />
 

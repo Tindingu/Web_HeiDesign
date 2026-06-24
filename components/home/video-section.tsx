@@ -214,7 +214,6 @@ export function ShortVideoSection({
   title = "SHORT VIDEO",
   subtitle = "Xem thêm tại Youtube Shorts",
 }: ShortVideoSectionProps) {
-  const [playingVideoId, setPlayingVideoId] = useState<number | null>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
@@ -264,11 +263,6 @@ export function ShortVideoSection({
     isDraggingRef.current = false;
   };
 
-  const openVideo = (video: HomepageVideoItem) => {
-    if (dragDistanceRef.current > 8) return;
-    setPlayingVideoId(video.id);
-  };
-
   return (
     <section className="overflow-x-clip bg-[#f8f9fa] py-12 text-slate-900 md:py-14">
       <Container>
@@ -316,7 +310,7 @@ export function ShortVideoSection({
 
             <div
               ref={railRef}
-              className="flex snap-x snap-mandatory cursor-grab gap-4 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] active:cursor-grabbing [&::-webkit-scrollbar]:hidden"
+              className="flex snap-x snap-mandatory cursor-grab gap-2.5 overflow-x-auto scroll-smooth pb-2 [scrollbar-width:none] active:cursor-grabbing sm:gap-4 [&::-webkit-scrollbar]:hidden"
               onMouseDown={onMouseDown}
               onMouseMove={onMouseMove}
               onMouseLeave={stopDragging}
@@ -328,55 +322,39 @@ export function ShortVideoSection({
                 const thumb =
                   video.thumbnailUrl ||
                   (videoId ? buildYouTubeThumbnailUrl(videoId) : "");
-                const isPlaying = playingVideoId === video.id && videoId;
 
                 return (
                   <article
                     key={video.id}
-                    className="group/card min-w-0 shrink-0 basis-[68%] snap-start sm:basis-[calc((100%-1rem)/2)] md:basis-[calc((100%-2rem)/3)] lg:basis-[calc((100%-3rem)/4)]"
+                    className="group/card min-w-0 shrink-0 basis-[calc((100%-0.625rem)/2)] snap-start sm:basis-[calc((100%-1rem)/2)] md:basis-[calc((100%-2rem)/3)] lg:basis-[calc((100%-3rem)/4)]"
                   >
                     <div className="relative aspect-[9/16] w-full overflow-hidden rounded bg-neutral-900 shadow-sm">
-                      {isPlaying ? (
+                      {videoId ? (
                         <iframe
-                          src={`${buildYouTubeEmbedUrl(videoId)}&autoplay=1`}
+                          src={buildYouTubeEmbedUrl(videoId)}
                           title={video.title}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                           className="absolute inset-0 h-full w-full border-0"
+                          loading="lazy"
                         />
                       ) : (
-                        <button
-                          type="button"
-                          onClick={() => openVideo(video)}
-                          className="absolute inset-0 block h-full w-full text-left"
-                          aria-label={`Xem short video: ${video.title}`}
-                        >
+                        <div className="h-full w-full bg-neutral-200">
                           {thumb ? (
                             <img
                               src={thumb}
                               alt={video.title}
-                              className="h-full w-full object-cover transition duration-700 group-hover/card:scale-105"
+                              className="h-full w-full object-cover"
                             />
-                          ) : (
-                            <div className="h-full w-full bg-neutral-200" />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/0 to-black/45" />
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-red-500 text-white shadow-lg transition duration-300 group-hover/card:scale-110 group-hover/card:bg-red-600">
-                              <Play
-                                className="ml-1 h-6 w-6"
-                                fill="currentColor"
-                              />
-                            </span>
-                          </div>
-                        </button>
+                          ) : null}
+                        </div>
                       )}
                     </div>
                     <a
                       href={video.youtubeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-3 block line-clamp-3 text-sm font-semibold leading-6 text-slate-700 transition hover:text-[#c8922e]"
+                      className="mt-2 block line-clamp-3 text-[11px] font-semibold leading-4 text-slate-700 transition hover:text-[#c8922e] sm:mt-3 sm:text-sm sm:leading-6"
                     >
                       {video.title}
                     </a>

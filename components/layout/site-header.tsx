@@ -342,13 +342,13 @@ export function SiteHeader() {
 
     if (item.label !== "Tiện ích thiết kế") {
       return (
-        <div className="absolute left-0 top-full z-50 hidden w-60 rounded-[1.15rem] border border-[#D8C3A5]/70 bg-[#FBF6F2] p-2 shadow-[0_18px_45px_rgba(31,31,31,0.12)] backdrop-blur group-hover:block">
+        <div className="absolute left-0 top-full z-50 hidden w-60 bg-white p-2 shadow-[0_18px_45px_rgba(31,31,31,0.14)] group-hover:block">
           {item.submenu.map((sub) => (
               <Link
                 key={sub.href}
                 href={sub.href}
                 onClick={() => trackHeaderNavigation(sub, "header_dropdown")}
-                className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
+                className="block px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-[#FBF6F2] hover:text-[#B88732]"
               >
               {sub.label}
             </Link>
@@ -358,20 +358,20 @@ export function SiteHeader() {
     }
 
     return (
-      <div className="absolute left-0 top-full z-50 hidden w-72 rounded-[1.15rem] border border-[#D8C3A5]/70 bg-[#FBF6F2] p-2 shadow-[0_18px_45px_rgba(31,31,31,0.12)] backdrop-blur group-hover:block">
+      <div className="absolute left-0 top-full z-50 hidden w-72 bg-white p-2 shadow-[0_18px_45px_rgba(31,31,31,0.14)] group-hover:block">
         {item.submenu.map((sub) =>
           sub.submenu ? (
             <div key={sub.href} className="group/nested relative after:absolute after:left-full after:top-0 after:h-full after:w-3">
               <Link
                 href={sub.href}
                 onClick={() => trackHeaderNavigation(sub, "header_dropdown")}
-                className="flex items-center justify-between gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
+                className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-[#FBF6F2] hover:text-[#B88732]"
               >
                 <span>{sub.label}</span>
                 <ChevronDown className="h-3.5 w-3.5 -rotate-90 text-[#B88732]" />
               </Link>
 
-              <div className="absolute left-[calc(100%+0.5rem)] top-0 z-50 hidden w-60 rounded-[1.15rem] border border-[#D8C3A5]/70 bg-[#FBF6F2] p-2 shadow-[0_18px_45px_rgba(31,31,31,0.12)] backdrop-blur group-hover/nested:block">
+              <div className="absolute left-[calc(100%+0.5rem)] top-0 z-50 hidden w-60 bg-white p-2 shadow-[0_18px_45px_rgba(31,31,31,0.14)] group-hover/nested:block">
                 {sub.submenu.map((nested) => (
                   <Link
                     key={nested.href}
@@ -379,7 +379,7 @@ export function SiteHeader() {
                   onClick={() =>
                     trackHeaderNavigation(nested, "header_nested_dropdown")
                   }
-                  className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
+                  className="block px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-[#FBF6F2] hover:text-[#B88732]"
                 >
                     {nested.label}
                   </Link>
@@ -391,7 +391,7 @@ export function SiteHeader() {
               key={sub.href}
               href={sub.href}
               onClick={() => trackHeaderNavigation(sub, "header_dropdown")}
-              className="block rounded-xl px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-white hover:text-[#B88732]"
+              className="block px-4 py-2.5 text-sm font-medium text-[#2A2A2A] transition-colors hover:bg-[#FBF6F2] hover:text-[#B88732]"
             >
               {sub.label}
             </Link>

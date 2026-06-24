@@ -23,7 +23,7 @@ const initialState = {
 };
 
 const luxuryFieldClass =
-  "h-[3.2rem] w-full rounded-xl border border-slate-200/85 bg-white px-4 text-sm text-[#17120e] shadow-sm outline-none transition duration-300 placeholder:text-[#75685f]/65 focus:border-[#1f4569]/55 focus:ring-4 focus:ring-[#1f4569]/10";
+  "h-11 w-full rounded-lg border border-slate-200/85 bg-white px-3.5 text-sm text-[#17120e] shadow-sm outline-none transition duration-300 placeholder:text-[#75685f]/65 focus:border-[#1f4569]/55 focus:ring-4 focus:ring-[#1f4569]/10 sm:h-[3.2rem] sm:rounded-xl sm:px-4";
 
 const defaultFieldClass =
   "h-12 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1f4569] focus:ring-4 focus:ring-[#1f4569]/10";
@@ -100,13 +100,16 @@ export function LeadCaptureForm({
 
   return (
     <form
-      className={cn(isLuxury ? "space-y-3.5" : "space-y-4", className)}
+      className={cn(
+        isLuxury ? "space-y-2.5 sm:space-y-3.5" : "space-y-4",
+        className,
+      )}
       onSubmit={handleSubmit}
     >
       <div
         className={cn(
           compact ? "grid gap-4 md:grid-cols-3" : "space-y-4",
-          isLuxury && "space-y-3.5",
+          isLuxury && "space-y-2.5 sm:space-y-3.5",
         )}
       >
         <div className={cn(isLuxury ? "space-y-0" : "space-y-2")}>
@@ -156,11 +159,11 @@ export function LeadCaptureForm({
             required
             rows={compact || isLuxury ? 3 : 4}
             placeholder={
-              isLuxury ? "Bạn muốn tư vấn hạng mục nào?" : "Mô tả nhu cầu của bạn"
+              isLuxury ? "Thông tin công trình cần tư vấn" : "Mô tả nhu cầu của bạn"
             }
             className={cn(
               isLuxury
-                ? "min-h-[6.5rem] w-full rounded-xl border border-slate-200/85 bg-white px-4 py-4 text-sm text-[#17120e] shadow-sm outline-none transition duration-300 placeholder:text-[#75685f]/65 focus:border-[#1f4569]/55 focus:ring-4 focus:ring-[#1f4569]/10"
+                ? "min-h-[5.25rem] w-full resize-none rounded-lg border border-slate-200/85 bg-white px-3.5 py-3 text-sm text-[#17120e] shadow-sm outline-none transition duration-300 placeholder:text-[#75685f]/65 focus:border-[#1f4569]/55 focus:ring-4 focus:ring-[#1f4569]/10 sm:min-h-[6.5rem] sm:rounded-xl sm:px-4 sm:py-4"
                 : "min-h-12 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1f4569] focus:ring-4 focus:ring-[#1f4569]/10",
             )}
           />
@@ -181,7 +184,7 @@ export function LeadCaptureForm({
           size="lg"
           className={cn(
             isLuxury
-              ? "h-[3.2rem] rounded-xl bg-[#0b1220] px-6 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-[0_16px_34px_rgba(11,18,32,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#1f4569]"
+              ? "h-11 w-full rounded-lg bg-[#0b1220] px-5 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-[0_16px_34px_rgba(11,18,32,0.22)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#1f4569] sm:h-[3.2rem] sm:w-auto sm:rounded-xl sm:px-6 sm:text-sm sm:tracking-[0.14em]"
               : "bg-[#1f4569] text-white hover:bg-[#173855]",
             buttonClassName,
           )}
