@@ -45,7 +45,7 @@ const facebookPixelId =
   process.env.NEXT_PUBLIC_META_PIXEL_ID ||
   process.env.META_PIXEL_ID ||
   "27265110099809235";
-const googleAnalyticsId = "G-1Y4XN2PM1R";
+const googleAnalyticsId = "G-79QWQH5DMM";
 
 export default function RootLayout({
   children,
