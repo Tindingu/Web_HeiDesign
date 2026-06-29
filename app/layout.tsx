@@ -45,6 +45,7 @@ const facebookPixelId =
   process.env.NEXT_PUBLIC_META_PIXEL_ID ||
   process.env.META_PIXEL_ID ||
   "27265110099809235";
+const googleAnalyticsId = "G-1Y4XN2PM1R";
 
 export default function RootLayout({
   children,
@@ -53,6 +54,25 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
+      <head>
+        <Script
+          id="google-analytics-src"
+          src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${googleAnalyticsId}');
+            `,
+          }}
+        />
+      </head>
       <body>
         <noscript>
           <img
