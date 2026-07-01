@@ -7,6 +7,7 @@ import {
   Eye,
   Flag,
   HeartHandshake,
+  PlayCircle,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { ScrollReveal } from "@/components/home/scroll-reveal";
@@ -79,7 +80,7 @@ const timeline = [
 ];
 
 const ABOUT_BG_IMAGE =
-  "https://res.cloudinary.com/dfazfoh2l/image/upload/v1778338289/z7096078087886_e35c6300a8d17958200bd4bc112584a3_copy_p7v3py.webp";
+  "https://res.cloudinary.com/dfazfoh2l/image/upload/v1782636466/b33f9db56bfcdc3142a358fa58122b76_bzaw78.webp";
 
 export default function AboutPage() {
   return (
@@ -118,10 +119,11 @@ export default function AboutPage() {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                   <Link
-                    href="/du-an"
+                    href="#video-gioi-thieu"
                     className="inline-flex items-center gap-2 rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:border-amber-300 hover:text-amber-200"
                   >
-                    <span>Xem dự án tiêu biểu</span>
+                    <PlayCircle className="h-4 w-4" />
+                    <span>Xem video giới thiệu</span>
                   </Link>
                 </div>
               </div>
@@ -148,6 +150,58 @@ export default function AboutPage() {
                   ))}
                 </div>
               </aside>
+            </ScrollReveal>
+          </div>
+        </Container>
+      </section>
+
+      <section id="video-gioi-thieu" className="bg-[#FBF6F2] py-14 md:py-20">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
+            <ScrollReveal distance={18} delay={0.03}>
+              <div className="space-y-5">
+                {/* <p className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-600">
+                  Video giới thiệu
+                </p> */}
+                <h2 className="max-w-xl text-3xl font-semibold leading-tight text-[#1f4569] md:text-4xl">
+                  Câu chuyện HEI Design qua từng không gian sống
+                </h2>
+                <p className="max-w-xl text-base leading-8 text-slate-600">
+                  Khám phá cách HEI Design đồng hành cùng khách hàng từ ý tưởng,
+                  bản vẽ, lựa chọn vật liệu đến thi công hoàn thiện. Mỗi công
+                  trình là một bản sắc riêng, được cân bằng giữa thẩm mỹ, công
+                  năng và trải nghiệm sống lâu dài.
+                </p>
+                <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                  {[
+                    "Thiết kế cá nhân hóa",
+                    "Thi công trọn gói",
+                    "Đồng hành sau bàn giao",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-amber-200/70 bg-white/70 px-4 py-3 text-sm font-semibold text-[#1f4569] shadow-sm"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal distance={18} delay={0.08}>
+              <div className="relative">
+                <div className="absolute -bottom-4 -right-4 h-full w-full rounded-[28px] border border-amber-300/70" />
+                <div className="relative overflow-hidden rounded-[28px] bg-[#0a1628] shadow-2xl shadow-slate-900/15">
+                  <iframe
+                    className="aspect-video w-full"
+                    src="https://www.youtube.com/embed/A9HcovFL1uo"
+                    title="Video giới thiệu HEI Design"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
             </ScrollReveal>
           </div>
         </Container>
