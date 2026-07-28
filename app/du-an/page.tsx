@@ -8,6 +8,7 @@ import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureShowcase } from "@/components/portfolio/architecture-showcase";
 import { DualFileWordUploader } from "@/components/portfolio/dual-file-word-uploader";
 import { Container } from "@/components/shared/container";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 
 export const revalidate = 86400;
 
@@ -34,6 +35,15 @@ export default async function PortfolioPage({
 
   return (
     <main className="bg-background">
+      <Container className="pt-10">
+        <Breadcrumb
+          items={[
+            { label: "Trang chủ", href: "/" },
+            { label: "Dự án", href: "/du-an" },
+          ]}
+        />
+      </Container>
+
       <CompletedProjects
         projects={projects}
         categories={categories}

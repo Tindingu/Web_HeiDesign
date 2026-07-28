@@ -14,7 +14,8 @@ import {
   resolveArticleType,
 } from "@/lib/article-path";
 import { Container } from "@/components/shared/container";
-import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
+import { ArticleMarkdownRenderer } from "@/components/shared/article-markdown-renderer";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { BlogToc } from "@/components/blog/toc";
 import { extractHeadings } from "@/lib/mdx";
 
@@ -70,12 +71,20 @@ export default async function InteriorConstructionTypePage({
       }))
     : [];
   const headings = [...introHeadings, ...mainHeadings];
+  const targetLabel = getConstructionTargetLabel(params.type);
 
   return (
     <main className="bg-background">
       {latestArticle && (
         <section className="py-20 bg-background">
           <Container className="space-y-8">
+            <Breadcrumb
+              items={[
+                { label: "Trang chủ", href: "/" },
+                { label: "Thi công nội thất", href: "/thi-cong-noi-that" },
+                { label: targetLabel, href: `/thi-cong-noi-that/${params.type}` },
+              ]}
+            />
             <article className="mx-auto max-w-5xl space-y-8">
               <header className="space-y-4">
                 <h3 className="text-3xl font-bold leading-tight md:text-5xl">
@@ -85,9 +94,10 @@ export default async function InteriorConstructionTypePage({
 
               {latestArticle.introContent && (
                 <section className="prose prose-lg max-w-none">
-                  <MarkdownRenderer
+                  <ArticleMarkdownRenderer
                     content={latestArticle.introContent}
                     headingIdPrefix="intro-"
+                    rendererVersion={latestArticle.rendererVersion}
                   />
                 </section>
               )}
@@ -127,9 +137,10 @@ export default async function InteriorConstructionTypePage({
         <section className="py-20 bg-background">
           <Container>
             <section className="mx-auto max-w-5xl prose prose-lg max-w-none">
-              <MarkdownRenderer
+              <ArticleMarkdownRenderer
                 content={latestArticle.mainContent}
                 headingIdPrefix="main-"
+                rendererVersion={latestArticle.rendererVersion}
               />
             </section>
           </Container>

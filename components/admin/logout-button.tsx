@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function LogoutButton() {
+export function LogoutButton({
+  className,
+  iconOnly = false,
+}: {
+  className?: string;
+  iconOnly?: boolean;
+}) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,10 +36,14 @@ export function LogoutButton() {
       variant="outline"
       onClick={handleLogout}
       disabled={isLoading}
-      className="border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+      aria-label="Đăng xuất"
+      className={
+        className ||
+        "border-white/30 bg-white/10 text-white hover:bg-white/20 hover:text-white"
+      }
     >
-      <LogOut className="mr-2 h-4 w-4" />
-      {isLoading ? "Đang đăng xuất..." : "Đăng xuất"}
+      <LogOut className={iconOnly ? "h-4 w-4" : "mr-2 h-4 w-4"} />
+      {!iconOnly && (isLoading ? "Đang đăng xuất..." : "Đăng xuất")}
     </Button>
   );
 }

@@ -5,10 +5,32 @@ declare global {
   var __HEISchemaInitPromise: Promise<void> | undefined;
 }
 
+async function isSchemaReady(client: any) {
+  const result = await client.query(`
+    SELECT
+      to_regclass('public.project_articles') IS NOT NULL AS has_project_articles,
+      EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'project_articles'
+          AND column_name = 'renderer_version'
+      ) AS has_renderer_version
+  `);
+
+  return Boolean(
+    result.rows[0]?.has_project_articles &&
+      result.rows[0]?.has_renderer_version,
+  );
+}
+
 async function createSchema() {
   const pool = getDbPool();
 
-  await pool.query(`
+  const schemaSql = `
+    CREATE SCHEMA IF NOT EXISTS public;
+    SET search_path TO public;
+
     CREATE TABLE IF NOT EXISTS article_sections (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL UNIQUE,
@@ -224,12 +246,14 @@ async function createSchema() {
       cover_image_url TEXT NOT NULL,
       intro_content TEXT NOT NULL,
       main_content TEXT NOT NULL,
+      renderer_version TEXT NOT NULL DEFAULT 'legacy',
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
 
     ALTER TABLE project_articles ADD COLUMN IF NOT EXISTS section_id INTEGER REFERENCES article_sections(id);
     ALTER TABLE project_articles ADD COLUMN IF NOT EXISTS type_id INTEGER REFERENCES article_types(id);
+    ALTER TABLE project_articles ADD COLUMN IF NOT EXISTS renderer_version TEXT NOT NULL DEFAULT 'legacy';
 
     CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_section_type ON project_articles(section_id, type_id) WHERE section_id IS NOT NULL AND type_id IS NOT NULL;
 
@@ -441,7 +465,30 @@ async function createSchema() {
       BEFORE UPDATE ON architecture_gallery_items
       FOR EACH ROW
       EXECUTE FUNCTION set_updated_at();
-  `);
+  `;
+
+  const client = await pool.connect().catch(() => null);
+
+  if (!client) {
+    await pool.query(schemaSql);
+    return;
+  }
+
+  try {
+    await client.query("CREATE SCHEMA IF NOT EXISTS public");
+    await client.query("SET search_path TO public");
+    await client.query("SELECT pg_advisory_lock(hashtext('hei_design_schema_init'))");
+    if (await isSchemaReady(client)) {
+      return;
+    }
+
+    await client.query(schemaSql);
+  } finally {
+    await client
+      .query("SELECT pg_advisory_unlock(hashtext('hei_design_schema_init'))")
+      .catch(() => undefined);
+    client.release();
+  }
 }
 
 export async function ensureDbSchema(): Promise<void> {

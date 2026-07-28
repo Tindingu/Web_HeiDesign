@@ -2,11 +2,8 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { BlogToc } from "@/components/blog/toc";
 import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
-import {
-  buildArticleJsonLd,
-  buildBreadcrumbJsonLd,
-  buildMetadata,
-} from "@/lib/seo";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
+import { buildArticleJsonLd, buildMetadata } from "@/lib/seo";
 import { extractHeadings } from "@/lib/mdx";
 import {
   getPostBySlug,
@@ -61,17 +58,24 @@ export default async function BlogDetailPage({
 
   const headings = extractHeadings(post.content);
   const jsonLd = buildArticleJsonLd(post);
-  const breadcrumb = buildBreadcrumbJsonLd([
-    { name: "Home", url: "https://heidesign.vn" },
-    { name: "Blog", url: "https://heidesign.vn/blog" },
-    { name: post.title, url: `https://heidesign.vn/blog/${post.slug}` },
-  ]);
 
   return (
     <main className="bg-background">
       <Container className="py-16">
         <div>
           <article className="space-y-6">
+            <Breadcrumb
+              items={[
+                { label: "Trang chủ", href: "/" },
+                { label: "Kinh nghiệm hay", href: "/blog" },
+                {
+                  label: post.category || "Kinh nghiệm hay",
+                  href: `/blog/chuyen-muc/${categorySlug}`,
+                },
+                { label: post.title, href: `/blog/${post.slug}` },
+              ]}
+              className="mb-6"
+            />
             <header className="space-y-4">
               <Link
                 href={`/blog/chuyen-muc/${toCategorySlug(post.category || "tin-tuc")}`}
@@ -100,10 +104,6 @@ export default async function BlogDetailPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
     </main>
   );

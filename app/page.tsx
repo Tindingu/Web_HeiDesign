@@ -87,6 +87,11 @@ export default async function HomePage() {
 
   return (
     <main className="bg-background overflow-x-clip">
+      <h1 className="sr-only">
+        Hei Design – Đơn vị Thiết Kế Thi Công Nội Thất Xây Nhà Trọn Gói Uy Tín
+        TPHCM
+      </h1>
+
       <ScrollReveal className="relative" distance={0}>
         <Hero hero={hero} />
       </ScrollReveal>

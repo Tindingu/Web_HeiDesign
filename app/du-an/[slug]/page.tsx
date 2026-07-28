@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import {
-  buildBreadcrumbJsonLd,
   buildMetadata,
   buildProjectJsonLd,
 } from "@/lib/seo";
 import { getProjectBySlug, getProjectSlugs, getProjects } from "@/lib/strapi";
 import { Container } from "@/components/shared/container";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -57,14 +57,19 @@ export default async function ProjectDetailPage({
     : [];
 
   const jsonLd = buildProjectJsonLd(project);
-  const breadcrumb = buildBreadcrumbJsonLd([
-    { name: "Home", url: "https://heidesign.vn" },
-    { name: "Portfolio", url: "https://heidesign.vn/du-an" },
-    { name: project.title, url: `https://heidesign.vn/du-an/${project.slug}` },
-  ]);
 
   return (
     <main className="bg-white">
+      <Container className="pt-8">
+        <Breadcrumb
+          items={[
+            { label: "Trang chủ", href: "/" },
+            { label: "Dự án", href: "/du-an" },
+            { label: project.title, href: `/du-an/${project.slug}` },
+          ]}
+        />
+      </Container>
+
       {/* Gallery Carousel */}
       <GalleryCarousel project={project} />
 
@@ -259,10 +264,6 @@ export default async function ProjectDetailPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
     </main>
   );

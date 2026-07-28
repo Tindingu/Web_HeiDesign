@@ -13,6 +13,7 @@ export interface ProjectArticle {
   coverImageUrl: string;
   introContent: string; // Markdown from File 1
   mainContent: string; // Markdown from File 2
+  rendererVersion?: "legacy" | "v2";
   createdAt: string;
   updatedAt: string;
 }
@@ -27,6 +28,7 @@ type ArticleRow = {
   cover_image_url: string;
   intro_content: string;
   main_content: string;
+  renderer_version: "legacy" | "v2" | null;
   created_at: Date;
   updated_at: Date;
 };
@@ -43,6 +45,7 @@ function mapArticleRow(row: ArticleRow): ProjectArticle {
     coverImageUrl: row.cover_image_url,
     introContent: row.intro_content,
     mainContent: row.main_content,
+    rendererVersion: row.renderer_version === "v2" ? "v2" : "legacy",
     createdAt: new Date(row.created_at).toISOString(),
     updatedAt: new Date(row.updated_at).toISOString(),
   };
@@ -63,6 +66,7 @@ export async function readArticles(): Promise<ProjectArticle[]> {
         pa.cover_image_url,
         pa.intro_content,
         pa.main_content,
+        COALESCE(pa.renderer_version, 'legacy') AS renderer_version,
         pa.created_at,
         pa.updated_at
       FROM project_articles pa
@@ -100,10 +104,11 @@ export async function writeArticles(articles: ProjectArticle[]): Promise<void> {
             cover_image_url,
             intro_content,
             main_content,
+            renderer_version,
             created_at,
             updated_at
           )
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
         `,
         [
           article.id,
@@ -115,6 +120,7 @@ export async function writeArticles(articles: ProjectArticle[]): Promise<void> {
           article.coverImageUrl,
           article.introContent,
           article.mainContent,
+          article.rendererVersion ?? "legacy",
           article.createdAt ?? new Date().toISOString(),
           article.updatedAt ?? new Date().toISOString(),
         ],
@@ -148,6 +154,7 @@ export async function getArticleById(
         pa.cover_image_url,
         pa.intro_content,
         pa.main_content,
+        COALESCE(pa.renderer_version, 'legacy') AS renderer_version,
         pa.created_at,
         pa.updated_at
       FROM project_articles pa
@@ -178,6 +185,7 @@ export async function getArticleBySlug(
         pa.cover_image_url,
         pa.intro_content,
         pa.main_content,
+        COALESCE(pa.renderer_version, 'legacy') AS renderer_version,
         pa.created_at,
         pa.updated_at
       FROM project_articles pa
@@ -211,9 +219,10 @@ export async function createArticle(
         description,
         cover_image_url,
         intro_content,
-        main_content
+        main_content,
+        renderer_version
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING
         id,
         slug,
@@ -224,6 +233,7 @@ export async function createArticle(
         cover_image_url,
         intro_content,
         main_content,
+        COALESCE(renderer_version, 'legacy') AS renderer_version,
         created_at,
         updated_at
     `,
@@ -236,6 +246,7 @@ export async function createArticle(
       article.coverImageUrl,
       article.introContent,
       article.mainContent,
+      article.rendererVersion ?? "legacy",
     ],
   )) as { rows: ArticleRow[] };
 
@@ -264,7 +275,8 @@ export async function upsertArticleByTargetType(
           description = $5,
           cover_image_url = $6,
           intro_content = $7,
-          main_content = $8
+          main_content = $8,
+          renderer_version = $9
         WHERE section_id = $1 AND type_id = $2
         RETURNING
           id,
@@ -276,6 +288,7 @@ export async function upsertArticleByTargetType(
           cover_image_url,
           intro_content,
           main_content,
+          COALESCE(renderer_version, 'legacy') AS renderer_version,
           created_at,
           updated_at
       `,
@@ -288,6 +301,7 @@ export async function upsertArticleByTargetType(
         article.coverImageUrl,
         article.introContent,
         article.mainContent,
+        article.rendererVersion ?? "legacy",
       ],
     )) as { rows: ArticleRow[] };
 
@@ -306,9 +320,10 @@ export async function upsertArticleByTargetType(
           description,
           cover_image_url,
           intro_content,
-          main_content
+          main_content,
+          renderer_version
         )
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING
           id,
           slug,
@@ -319,6 +334,7 @@ export async function upsertArticleByTargetType(
           cover_image_url,
           intro_content,
           main_content,
+          COALESCE(renderer_version, 'legacy') AS renderer_version,
           created_at,
           updated_at
       `,
@@ -331,6 +347,7 @@ export async function upsertArticleByTargetType(
         article.coverImageUrl,
         article.introContent,
         article.mainContent,
+        article.rendererVersion ?? "legacy",
       ],
     )) as { rows: ArticleRow[] };
 
@@ -373,7 +390,8 @@ export async function updateArticle(
         description = $6,
         cover_image_url = $7,
         intro_content = $8,
-        main_content = $9
+        main_content = $9,
+        renderer_version = $10
       WHERE id = $1
       RETURNING
         id,
@@ -385,6 +403,7 @@ export async function updateArticle(
         cover_image_url,
         intro_content,
         main_content,
+        COALESCE(renderer_version, 'legacy') AS renderer_version,
         created_at,
         updated_at
     `,
@@ -398,6 +417,7 @@ export async function updateArticle(
       merged.coverImageUrl,
       merged.introContent,
       merged.mainContent,
+      merged.rendererVersion ?? "legacy",
     ],
   )) as { rows: ArticleRow[] };
 

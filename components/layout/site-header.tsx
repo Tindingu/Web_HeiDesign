@@ -182,6 +182,8 @@ export function SiteHeader() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const isChromeHiddenRoute =
+    pathname?.startsWith("/uat") || pathname?.startsWith("/admin");
   const isProjectPage = pathname?.startsWith("/du-an");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
@@ -203,8 +205,9 @@ export function SiteHeader() {
   const topStartScrollLeftRef = useRef(0);
 
   useEffect(() => {
+    if (isChromeHiddenRoute) return;
     setSearchKeyword(searchParams.get("s") || "");
-  }, [searchParams]);
+  }, [isChromeHiddenRoute, searchParams]);
 
   useEffect(() => {
     if (!mobileSearchOpen) return;
@@ -230,13 +233,15 @@ export function SiteHeader() {
   };
 
   useEffect(() => {
+    if (isChromeHiddenRoute) return;
     setMobileSearchOpen(false);
     setMobileMenuOpen(false);
     setActiveSubmenu(null);
     setActiveNestedSubmenu(null);
-  }, [pathname, searchParams]);
+  }, [isChromeHiddenRoute, pathname, searchParams]);
 
   useEffect(() => {
+    if (isChromeHiddenRoute) return;
     const loadTargets = async () => {
       try {
         const response = await fetch("/api/article-targets", {
@@ -271,7 +276,7 @@ export function SiteHeader() {
     };
 
     void loadTargets();
-  }, []);
+  }, [isChromeHiddenRoute]);
 
   const menuItems = useMemo(() => {
     return baseMenuItems.map((item) => {
@@ -284,6 +289,10 @@ export function SiteHeader() {
       return item;
     });
   }, [constructionSubmenu, interiorSubmenu]);
+
+  if (isChromeHiddenRoute) {
+    return null;
+  }
 
   const onTopCategoriesMouseDown: React.MouseEventHandler<HTMLDivElement> = (
     event,

@@ -16,7 +16,7 @@ export function LeadCapturePopup() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (pathname.startsWith("/admin")) return;
+    if (pathname.startsWith("/admin") || pathname.startsWith("/uat")) return;
 
     const now = Date.now();
     const nextAtRaw = window.localStorage.getItem(POPUP_NEXT_AT_KEY);
@@ -34,7 +34,7 @@ export function LeadCapturePopup() {
     return () => window.clearTimeout(timer);
   }, [pathname]);
 
-  if (pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/admin") || pathname.startsWith("/uat")) return null;
 
   const closeAndScheduleNext = () => {
     setIsOpen(false);

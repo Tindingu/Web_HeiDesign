@@ -240,9 +240,9 @@ export function ArchitectureShowcase({
                 </div>
                 <div className="absolute inset-0 bg-black/10 transition duration-300 group-hover:bg-black/25" />
                 <div className="absolute inset-x-0 bottom-0 p-4 text-left">
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/85">
+                  {/* <p className="text-xs uppercase tracking-[0.2em] text-white/85">
                     {image.projectTitle}
-                  </p>
+                  </p> */}
                 </div>
               </Link>
             ))}

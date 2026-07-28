@@ -6,7 +6,7 @@ import type { ProjectArticle } from "@/lib/article-storage";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import Link from "next/link";
-import { Upload } from "lucide-react";
+import { FileText, Upload } from "lucide-react";
 import {
   buildTargetTypePath,
   CONSTRUCTION_TARGET_OPTIONS,
@@ -17,6 +17,7 @@ import {
 } from "@/lib/article-path";
 
 type FormData = Omit<ProjectArticle, "id" | "createdAt" | "updatedAt">;
+type UploadMode = "word" | "markdown";
 
 const initialFormData: FormData = {
   targetSection: "thiet-ke-noi-that",
@@ -27,7 +28,58 @@ const initialFormData: FormData = {
   coverImageUrl: "",
   introContent: "",
   mainContent: "",
+  rendererVersion: "legacy",
 };
+
+function stripMarkdownFrontmatter(markdown: string) {
+  const normalized = markdown.replace(/^\uFEFF/, "");
+  if (!normalized.startsWith("---")) return normalized.trim();
+
+  const endIndex = normalized.indexOf("\n---", 3);
+  if (endIndex === -1) return normalized.trim();
+
+  return normalized.slice(endIndex + 4).trimStart();
+}
+
+function splitMarkdownContent(markdown: string) {
+  const content = stripMarkdownFrontmatter(markdown);
+  const markerPattern = /^\s*<!--\s*MAIN_CONTENT\s*-->\s*$/im;
+  const match = markerPattern.exec(content);
+
+  if (!match || match.index < 0) {
+    return {
+      introContent: "",
+      mainContent: content,
+    };
+  }
+
+  return {
+    introContent: content.slice(0, match.index).trim(),
+    mainContent: content.slice(match.index + match[0].length).trim(),
+  };
+}
+
+function parseMarkdownFrontmatter(markdown: string) {
+  const normalized = markdown.replace(/^\uFEFF/, "");
+  if (!normalized.startsWith("---")) return {};
+
+  const endIndex = normalized.indexOf("\n---", 3);
+  if (endIndex === -1) return {};
+
+  const frontmatter = normalized.slice(3, endIndex);
+  const result: Record<string, string> = {};
+
+  for (const line of frontmatter.split(/\r?\n/)) {
+    const match = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
+    if (!match) continue;
+
+    const key = match[1];
+    const value = match[2].trim().replace(/^["']|["']$/g, "");
+    result[key] = value;
+  }
+
+  return result;
+}
 
 export function ArticleForm({ article }: { article?: ProjectArticle }) {
   const router = useRouter();
@@ -36,6 +88,10 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
   );
   const [introFile, setIntroFile] = useState<File | null>(null);
   const [mainFile, setMainFile] = useState<File | null>(null);
+  const [markdownFile, setMarkdownFile] = useState<File | null>(null);
+  const [uploadMode, setUploadMode] = useState<UploadMode>(
+    article?.rendererVersion === "v2" ? "markdown" : "word",
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -147,6 +203,34 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
     return String(data.markdown || "");
   };
 
+  const handleMarkdownFileChange = async (file: File | null) => {
+    setMarkdownFile(file);
+    setError("");
+
+    if (!file) return;
+
+    if (!file.name.toLowerCase().endsWith(".md")) {
+      setError("Vui lòng chọn file Markdown .md");
+      return;
+    }
+
+    try {
+      const rawMarkdown = await file.text();
+      const metadata = parseMarkdownFrontmatter(rawMarkdown);
+      setFormData((prev) => ({
+        ...prev,
+        title: metadata.title || prev.title,
+        description: metadata.excerpt || metadata.description || prev.description,
+        coverImageUrl:
+          metadata.coverImage && /^https?:\/\//i.test(metadata.coverImage)
+            ? metadata.coverImage
+            : prev.coverImageUrl,
+      }));
+    } catch {
+      setError("Không thể đọc file Markdown");
+    }
+  };
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -186,21 +270,29 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
       }
 
       // Tạo mới bắt buộc phải upload đủ 2 file Word.
-      if (!article && (!introFile || !mainFile)) {
+      if (!article && uploadMode === "word" && (!introFile || !mainFile)) {
         setError("Vui lòng chọn đủ 2 file Word (Giới thiệu và Nội dung chính)");
         setLoading(false);
         return;
       }
 
       try {
+        if (uploadMode === "markdown" && !markdownFile && !article) {
+          throw new Error("Vui lòng chọn file Markdown .md");
+        }
+
         let introContent = formData.introContent;
         let mainContent = formData.mainContent;
 
-        if (introFile) {
+        if (uploadMode === "markdown" && markdownFile) {
+          const splitContent = splitMarkdownContent(await markdownFile.text());
+          introContent = splitContent.introContent;
+          mainContent = splitContent.mainContent;
+        } else if (introFile) {
           introContent = await convertWordFile(introFile, "File Giới thiệu");
         }
 
-        if (mainFile) {
+        if (uploadMode === "word" && mainFile) {
           mainContent = await convertWordFile(mainFile, "File Nội dung chính");
         }
 
@@ -225,6 +317,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
             category: formData.targetType,
             introContent,
             mainContent,
+            rendererVersion: uploadMode === "markdown" ? "v2" : "legacy",
           }),
         });
 
@@ -240,6 +333,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
         );
         setIntroFile(null);
         setMainFile(null);
+        setMarkdownFile(null);
         setTimeout(() => {
           router.push("/admin/du-an");
           router.refresh();
@@ -250,7 +344,7 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
         setLoading(false);
       }
     },
-    [formData, article, introFile, mainFile, router],
+    [formData, article, introFile, mainFile, markdownFile, uploadMode, router],
   );
 
   return (
@@ -379,6 +473,41 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
             />
           </div>
 
+          <div>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Chọn cách nhập nội dung *
+            </label>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => setUploadMode("word")}
+                className={`rounded-lg border px-4 py-3 text-left transition ${
+                  uploadMode === "word"
+                    ? "border-amber-500 bg-amber-50 text-amber-800"
+                    : "border-gray-200 bg-white text-gray-700 hover:border-amber-300"
+                }`}
+              >
+                <span className="block font-semibold">2 file Word</span>
+                <span className="text-xs">Convert .docx sang Markdown</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setUploadMode("markdown")}
+                className={`rounded-lg border px-4 py-3 text-left transition ${
+                  uploadMode === "markdown"
+                    ? "border-amber-500 bg-amber-50 text-amber-800"
+                    : "border-gray-200 bg-white text-gray-700 hover:border-amber-300"
+                }`}
+              >
+                <span className="block font-semibold">1 file Markdown</span>
+                <span className="text-xs">Upload trực tiếp file .md</span>
+              </button>
+            </div>
+          </div>
+
+          {uploadMode === "word" ? (
+            <>
+
           {/* Intro Word File */}
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-2">
@@ -434,6 +563,48 @@ export function ArticleForm({ article }: { article?: ProjectArticle }) {
               </div>
             </div>
           </div>
+
+            </>
+          ) : (
+            <div>
+              <label className="block text-sm font-semibold text-gray-900 mb-2">
+                File Markdown: Nội dung bài viết {!article && "*"}
+              </label>
+              <div className="relative rounded-lg border-2 border-dashed border-amber-300 bg-amber-50 px-6 py-4">
+                <input
+                  type="file"
+                  accept=".md,text/markdown,text/plain"
+                  onChange={(e) =>
+                    void handleMarkdownFileChange(e.target.files?.[0] ?? null)
+                  }
+                  className="absolute inset-0 cursor-pointer opacity-0"
+                />
+                <div className="flex items-center gap-3">
+                  <FileText className="h-5 w-5 text-amber-600" />
+                  <div>
+                    <p className="font-semibold text-gray-900">
+                      {markdownFile?.name || "Chọn file Markdown .md"}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      Upload trực tiếp nội dung Markdown, không cần convert Word
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <p className="mt-2 text-xs text-gray-500">
+                Nếu file có frontmatter, hệ thống sẽ tự bỏ phần metadata khi lưu
+                nội dung. Ảnh trong Markdown nên dùng URL public đầy đủ.
+              </p>
+              <p className="mt-1 text-xs text-gray-500">
+                Thêm{" "}
+                <code className="rounded bg-gray-100 px-1">
+                  {"<!-- MAIN_CONTENT -->"}
+                </code>{" "}
+                để tách phần trên marker vào giới thiệu và phần dưới marker vào
+                nội dung chính.
+              </p>
+            </div>
+          )}
 
           {(formData.introContent || formData.mainContent) && (
             <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">

@@ -7,6 +7,8 @@ import {
 import { readArchitectureGallery } from "@/lib/architecture-gallery-storage";
 import { CompletedProjects } from "@/components/home/completed-projects";
 import { ArchitectureStyles } from "@/components/home/architecture-styles";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
+import { Container } from "@/components/shared/container";
 
 export const revalidate = 86400;
 
@@ -30,6 +32,15 @@ export default async function InteriorDesignPage() {
 
   return (
     <main className="bg-background">
+      <Container className="pt-10">
+        <Breadcrumb
+          items={[
+            { label: "Trang chủ", href: "/" },
+            { label: "Thiết kế nội thất", href: "/thiet-ke-noi-that" },
+          ]}
+        />
+      </Container>
+
       <CompletedProjects
         projects={projects}
         categories={categories}

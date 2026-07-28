@@ -17,7 +17,8 @@ import {
   toKhongGianTypeSlug,
 } from "@/lib/article-path";
 import { Container } from "@/components/shared/container";
-import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
+import { ArticleMarkdownRenderer } from "@/components/shared/article-markdown-renderer";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { BlogToc } from "@/components/blog/toc";
 import { extractHeadings } from "@/lib/mdx";
 
@@ -84,12 +85,20 @@ export default async function KhongGianTypePage({
       }))
     : [];
   const headings = [...introHeadings, ...mainHeadings];
+  const targetLabel = getDuAnTargetLabel(activeType);
 
   return (
     <main className="bg-background">
       {latestArticle && (
         <section className="bg-background py-20">
           <Container className="space-y-8">
+            <Breadcrumb
+              items={[
+                { label: "Trang chủ", href: "/" },
+                { label: "Dự án", href: "/du-an" },
+                { label: targetLabel, href: `/khong-gian/${params.type}` },
+              ]}
+            />
             <article className="mx-auto max-w-5xl space-y-8">
               <header className="space-y-4">
                 <h3 className="text-3xl font-bold leading-tight md:text-5xl">
@@ -104,9 +113,10 @@ export default async function KhongGianTypePage({
 
               {latestArticle.introContent && (
                 <section className="prose prose-lg max-w-none">
-                  <MarkdownRenderer
+                  <ArticleMarkdownRenderer
                     content={latestArticle.introContent}
                     headingIdPrefix="intro-"
+                    rendererVersion={latestArticle.rendererVersion}
                   />
                 </section>
               )}
@@ -147,9 +157,10 @@ export default async function KhongGianTypePage({
         <section className="bg-background py-20">
           <Container>
             <section className="prose prose-lg mx-auto max-w-5xl max-w-none">
-              <MarkdownRenderer
+              <ArticleMarkdownRenderer
                 content={latestArticle.mainContent}
                 headingIdPrefix="main-"
+                rendererVersion={latestArticle.rendererVersion}
               />
             </section>
           </Container>

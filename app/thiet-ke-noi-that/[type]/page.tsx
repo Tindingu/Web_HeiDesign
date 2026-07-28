@@ -14,7 +14,8 @@ import {
   resolveArticleType,
 } from "@/lib/article-path";
 import { Container } from "@/components/shared/container";
-import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
+import { ArticleMarkdownRenderer } from "@/components/shared/article-markdown-renderer";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { BlogToc } from "@/components/blog/toc";
 import { extractHeadings } from "@/lib/mdx";
 
@@ -71,17 +72,25 @@ export default async function InteriorDesignTypePage({
       }))
     : [];
   const headings = [...introHeadings, ...mainHeadings];
+  const targetLabel = getInteriorTargetLabel(params.type);
 
   return (
     <main className="bg-background">
       {latestArticle && (
         <section className="py-20 bg-background">
           <Container className="space-y-8">
+            <Breadcrumb
+              items={[
+                { label: "Trang chủ", href: "/" },
+                { label: "Thiết kế nội thất", href: "/thiet-ke-noi-that" },
+                { label: targetLabel, href: `/thiet-ke-noi-that/${params.type}` },
+              ]}
+            />
             <article className="mx-auto max-w-5xl space-y-8">
               <header className="space-y-4">
-                <h3 className="text-3xl font-bold leading-tight md:text-5xl">
+                <h1 className="text-3xl font-bold leading-tight md:text-5xl">
                   {latestArticle.title}
-                </h3>
+                </h1>
                 {/* {latestArticle.description && (
                   <p className="text-lg text-muted-foreground">
                     {latestArticle.description}
@@ -103,9 +112,10 @@ export default async function InteriorDesignTypePage({
 
               {latestArticle.introContent && (
                 <section className="prose prose-lg max-w-none">
-                  <MarkdownRenderer
+                  <ArticleMarkdownRenderer
                     content={latestArticle.introContent}
                     headingIdPrefix="intro-"
+                    rendererVersion={latestArticle.rendererVersion}
                   />
                 </section>
               )}
@@ -148,9 +158,10 @@ export default async function InteriorDesignTypePage({
         <section className="py-20 bg-background">
           <Container>
             <section className="mx-auto max-w-5xl prose prose-lg max-w-none">
-              <MarkdownRenderer
+              <ArticleMarkdownRenderer
                 content={latestArticle.mainContent}
                 headingIdPrefix="main-"
+                rendererVersion={latestArticle.rendererVersion}
               />
             </section>
           </Container>

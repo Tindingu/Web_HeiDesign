@@ -3,4 +3,7 @@ node_modules
 out
 .env.local
 .env
+.env.example
+icep-design-posts/
+.uat
 .DS_Store

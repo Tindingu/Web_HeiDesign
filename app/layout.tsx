@@ -1,7 +1,6 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import React, { Suspense } from "react";
@@ -9,6 +8,7 @@ import { LeadCapturePopup } from "@/components/contact/lead-capture-popup";
 import { FloatingContactButtons } from "@/components/contact/floating-contact-buttons";
 import { PageTransition } from "@/components/motion/page-transition";
 import { siteConfig } from "@/lib/constants";
+import { SiteTrackingScripts } from "@/components/tracking/site-tracking-scripts";
 
 export const metadata: Metadata = {
   metadataBase: process.env.NEXT_PUBLIC_SITE_URL
@@ -54,52 +54,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <head>
-        <Script
-          id="google-analytics-src"
-          src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
-          strategy="afterInteractive"
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${googleAnalyticsId}');
-            `,
-          }}
-        />
-      </head>
       <body>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src={`https://www.facebook.com/tr?id=${facebookPixelId}&ev=PageView&noscript=1`}
-            alt=""
-          />
-        </noscript>
-        <Script
-          id="facebook-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '${facebookPixelId}');
-              fbq('track', 'PageView');
-            `,
-          }}
+        <SiteTrackingScripts
+          facebookPixelId={facebookPixelId}
+          googleAnalyticsId={googleAnalyticsId}
         />
         <Suspense fallback={null}>
           <SiteHeader />

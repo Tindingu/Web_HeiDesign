@@ -1,6 +1,7 @@
 import { buildMetadata } from "@/lib/seo";
 import { getPostCategories, getPosts } from "@/lib/strapi";
 import { Container } from "@/components/shared/container";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import Link from "next/link";
 import { toCategorySlug } from "@/lib/post-category";
 import { RelatedPostsCarousel } from "@/components/blog/related-posts-carousel";
@@ -24,6 +25,13 @@ export default async function BlogPage() {
   return (
     <main className="bg-background">
       <Container className="py-16">
+        <Breadcrumb
+          items={[
+            { label: "Trang chủ", href: "/" },
+            { label: "Kinh nghiệm hay", href: "/blog" },
+          ]}
+          className="mb-8"
+        />
         <div className="space-y-4">
           <h1 className="text-4xl font-semibold md:text-5xl">
             Kinh nghiệm hay

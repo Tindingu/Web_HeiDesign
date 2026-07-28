@@ -1,8 +1,15 @@
 import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
-import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
+import { ArticleMarkdownRenderer } from "@/components/shared/article-markdown-renderer";
 import { getArticleBySlug, readArticles } from "@/lib/article-storage";
 import { buildMetadata } from "@/lib/seo";
+import {
+  buildTargetTypePath,
+  getTargetLabel,
+  resolveArticleSection,
+  resolveArticleType,
+} from "@/lib/article-path";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import Image from "next/image";
 
 export const revalidate = 86400;
@@ -44,11 +51,30 @@ export default async function ArticleDetailPage({
   if (!article) {
     notFound();
   }
+  const section = resolveArticleSection(article);
+  const type = resolveArticleType(article);
+  const sectionLabel =
+    section === "thi-cong-noi-that"
+      ? "Thi công nội thất"
+      : section === "du-an"
+        ? "Dự án"
+        : "Thiết kế nội thất";
+  const sectionHref = section === "du-an" ? "/du-an" : `/${section}`;
+  const targetLabel = getTargetLabel(section, type);
+  const targetHref = buildTargetTypePath(section, type);
 
   return (
     <main className="bg-background">
       <Container className="py-12">
         <article className="mx-auto max-w-4xl space-y-8">
+          <Breadcrumb
+            items={[
+              { label: "Trang chủ", href: "/" },
+              { label: sectionLabel, href: sectionHref },
+              { label: targetLabel, href: targetHref },
+              { label: article.title, href: `/du-an/bai-viet/${article.slug}` },
+            ]}
+          />
           <header className="space-y-4">
             <p className="text-sm font-semibold uppercase tracking-wider text-amber-600">
               {article.category}
@@ -77,13 +103,19 @@ export default async function ArticleDetailPage({
 
           {article.introContent && (
             <section className="prose prose-lg max-w-none">
-              <MarkdownRenderer content={article.introContent} />
+              <ArticleMarkdownRenderer
+                content={article.introContent}
+                rendererVersion={article.rendererVersion}
+              />
             </section>
           )}
 
           {article.mainContent && (
             <section className="prose prose-lg max-w-none">
-              <MarkdownRenderer content={article.mainContent} />
+              <ArticleMarkdownRenderer
+                content={article.mainContent}
+                rendererVersion={article.rendererVersion}
+              />
             </section>
           )}
         </article>

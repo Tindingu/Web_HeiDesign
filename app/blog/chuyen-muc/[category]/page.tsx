@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buildMetadata } from "@/lib/seo";
 import { getPostCategories, getPostsByCategorySlug } from "@/lib/strapi";
 import { Container } from "@/components/shared/container";
+import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { PostCard } from "@/components/blog/post-card";
 import { toCategoryLabel } from "@/lib/post-category";
 
@@ -44,6 +45,16 @@ export default async function BlogCategoryPage({
   return (
     <main className="bg-background">
       <Container className="py-16 space-y-10">
+        <Breadcrumb
+          items={[
+            { label: "Trang chủ", href: "/" },
+            { label: "Kinh nghiệm hay", href: "/blog" },
+            {
+              label: activeCategory.label,
+              href: `/blog/chuyen-muc/${activeCategory.slug}`,
+            },
+          ]}
+        />
         <div className="space-y-4">
           <Link
             href="/blog"

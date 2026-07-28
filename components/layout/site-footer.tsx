@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Instagram, MapPin, Phone, Mail, YoutubeIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { siteConfig } from "@/lib/constants";
 import { TrackedLink } from "@/components/tracking/tracked-link";
@@ -19,6 +22,12 @@ function TikTokIcon({ className }: { className?: string }) {
 }
 
 export function SiteFooter() {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/uat") || pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   const messengerMatch = siteConfig.facebookUrl.match(/m\.me\/([^/?#]+)/i);
   const facebookPageHref = messengerMatch?.[1]
     ? `https://www.facebook.com/${messengerMatch[1]}`

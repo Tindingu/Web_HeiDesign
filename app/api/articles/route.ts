@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
         coverImageUrl: data.coverImageUrl,
         introContent: data.introContent,
         mainContent: data.mainContent,
+        rendererVersion: data.rendererVersion === "v2" ? "v2" : "legacy",
       },
     );
     revalidateArticleContent(newArticle);
@@ -78,6 +79,12 @@ export async function PUT(request: NextRequest) {
       coverImageUrl: data.coverImageUrl,
       introContent: data.introContent,
       mainContent: data.mainContent,
+      rendererVersion:
+        data.rendererVersion === "v2"
+          ? "v2"
+          : data.rendererVersion === "legacy"
+            ? "legacy"
+            : previousArticle?.rendererVersion,
     });
 
     if (!updated) {
