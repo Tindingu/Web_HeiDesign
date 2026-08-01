@@ -7,4 +7,5 @@ out
 icep-design-posts/
 .uat
 .DS_Store
-.data
+data
+wp-content
