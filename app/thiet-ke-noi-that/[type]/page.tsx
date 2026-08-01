@@ -1,4 +1,4 @@
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildServiceJsonLd } from "@/lib/seo";
 import { getProjects } from "@/lib/strapi";
 import {
   readProjectCategories,
@@ -73,6 +73,12 @@ export default async function InteriorDesignTypePage({
     : [];
   const headings = [...introHeadings, ...mainHeadings];
   const targetLabel = getInteriorTargetLabel(params.type);
+  const serviceJsonLd = buildServiceJsonLd({
+    name: targetLabel,
+    description: latestArticle?.description,
+    path: `/thiet-ke-noi-that/${params.type}`,
+    serviceType: "Thiết kế nội thất",
+  });
 
   return (
     <main className="bg-background">
@@ -169,6 +175,10 @@ export default async function InteriorDesignTypePage({
       )}
 
       <BlogToc headings={headings} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
     </main>
   );
 }

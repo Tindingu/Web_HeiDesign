@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { ArticleMarkdownRenderer } from "@/components/shared/article-markdown-renderer";
 import { getArticleBySlug, readArticles } from "@/lib/article-storage";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildProjectArticleJsonLd } from "@/lib/seo";
 import {
   buildTargetTypePath,
   getTargetLabel,
@@ -62,6 +62,10 @@ export default async function ArticleDetailPage({
   const sectionHref = section === "du-an" ? "/du-an" : `/${section}`;
   const targetLabel = getTargetLabel(section, type);
   const targetHref = buildTargetTypePath(section, type);
+  const articleJsonLd = buildProjectArticleJsonLd(
+    article,
+    `/du-an/bai-viet/${article.slug}`,
+  );
 
   return (
     <main className="bg-background">
@@ -120,6 +124,10 @@ export default async function ArticleDetailPage({
           )}
         </article>
       </Container>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
     </main>
   );
 }

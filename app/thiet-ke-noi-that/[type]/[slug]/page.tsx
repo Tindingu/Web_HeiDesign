@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { ArticleMarkdownRenderer } from "@/components/shared/article-markdown-renderer";
 import { readArticles } from "@/lib/article-storage";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, buildProjectArticleJsonLd } from "@/lib/seo";
 import {
   categoryToTypeSlug,
   getInteriorTargetLabel,
@@ -52,6 +52,10 @@ export default async function InteriorArticleDetailPage({
     notFound();
   }
   const targetLabel = getInteriorTargetLabel(params.type);
+  const articleJsonLd = buildProjectArticleJsonLd(
+    article,
+    `/thiet-ke-noi-that/${params.type}/${article.slug}`,
+  );
 
   return (
     <main className="bg-background">
@@ -113,6 +117,10 @@ export default async function InteriorArticleDetailPage({
           )}
         </article>
       </Container>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
     </main>
   );
 }

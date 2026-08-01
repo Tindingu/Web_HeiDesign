@@ -474,19 +474,41 @@ async function createSchema() {
     return;
   }
 
+  let hasSchemaLock = false;
+
   try {
     await client.query("CREATE SCHEMA IF NOT EXISTS public");
     await client.query("SET search_path TO public");
-    await client.query("SELECT pg_advisory_lock(hashtext('hei_design_schema_init'))");
+
+    if (await isSchemaReady(client)) {
+      return;
+    }
+
+    const lockResult = await client.query(
+      "SELECT pg_try_advisory_lock(hashtext('hei_design_schema_init')) AS locked",
+    );
+    hasSchemaLock = Boolean(lockResult.rows[0]?.locked);
+
+    if (!hasSchemaLock) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      if (await isSchemaReady(client)) {
+        return;
+      }
+
+      throw new Error("Database schema init is already running. Please retry.");
+    }
+
     if (await isSchemaReady(client)) {
       return;
     }
 
     await client.query(schemaSql);
   } finally {
-    await client
-      .query("SELECT pg_advisory_unlock(hashtext('hei_design_schema_init'))")
-      .catch(() => undefined);
+    if (hasSchemaLock) {
+      await client
+        .query("SELECT pg_advisory_unlock(hashtext('hei_design_schema_init'))")
+        .catch(() => undefined);
+    }
     client.release();
   }
 }

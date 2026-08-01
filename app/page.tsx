@@ -9,7 +9,7 @@ import { Services } from "@/components/home/services";
 import { ProcessTimeline } from "@/components/home/process-timeline";
 import { TestimonialsCarousel } from "@/components/home/testimonials-carousel";
 import { CtaStrip } from "@/components/home/cta-strip";
-import { buildBusinessJsonLd, buildMetadata } from "@/lib/seo";
+import { buildHomeJsonLdGraph, buildMetadata } from "@/lib/seo";
 import { getHomeContent, getPosts, getProjects } from "@/lib/strapi";
 import {
   readProjectCategories,
@@ -83,7 +83,7 @@ export default async function HomePage() {
           imageUrl: item.imageUrl,
         }))
       : content.testimonials;
-  const jsonLd = buildBusinessJsonLd();
+  const jsonLd = buildHomeJsonLdGraph();
 
   return (
     <main className="bg-background overflow-x-clip">

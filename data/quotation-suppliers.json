@@ -1,0 +1,26 @@
+﻿{
+    "status":  true,
+    "message":  "Action Successfully",
+    "data":  [
+                 {
+                     "_id":  "ancuong1",
+                     "name":  "An Cường",
+                     "address":  "702/1K Đ. Sư Vạn Hạnh, Phường 12, Quận 10, Thành phố Hồ Chí Minh 70000",
+                     "description":  "",
+                     "logoUrl":  false,
+                     "sortIndex":  0,
+                     "createdAt":  "2024-08-04 12:01:58",
+                     "updatedAt":  "2024-08-04 12:01:58"
+                 },
+                 {
+                     "_id":  "Bt",
+                     "name":  "Ba Thanh",
+                     "address":  "",
+                     "description":  "",
+                     "logoUrl":  false,
+                     "sortIndex":  1,
+                     "createdAt":  "2024-08-04 12:02:25",
+                     "updatedAt":  "2024-08-04 12:02:25"
+                 }
+             ]
+}

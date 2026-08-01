@@ -18,7 +18,11 @@ export function FloatingContactButtons() {
   const router = useRouter();
   const [isQuoteCollapsed, setIsQuoteCollapsed] = useState(false);
 
-  if (pathname.startsWith("/admin") || pathname.startsWith("/uat")) {
+  if (
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/uat") ||
+    pathname === "/bao-gia"
+  ) {
     return null;
   }
 

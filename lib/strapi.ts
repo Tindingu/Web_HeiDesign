@@ -243,12 +243,16 @@ function mapImage(
 
 async function fetchStrapi<T>(path: string, query?: string): Promise<T | null> {
   const url = `${env.STRAPI_URL}/api/${path}${query ? `?${query}` : ""}`;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3000);
+
   try {
     const response = await fetch(url, {
       headers: env.STRAPI_TOKEN
         ? { Authorization: `Bearer ${env.STRAPI_TOKEN}` }
         : undefined,
       next: { revalidate: 120 },
+      signal: controller.signal,
     });
 
     if (!response.ok) return null;
@@ -256,6 +260,8 @@ async function fetchStrapi<T>(path: string, query?: string): Promise<T | null> {
     return json.data ?? null;
   } catch {
     return null;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 

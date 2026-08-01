@@ -14,9 +14,13 @@ export function LeadCapturePopup() {
   const pathname = usePathname();
   const pageUrl = pathname || "/";
   const [isOpen, setIsOpen] = useState(false);
+  const shouldHidePopup =
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/uat") ||
+    pathname === "/bao-gia";
 
   useEffect(() => {
-    if (pathname.startsWith("/admin") || pathname.startsWith("/uat")) return;
+    if (shouldHidePopup) return;
 
     const now = Date.now();
     const nextAtRaw = window.localStorage.getItem(POPUP_NEXT_AT_KEY);
@@ -32,9 +36,9 @@ export function LeadCapturePopup() {
     }, initialDelay);
 
     return () => window.clearTimeout(timer);
-  }, [pathname]);
+  }, [pathname, shouldHidePopup]);
 
-  if (pathname.startsWith("/admin") || pathname.startsWith("/uat")) return null;
+  if (shouldHidePopup) return null;
 
   const closeAndScheduleNext = () => {
     setIsOpen(false);

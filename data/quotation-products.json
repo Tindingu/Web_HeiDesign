@@ -1,0 +1,2596 @@
+﻿{
+    "status":  true,
+    "message":  "Action Successfully",
+    "data":  [
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  "810",
+                                  "depth":  "610"
+                              },
+                     "_id":  "9utlFgmdV3xBTBL3kFIiiInC",
+                     "name":  "Tủ bếp dưới",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "Dài/1000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-7.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3300000",
+                                                                "_id":  "xfWlm2jvn4RWj5XfId9vftCH"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2640000",
+                                                                "_id":  "Tui4FBEwFWpTM4iR0FIHzL2R"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2k",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-8.jpg",
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-9.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3450000",
+                                                                "_id":  "WsC2D221u5aqzrDC43APo3Nc"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2760000",
+                                                                "_id":  "3Qa1tQpXYXp1Tv2qjTac2Vq9"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-10.jpg",
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-11.jpg",
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-12.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3650000",
+                                                                "_id":  "76UB1f7DYr8dkJ0wcxBUGKLg"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2920000",
+                                                                "_id":  "6NVDSUVlRHuSIgnJFsu5NPMf"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-16.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3750000",
+                                                                "_id":  "GPzjye4MFx20w1Aa9qydqLPH"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3000000",
+                                                                "_id":  "XBP8KwYcq2MLafMJ6nWpBrTq"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ acrylic",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine. Cánh gỗ nhựa phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-17.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5500000",
+                                                                "_id":  "xgUjbQNHxZfwVbYY37XgsaCx"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4400000",
+                                                                "_id":  "ynirWfig3yY4hQhTisJllI1d"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF nhôm kính",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-18.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4500000",
+                                                                "_id":  "5kSao4EPCVx1LEF6WZTUAcLM"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3600000",
+                                                                "_id":  "RbUep2YmEmecpC3nEfyfS0ce"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Nhựa nhôm kính",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5500000",
+                                                                "_id":  "Y2pfJ9XNb9nwHzQUoLqJHTAw"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4400000",
+                                                                "_id":  "wYrtbfl9E4vnfv96vNMnZYvl"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  "800",
+                                  "depth":  "350"
+                              },
+                     "_id":  "I7s6dDG2iPZce8OZYGCCDjsd",
+                     "name":  "Tủ bếp trên",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "Dài/1000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3100000",
+                                                                "_id":  "F3GzPSbhCYlhKPQoYfeIR8Uv"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2480000",
+                                                                "_id":  "ZhE5OAZ3zT38r4eJDov2CExV"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3450000",
+                                                                "_id":  "TDdIhxtVeBbsctjgsEtcrs6J"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2760000",
+                                                                "_id":  "Q8LpoO3PmLkgxkyGDbZxWmNa"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic mặt ngoài, mặt trong phủ melamine",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-1-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3550000",
+                                                                "_id":  "G4xEZsR2YI2LllYf5yH6hRco"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2840000",
+                                                                "_id":  "ZibrLFWAz3mw6QhM2RBRXP9h"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-2-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3650000",
+                                                                "_id":  "6bAxRBXbP3oeu2oDcFZi9Amj"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2920000",
+                                                                "_id":  "0oX2q2i7GkHgM3W1Rj5w5m3m"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ melamine",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine, cánh gỗ nhựa phủ melamine",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-3-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4300000",
+                                                                "_id":  "Mp28Y5gWtUz1xkcEMkQByLbA"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3440000",
+                                                                "_id":  "iEFT77Kg7ngJ11Fj9Cib3M9g"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ acrylic",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine. Cánh gỗ nhựa phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-4-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3550000",
+                                                                "_id":  "GUDqaH2WeNTfVx5UtzUhqS4L"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2840000",
+                                                                "_id":  "v3cCsTy2RAInnjPqAqSHuYgL"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF nhôm kính",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-5-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4850000",
+                                                                "_id":  "zqwf19VXBofFRbZT7FcIqWiK"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3880000",
+                                                                "_id":  "P6aDN2YGB9Okr9ZEDeFuLT3K"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Nhựa nhôm kính",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-6-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5450000",
+                                                                "_id":  "ZR2vZetzIZoDqOEiZy0qEjiu"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4360000",
+                                                                "_id":  "BevDhrKz1qOTVpXQsN0oMtI7"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  null,
+                                  "depth":  "610"
+                              },
+                     "_id":  "6Lhda9XUTreP0POwpND1yJnd",
+                     "name":  "Tủ bao tủ lạnh",
+                     "unit":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? \"m dài\" : \"m2\"",
+                     "formulaQuantity":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? (Math.max(Cao, Dài) / 1000) : (Dài * Cao) / 1000000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-7-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2600000",
+                                                                "_id":  "zxfdNSt6nzwwLWoOMOlckrWp"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2080000",
+                                                                "_id":  "aQqtiMGC0cf3hrKhkfr9bFhN"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2k",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k mặt ngoài, mặt trong phủ melamine",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-8-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2800000",
+                                                                "_id":  "kbgCq0XOJ8VUCES8P3Vg7xGd"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2240000",
+                                                                "_id":  "HlBiMEmxsJHRHDp73cKsKJC4"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic mặt ngoài, mặt trong phủ melamine",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-9-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2850000",
+                                                                "_id":  "m2xvyqQy0WSdcYJuMaRGSAYB"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1180000",
+                                                                "_id":  "Y9aBA3chROrqxerz2p7NaMVD"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-10-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2850000",
+                                                                "_id":  "jnDWI59pEWUbUaipOtIC8PaU"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2280000",
+                                                                "_id":  "xgVFyFfDXzit4ENse5Wqzkmj"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ melamine",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine, cánh gỗ nhựa phủ melamine",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2800000",
+                                                                "_id":  "7uicqIy7aAcgl6Wl2zQfixUW"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2240000",
+                                                                "_id":  "x8j3TYe87lazB8qvGk8HOmDu"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ acrylic",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine. Cánh gỗ nhựa phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3700000",
+                                                                "_id":  "SgYcCRiiVQ5kGD0I1TkiCuxj"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2960000",
+                                                                "_id":  "MWPWyfSqQuoOxn6hplOPqeUc"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF nhôm kính",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2850000",
+                                                                "_id":  "jVsrKUlzZjaYOI9hOkVrURGR"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2280000",
+                                                                "_id":  "kheovjliYfYkh51AjVzxNbAr"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Nhựa nhôm kính",
+                                                               "description":  "Thùng gỗ nhựa phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3950000",
+                                                                "_id":  "E3uxzz8x7fwNcscYVp0SkSer"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3160000",
+                                                                "_id":  "7zaz765yVN4WwvjmL6FuSTWq"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  null,
+                                  "depth":  "350"
+                              },
+                     "_id":  "N7aIuZg08d8V88PYfSnAFqOF",
+                     "name":  "Tủ giày",
+                     "unit":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? \"m dài\" : \"m2\"",
+                     "formulaQuantity":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? (Math.max(Cao, Dài) / 1000) : (Dài * Cao) / 1000000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2400000",
+                                                                "_id":  "qGvDYWoFUkaWB3xBdprgzEvY"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1920000",
+                                                                "_id":  "SiaPvMuPVydY2qiFoeLCWDvx"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2600000",
+                                                                "_id":  "k7U6OH13JLNYY6dYPovnEABJ"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2080000",
+                                                                "_id":  "xBxiRXoxdxBXWSp8bcXJmCUu"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2700000",
+                                                                "_id":  "XrnVDXh7lHxwrzYcj4u2kzWA"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2360000",
+                                                                "_id":  "ZiOmMXFels8nalAb4pLtkuHy"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2900000",
+                                                                "_id":  "02i5jvAHcF4uYGOafneVNI1m"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2320000",
+                                                                "_id":  "8L3woAKI4QrsjjUK9f8k4gyA"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-7-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3550000",
+                                                                "_id":  "x8R1FubgobeHaRrqbGtNi1GW"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2840000",
+                                                                "_id":  "f0zYkv4378VJxppyosOoaajj"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-8-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3750000",
+                                                                "_id":  "N6X2u5swHvd5LV2M5y1UqN7v"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3000000",
+                                                                "_id":  "GL8W47WnTXU5nnXpVMLB24Kp"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-9-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2700000",
+                                                                "_id":  "LQGIyTQn1abCWQp5nLxDNuoY"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2360000",
+                                                                "_id":  "1LHJuD2ReaIzggIHx9sKbQTI"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-10-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3850000",
+                                                                "_id":  "vvS9Er9AQ5Uqs9klSTCEWgRj"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3080000",
+                                                                "_id":  "upuxkR4Ja3LfTLWmDaUva8sw"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Nhôm kính - MDF thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh nhôm kính",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-2-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4800000",
+                                                                "_id":  "H4UZ4f0hWRwR38dfHu1MKMK1"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4320000",
+                                                                "_id":  "w6SfSZ9E8hOCI2BkHJ0G6w8O"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Nhôm kính - MDF chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh nhôm kính",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-3-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5000000",
+                                                                "_id":  "7M3BGOP2BWdf6m3IXW20zUzC"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4000000",
+                                                                "_id":  "r1EQk5YIZTMb1VVbqSI5QYNg"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  "300",
+                                  "depth":  "350"
+                              },
+                     "_id":  "7v1NNazjg2X0LrcLzDJOcWQX",
+                     "name":  "Kệ tivi",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "Dài/1000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-4-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2150000",
+                                                                "_id":  "BpQIjCVxnEkeOyRJvn8V70ql"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1720000",
+                                                                "_id":  "A4itiak38eb2kPUwL4zgDyja"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-5-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2350000",
+                                                                "_id":  "n76dhWmAN90RqCzuelsJGlLy"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1880000",
+                                                                "_id":  "oj4XTf2SK5L44ZyKBMPvxYy4"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/thiet-ke-noi-that-ke-tivi-ket-hop-ban-tho-6-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2350000",
+                                                                "_id":  "l0EamOHdZ1CqHP7sHHUtICZQ"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1880000",
+                                                                "_id":  "Re3jsjVU4ToMtn8rGJU6xK2H"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2550000",
+                                                                "_id":  "lbLWHZjTQYPyP07xlPVtjG15"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2040000",
+                                                                "_id":  "za2vokkzzObI6sBjSLjevaOH"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2150000",
+                                                                "_id":  "6AxmIFq1Ufa0bdO0vLOLthZF"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "0",
+                                                                "_id":  "53ySvcxMYQzD0zGQa1moy8zl"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-3.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2950000",
+                                                                "_id":  "UgrFmDT13bwm5ekCe3xH7cvw"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2360000",
+                                                                "_id":  "Fn8NZzhyEJwHG2afc91PT8nV"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-4.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2850000",
+                                                                "_id":  "387i77CgFI38HSiHo9DPBibw"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2280000",
+                                                                "_id":  "q8zkWop82a9zxVWocWzHokTh"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-5.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3050000",
+                                                                "_id":  "yZzEXmqjN5f4t3UPtNnE7hY5"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2440000",
+                                                                "_id":  "1bzmF7uqzerP7KzUkCGgGo72"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF thường, nhôm kinh",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh nhôm kính",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-6.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3850000",
+                                                                "_id":  "WnX0HEr3QQqGaGrcwTRqB5W9"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3080000",
+                                                                "_id":  "IegtCbEl5xZLJBFqHOrInKGF"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF chống ẩm, nhôm kính",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh nhôm kính",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/ke-tivi-ket-hop-ban-tho.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4050000",
+                                                                "_id":  "wF27jMZ5Jg42KJAQC0sbnPTA"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3240000",
+                                                                "_id":  "BrX2hi5u59Qg9aat8176eKGQ"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  null,
+                                  "depth":  "550"
+                              },
+                     "_id":  "aCGQY5h9JHgvP2PoxJ7u1phD",
+                     "name":  "Tủ áo",
+                     "unit":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? \\\"m dài\\\" : \\\"m2\\\"",
+                     "formulaQuantity":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? (Math.max(Cao, Dài) / 1000) : (Dài * Cao) / 1000000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/luu-y-noi-that-ke-tivi-ket-hop-ban-tho-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2900000",
+                                                                "_id":  "XXtgTSlRdWWcxWFru8wa8YZr"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2320000",
+                                                                "_id":  "POoxBqLEgl9LfsN5xHbP6Ihl"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/luu-y-noi-that-ke-tivi-ket-hop-ban-tho-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3100000",
+                                                                "_id":  "3x5rwcnLTVm7f24XPmjmeAuG"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2480000",
+                                                                "_id":  "NCrFb6nijaasYcyLvLSGtePP"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3300000",
+                                                                "_id":  "llC0Vn5b0cRG5XQ1sqdxdoFe"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2640000",
+                                                                "_id":  "MeUstpJ4gDIjD1JOfUZcMb7n"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/cong-ty-thiet-ke-thi-cong-noi-that-icep-banner-4.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3400000",
+                                                                "_id":  "eLdfZjCeRQixGKxtGgAGPFTA"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2720000",
+                                                                "_id":  "l2clClv2zezy5r1QzHWHt6fv"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3750000",
+                                                                "_id":  "4fMBuZOwj2Uo7xZhUOrFi9Cx"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3000000",
+                                                                "_id":  "nYiLYhsMtqkFXYpxFWg0jKHB"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-8.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3850000",
+                                                                "_id":  "auVdcPYUGigCK4IOlIxrR24x"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3080000",
+                                                                "_id":  "me2MKVOPTJ9zsnrZrzo1mmzE"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-7.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3900000",
+                                                                "_id":  "JAuuBezMRmunwIZIxwyvoN7y"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3120000",
+                                                                "_id":  "BCPlMKLb7cDh1udeSAY2oAyP"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-that-ke-tivi-ket-hop-ban-tho-8-1.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4100000",
+                                                                "_id":  "eJvCIARls8ICnPIvRcJzpTsA"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3280000",
+                                                                "_id":  "DdcCrE8W2BBrSqOEtVctJYDn"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF thường, cánh nhôm kính",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4800000",
+                                                                "_id":  "9ZIf7n42ztCTR6jiNXGXeBiC"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3840000",
+                                                                "_id":  "sAjfhCNuo3KmWdArxWdS83ym"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF chống ẩm, cánh nhôm kính",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh nhôm kính.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5000000",
+                                                                "_id":  "j7RTctQkZ2kStumqfMoo2jrI"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4000000",
+                                                                "_id":  "1WfBFHM3Ctn1zcGCmeoEh1t3"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  "750",
+                                  "depth":  "500"
+                              },
+                     "_id":  "slncuN7ANmem0tsE7BLm0Kne",
+                     "name":  "Bàn làm việc / Bàn trang điểm ( chưa bao gồm gương soi )",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "Dài/1000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/menh-moc.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2400000",
+                                                                "_id":  "xe7eS8mwv9p7E1BBo9H9tmv5"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1920000",
+                                                                "_id":  "LUc3vcG2ybjfJLrTIHr0u6xm"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Melamine chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/menh-moc-1.jpg",
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/menh-moc-2.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2600000",
+                                                                "_id":  "RXICpFdZTElhQlZ3iBYh5tsu"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2080000",
+                                                                "_id":  "olUiOl9dIHcC5vYnSfUcDANX"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/menh-moc-3.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2700000",
+                                                                "_id":  "D4qkTvGLgqY57CKYh4yTv2EG"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2160000",
+                                                                "_id":  "C0FkhzbIzcWmyN6wi3jnwAKS"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2K chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2900000",
+                                                                "_id":  "eJZV4aecKLrHt2wOv8LW7bWr"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2320000",
+                                                                "_id":  "PAfbZswkWfr6ELgj3JUDf5OO"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2900000",
+                                                                "_id":  "746HWduaJruQj50GkNKOfX4C"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2320000",
+                                                                "_id":  "leogxYibzfMKm5AsvSrGuBcc"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/icon1-1.png"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3100000",
+                                                                "_id":  "Rd5FXSNO4DwhH6IvxiyhBKvF"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2480000",
+                                                                "_id":  "J9Du1rrEDWXmQBtLM2JzKhC0"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3100000",
+                                                                "_id":  "ZyjNAiJ0Pf4FSco4gQCVUCWi"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2480000",
+                                                                "_id":  "OxlCRvtYBMDEUFn6MELwhkBR"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/huong-phong-khach.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3300000",
+                                                                "_id":  "Vp6IBLDWXsE7zQK67P0qERaJ"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2640000",
+                                                                "_id":  "eiG6hAgOP8tvlB1g6bcqKqFU"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "500",
+                                  "height":  "500",
+                                  "depth":  "17"
+                              },
+                     "_id":  "jZQskBcAVSirbmheNjMbfgaO",
+                     "name":  "Gương soi bàn trang điểm",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Gương ốp khung MDF",
+                                                               "description":  "Gương ốp khung MDF",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "500000",
+                                                                "_id":  "ZnQqeYZ3Z0Lj91U1LiBlwnEC"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "400000",
+                                                                "_id":  "wnEugeSZwzHyhQl2M1Bq1y6H"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  "350",
+                                  "depth":  "600"
+                              },
+                     "_id":  "w9WghMsgD9c6kx57lDHJZowm",
+                     "name":  "Tủ dưới Lavabo",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "Dài/1000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ melamine",
+                                                               "description":  "Thùng và cánh gỗ nhựa phủ melamine",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4400000",
+                                                                "_id":  "wIw4SDtRTrYmwXruHjtSuOPM"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3520000",
+                                                                "_id":  "Rm5D14dkYLl7YmwL6QCya6Eh"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ sơn 2K",
+                                                               "description":  "Thùng gỗ nhựa phủ Melamine, cánh gỗ nhựa phủ sơn 2K mặt ngoài",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "4400000",
+                                                                "_id":  "LhDX6ErEYHRCZPmfh6XfJt93"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "3520000",
+                                                                "_id":  "NljzPUfkOHgAFc0pqnlw7H4b"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ Acrylic",
+                                                               "description":  "Thùng gỗ nhựa phủ Melamine, cánh gỗ nhựa phủ Acrylic mặt ngoài.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5000000",
+                                                                "_id":  "OeyVgVmnqUzYaM14WLpueNfZ"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4000000",
+                                                                "_id":  "YFc3fETP1LPqBdGzl8pDzAZW"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa chạy pano phủ sơn 2K",
+                                                               "description":  "Thùng gỗ nhựa phủ Melamine, cánh gỗ nhựa chạy Pano phủ sơn 2K mặt ngoài.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/huong-phong-khach-menh-moc.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5000000",
+                                                                "_id":  "48qoLhOh9Geehp5p7O8qLJhm"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4000000",
+                                                                "_id":  "wpvonlgCOI0XFEy99ZFStycT"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  null,
+                                  "depth":  "150"
+                              },
+                     "_id":  "9MXyHa6au7lZohQxke3V65iZ",
+                     "name":  "Tủ gương",
+                     "unit":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? \\\"m dài\\\" : \\\"m2\\\"",
+                     "formulaQuantity":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? (Math.max(Cao, Dài) / 1000) : (Dài * Cao) / 1000000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Gỗ nhựa phủ melamine",
+                                                               "description":  "Thùng và cánh gỗ nhựa phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3700000",
+                                                                "_id":  "RaYlHv7KA13HNqacchLtNIYE"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2960000",
+                                                                "_id":  "FGJOCrrxOURzOlOIlYy6pvRR"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  null,
+                                  "depth":  "610"
+                              },
+                     "_id":  "oI62pWcqHUiW5KCbuw5mOAjF",
+                     "name":  "Mặt đá",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "Dài/1000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Đá đen tự nhiên",
+                                                               "description":  "Đá đen tự nhiên. Chiều rộng không vượt quá 610mm",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1800000",
+                                                                "_id":  "8QlqdLNJF9Rzo9STlSdcMuHz"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1440000",
+                                                                "_id":  "65syzIah6xx7ae18ZRmyray2"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Đá trắng vân mây nhân tạo",
+                                                               "description":  "Đá trắng vân mây nhân tạo. Chiều rộng không vượt quá 610mm",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2100000",
+                                                                "_id":  "oIHw1CAasXRQGObsKxGbnaTa"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1680000",
+                                                                "_id":  "XnWDhbvgiSeodUQ2GCPEDnby"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  "650",
+                                  "depth":  "5"
+                              },
+                     "_id":  "Tacpk9RDScRP7VWfQ4Dv17Ts",
+                     "name":  "Kính ốp bếp",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "Dài/1000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Kính ốp bếp",
+                                                               "description":  "Kính màu trơn",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/noi-thta-menh-moc.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1000000",
+                                                                "_id":  "sx45myV5TPgezyzWtPLZD7TK"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "800000",
+                                                                "_id":  "NAQrfw3mCi5Z209lXBEOO9t5"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "2000",
+                                  "height":  "300",
+                                  "depth":  "1400"
+                              },
+                     "_id":  "GEqWKpQ0OuW4OXSwDbqvrX81",
+                     "name":  "Giường hộp 1m4",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF thường",
+                                                               "description":  "MDF thường lõi vàng phủ melamine. Đầu giường cao 800mm, thân giường cao 300mm.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/cau-kim-tien.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5200000",
+                                                                "_id":  "KSxfxS0xezmhhrwwucU9BAtG"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4160000",
+                                                                "_id":  "uNDtPRoUxxCdnrzpDn2TLyqI"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF chống ẩm ",
+                                                               "description":  "MDF chống ẩm lõi xanh phủ melamine. Đầu giường cao 800mm, thân giường cao 300mm.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/cay-canh-phong-khach.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5500000",
+                                                                "_id":  "WLukkNulrz6USWWkNHrWx3db"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4400000",
+                                                                "_id":  "WeJiHWNBxfu16oOr2BT3JcH8"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "2000",
+                                  "height":  "300",
+                                  "depth":  "1600"
+                              },
+                     "_id":  "Hh30Xl3335pva0wYQaMRVUuM",
+                     "name":  "Giường bọc nệm 1m6",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Vải bố hoặc Vải nhung",
+                                                               "description":  "MDF bọc mút nệm và vải bố hoặc vải nhung",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "8500000",
+                                                                "_id":  "ggCGirfGflKX86fzniun0bYB"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "6800000",
+                                                                "_id":  "Zq66BBupLptunh7CgFMqhDcp"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Da PU",
+                                                               "description":  "MDF bọc mút nệm và da PU",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "9000000",
+                                                                "_id":  "jN9DRFFUEjHv10D64ZTeeze9"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "7200000",
+                                                                "_id":  "sE4np2nIiRTtQ3PdCtqmNnsj"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Da Microfiber",
+                                                               "description":  "MDF bọc mút nệm và da Microfiber\r\n",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "10000000",
+                                                                "_id":  "CrEHLs76beX86VQzaF4b6uGH"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "8000000",
+                                                                "_id":  "QLLFxawQXjKw0ajPZE7A8VDj"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "2000",
+                                  "height":  "300",
+                                  "depth":  "1800"
+                              },
+                     "_id":  "yEptTGklyOaEbaG4SXoPihcl",
+                     "name":  "Giường bọc nệm 1m8",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Vải bố hoặc Vải nhung",
+                                                               "description":  "MDF bọc mút nệm và vải bố hoặc vải nhung",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "9000000",
+                                                                "_id":  "pms9SgHEjiJYrSRH5pkCuh4h"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "7200000",
+                                                                "_id":  "OB7wtB3P4xuwY0DCeO06FfZi"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Da PU",
+                                                               "description":  "MDF bọc mút nệm và da PU",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "9500000",
+                                                                "_id":  "3MrrJ52iBNGZJkf6adDACFWJ"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "7600000",
+                                                                "_id":  "hPrYSsdpXnu2sNq4fMBMMQI7"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Da Microfiber",
+                                                               "description":  "MDF bọc mút nệm và da Microfiber",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "10500000",
+                                                                "_id":  "QBdBUysk9L9th5OsQTZi5WQV"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "8400000",
+                                                                "_id":  "Qjh9BoQqiJhdqpEzOskg9OQB"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  "300",
+                                  "depth":  null
+                              },
+                     "_id":  "IBWk2jLaduVobQFiUwzjGFu0",
+                     "name":  "Giường bục",
+                     "unit":  "",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Thùng MDF thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2900000",
+                                                                "_id":  "zjqQwHDlraSq7aYEFpGGJyuq"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2320000",
+                                                                "_id":  "H2P6smAQMlA0XfngNIakrk0Q"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Thùng MDF chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/tranh-thuy-mac.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "3200000",
+                                                                "_id":  "8tnS87KxdafdiOH9DzWfUncD"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "2560000",
+                                                                "_id":  "a31r5VvQf3HyHj8IXGQ45KPq"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "2000",
+                                  "height":  "300",
+                                  "depth":  "1600"
+                              },
+                     "_id":  "cliWfwiyk0l0ei38siqNBXUj",
+                     "name":  "Giường hộp 1m6",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF thường",
+                                                               "description":  "MDF thường lõi vàng phủ melamine. Đầu giường cao 800mm, thân giường cao 300mm.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/tranh-tung-hac-dien-nien.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "5800000",
+                                                                "_id":  "IgZVu39yw2x9mKt0AOGul25J"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4640000",
+                                                                "_id":  "lmT5ITRGce8nP3f0w5R4YlAA"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF chống ẩm",
+                                                               "description":  "MDF chống ẩm lõi xanh phủ melamine. Đầu giường cao 800mm, thân giường cao 300mm.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/be-ca-phong-thuy.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "6100000",
+                                                                "_id":  "JEHORRoO9wdVjge8zOIwWIDK"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "4880000",
+                                                                "_id":  "YtIqM8Xxcmj82H8mymOUow8J"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "2000",
+                                  "height":  "300",
+                                  "depth":  "1800"
+                              },
+                     "_id":  "j8dxG2w8jDQJKfyHL6sVe4RB",
+                     "name":  "Giường hộp 1m8",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF thường",
+                                                               "description":  "MDF thường lõi vàng phủ melamine. Đầu giường cao 800mm, thân giường cao 300mm.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "6300000",
+                                                                "_id":  "xvqhYY8A2iouzn8vAYEddT9S"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "5040000",
+                                                                "_id":  "vF2VMbPUdjoE6m7vSegTkdxO"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "MDF chống ẩm",
+                                                               "description":  "MDF chống ẩm lõi xanh phủ melamine. Đầu giường cao 800mm, thân giường cao 300mm.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/ty-huu-phong-thuy.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "6600000",
+                                                                "_id":  "RxawqWSg4KDdzOScZpejqbSK"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "5280000",
+                                                                "_id":  "AlACFLWSQckwuggfKbYGx5IS"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "2000",
+                                  "height":  "300",
+                                  "depth":  "1400"
+                              },
+                     "_id":  "cwIwEc5S3QWHdrJoRZlKuyyJ",
+                     "name":  "Giường bọc nệm 1m4",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Vải bố hoặc Vải nhung",
+                                                               "description":  "MDF bọc mút nệm và vải bố hoặc vải nhung",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "8000000",
+                                                                "_id":  "beZWOq0bBZSFA85qkXFrCX4q"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "6400000",
+                                                                "_id":  "FN2w13tGVLMNBHTI6HhN7jPm"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Da PU",
+                                                               "description":  "MDF bọc mút nệm và da PU",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "8500000",
+                                                                "_id":  "vt5cc6aHr5bpiune9ZbuaxpK"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "6800000",
+                                                                "_id":  "RbEC06RloAkc2Yq0YTl1uQR5"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Da Microfiber",
+                                                               "description":  "MDF bọc mút nệm và da Microfiber",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Giá mang tính chất tham khảo. Tùy mẫu cụ thể sẽ có mức giá khác nhau."
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "9500000",
+                                                                "_id":  "M8fnAaIpDE04LfSIgla7pNTf"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "7600000",
+                                                                "_id":  "So1gUcgKMeTOcZ91UYJAIEgf"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "580",
+                                  "height":  "120",
+                                  "depth":  "580"
+                              },
+                     "_id":  "kZvEUUnqugJ6CIGi6gdLh2MR",
+                     "name":  "Hộc kéo giường hộp",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Thùng MDF thường",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Không xác định"
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "500000",
+                                                                "_id":  "8OT3DJeBTkSAnohJk6uvJApA"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "500000",
+                                                                "_id":  "JK5hWzqr380jrT9vLZNKvhqz"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Thùng MDF chống ẩm",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  "Không xác định"
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "500000",
+                                                                "_id":  "gKg1KX8RsGT6gpmif7410Lcs"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "500000",
+                                                                "_id":  "L7KqWEQdefnM01jAsVon4CmZ"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  "500",
+                                  "height":  "450",
+                                  "depth":  "400"
+                              },
+                     "_id":  "yvSOkpUl1PaB35gfiMWKcPJk",
+                     "name":  "Tab đầu giường",
+                     "unit":  "Cái",
+                     "formulaQuantity":  "",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Thùng MDF ",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1500000",
+                                                                "_id":  "99Fi0rABbtxsWT1AG0hZwdHG"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1200000",
+                                                                "_id":  "EdRBS6kCGx5pnQmoQ7NXfTTr"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Thùng MDF ",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1700000",
+                                                                "_id":  "WM0S3BWjEYQ7RlTio1V8ndBd"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1360000",
+                                                                "_id":  "Dcr1j6iAAjxmyKZ94eTPvE66"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2k",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1700000",
+                                                                "_id":  "NoYqHG2CPtzp3OQGepXqqdaj"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1360000",
+                                                                "_id":  "S9ttOO50cc4ixR9kcyr1HwlW"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Sơn 2k",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1900000",
+                                                                "_id":  "eKhZcVg8mXJlPVS9BBpCgG3x"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1520000",
+                                                                "_id":  "IJzTlIeLGM2areEVLGfs8Qpo"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/da-phong-thuy.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1800000",
+                                                                "_id":  "qwCjywepCLODTGRFlr96aRTZ"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1440000",
+                                                                "_id":  "rVK1fHN4LZyT4lRksPXq8kgO"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Acrylic",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phủ Acrylic mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/da-phong-thuy.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2000000",
+                                                                "_id":  "fCABua9g65qZOz2JA57V6wLt"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1600000",
+                                                                "_id":  "iJft4ezMQ4xtNfC3TscX0ceL"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano",
+                                                               "description":  "Thùng MDF thường lõi vàng phủ melamine. Cánh MDF thường lõi vàng phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/coc-ba-chan-phong-thuy.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1800000",
+                                                                "_id":  "A7N3IIAgVVL8mQ2DQuADXzI4"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1440000",
+                                                                "_id":  "O4TDpLYve8hMAC1G3I4Tdxok"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Pano",
+                                                               "description":  "Thùng MDF chống ẩm lõi xanh phủ melamine. Cánh MDF chống ẩm lõi xanh phay pano phủ sơn 2k mặt ngoài, mặt trong phủ melamine.",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/coc-ba-chan-phong-thuy.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "2000000",
+                                                                "_id":  "3UcQ1QhZYKPFD4jorBxU3Ac1"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "1600000",
+                                                                "_id":  "UVx8fce53Xv7CGBMpAAxbtJ4"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 },
+                 {
+                     "size":  {
+                                  "width":  null,
+                                  "height":  null,
+                                  "depth":  null
+                              },
+                     "_id":  "8R1i9EjgkoVs1Z1dZTkLZR8P",
+                     "name":  "Ốp vách trang trí",
+                     "unit":  "m dài",
+                     "formulaQuantity":  "(Dài \u003c= 1000 || Cao \u003c= 1000) ? (Math.max(Cao, Dài) / 1000) : (Dài * Cao) / 1000000",
+                     "formulaPrice":  "Đơn giá * Khối lượng",
+                     "description":  "",
+                     "createdAt":  "2023-10-24T07:11:01.544Z",
+                     "updatedAt":  "2024-07-03T06:53:51.594Z",
+                     "listMaterial":  [
+                                          {
+                                              "material":  {
+                                                               "name":  "Tấm nhựa pvc vân đá, hoặc trơn bóng",
+                                                               "description":  "Tấm nhựa pvc vân đá, hoặc trơn bóng",
+                                                               "imgUrl":  [
+                                                                              "http://localhost:8080/wp-content/uploads/2023/08/tru-da-phong-thuy.jpg"
+                                                                          ],
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "700000",
+                                                                "_id":  "Yr4A7J67LEJhZ0lzHV2Wa8NS"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "700000",
+                                                                "_id":  "G4fuNgtsXZwoGHFIArYEWqtD"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Tấm ốp vách MDF thường lõi vàng",
+                                                               "description":  "Tấm ốp vách MDF thường lõi vàng",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1000000",
+                                                                "_id":  "u77Im4ZtKywBuTQzBySivtcS"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "800000",
+                                                                "_id":  "8GqZ0T2fQJRXLQWjIi2H3lmK"
+                                                            }
+                                                        ]
+                                          },
+                                          {
+                                              "material":  {
+                                                               "name":  "Thanh lam nhựa giả gỗ hoặc màu trơn",
+                                                               "description":  "Thanh lam nhựa giả gỗ hoặc màu trơn",
+                                                               "imgUrl":  false,
+                                                               "price":  "",
+                                                               "note":  ""
+                                                           },
+                                              "price":  [
+                                                            {
+                                                                "trademark":  "ancuong1",
+                                                                "priceValue":  "1100000",
+                                                                "_id":  "rN7VHT9rqgS18fCulc03NTri"
+                                                            },
+                                                            {
+                                                                "trademark":  "Bt",
+                                                                "priceValue":  "800000",
+                                                                "_id":  "jxDT1WSw6z8h8gV5csH9eaQW"
+                                                            }
+                                                        ]
+                                          }
+                                      ]
+                 }
+             ]
+}
