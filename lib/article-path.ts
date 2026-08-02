@@ -92,7 +92,18 @@ export function getInteriorTargetLabel(type: string): string {
   );
 }
 
+const CONSTRUCTION_SPACE_LABELS: Record<string, string> = {
+  "phong-khach": "Thi công nội thất phòng khách",
+  "phong-bep": "Thi công nội thất phòng bếp",
+  "phong-ngu": "Thi công nội thất phòng ngủ",
+  "phong-tam": "Thi công nội thất phòng tắm",
+};
+
 export function getConstructionTargetLabel(type: string): string {
+  if (CONSTRUCTION_SPACE_LABELS[type]) {
+    return CONSTRUCTION_SPACE_LABELS[type];
+  }
+
   return (
     CONSTRUCTION_TARGET_OPTIONS.find((item) => item.value === type)?.label ||
     "Thi công nội thất"
