@@ -35,9 +35,9 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
     <>
       <nav
         aria-label="Breadcrumb"
-        className={`flex min-w-0 items-center text-sm font-medium text-slate-500 ${className}`}
+        className={`flex min-w-0 items-center border-y border-[#D7B46A]/70 py-4 text-sm font-medium text-[#1f4569] ${className}`}
       >
-        <ol className="flex min-w-0 flex-wrap items-center gap-1.5">
+        <ol className="flex min-w-0 flex-wrap items-center gap-2">
           {visibleItems.map((item, index) => {
             const isLast = index === visibleItems.length - 1;
             const label = item.label;
@@ -50,21 +50,21 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
                 {index > 0 && (
                   <ChevronRight
                     aria-hidden="true"
-                    className="h-3 w-3 shrink-0 text-slate-400"
+                    className="h-3.5 w-3.5 shrink-0 text-[#B88732]"
                   />
                 )}
 
                 {item.href && !isLast ? (
                   <Link
                     href={item.href}
-                    className="inline-flex min-w-0 items-center text-[#52759b] transition hover:text-[#B88732]"
+                    className="inline-flex min-w-0 items-center text-[#1f4569] transition hover:text-[#B88732]"
                   >
                     <span className="truncate">{label}</span>
                   </Link>
                 ) : (
                   <span
                     aria-current={isLast ? "page" : undefined}
-                    className="min-w-0 truncate text-slate-600"
+                    className="min-w-0 truncate text-[#1f4569]"
                   >
                     {label}
                   </span>

@@ -59,7 +59,7 @@ export default async function InteriorArticleDetailPage({
 
   return (
     <main className="bg-background">
-      <Container className="py-12">
+      <Container className="pb-12 pt-8">
         <article className="mx-auto max-w-4xl space-y-8">
           <Breadcrumb
             items={[

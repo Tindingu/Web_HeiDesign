@@ -61,7 +61,7 @@ export default async function BlogDetailPage({
 
   return (
     <main className="bg-background">
-      <Container className="py-16">
+      <Container className="pb-16 pt-8">
         <div>
           <article className="space-y-6">
             <Breadcrumb

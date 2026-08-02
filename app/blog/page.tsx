@@ -24,7 +24,7 @@ export default async function BlogPage() {
 
   return (
     <main className="bg-background">
-      <Container className="py-16">
+      <Container className="pb-16 pt-8">
         <Breadcrumb
           items={[
             { label: "Trang chủ", href: "/" },

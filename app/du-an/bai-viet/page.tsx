@@ -80,7 +80,7 @@ export default async function DuAnArticlePage({
   return (
     <main className="bg-background">
       {latestArticle && (
-        <section className="bg-background py-20">
+        <section className="bg-background pb-20 pt-8">
           <Container className="space-y-8">
             <Breadcrumb
               items={[

@@ -2,6 +2,13 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { UatMarkdownRenderer } from "@/components/uat/uat-markdown-renderer";
+import { readArchitectureGallery } from "@/lib/architecture-gallery-storage";
+import { buildFaqJsonLd, extractMarkdownFaqs } from "@/lib/markdown-faq";
+import { getProjects } from "@/lib/strapi";
+import {
+  readProjectCategories,
+  readProjectStyles,
+} from "@/lib/taxonomy-storage";
 import { getUatPostBySlug } from "@/lib/uat-post-storage";
 
 export const runtime = "nodejs";
@@ -23,7 +30,22 @@ export default async function UatArticlePreviewPage({
     notFound();
   }
 
-  const articleContent = removeLeadingTitleHeading(post.markdown);
+  const parsedArticle = extractMarkdownFaqs(
+    removeLeadingTitleHeading(post.markdown),
+  );
+  const shouldRenderMainMarker = /<!--\s*MAIN_CONTENT\s*-->/i.test(
+    parsedArticle.content,
+  );
+  const [projects, projectCategories, projectStyles, architectureGallery] =
+    shouldRenderMainMarker
+      ? await Promise.all([
+          getProjects(),
+          readProjectCategories(),
+          readProjectStyles(),
+          readArchitectureGallery(),
+        ])
+      : [[], [], [], []];
+  const faqJsonLd = buildFaqJsonLd(parsedArticle.faqs);
 
   return (
     <main className="bg-background">
@@ -57,13 +79,34 @@ export default async function UatArticlePreviewPage({
             </div>
           ) : null}
 
-          {articleContent ? (
+          {parsedArticle.content ? (
             <section className="prose prose-lg max-w-none">
-              <UatMarkdownRenderer content={articleContent} />
+              <UatMarkdownRenderer
+                content={parsedArticle.content}
+                faqs={parsedArticle.faqs}
+                projects={projects}
+                projectCategories={projectCategories}
+                projectStyles={projectStyles}
+                architectureItems={architectureGallery.map((item) => ({
+                  styleSlug: item.styleSlug,
+                  projectSlug: item.projectSlug,
+                  projectTitle: item.projectTitle,
+                  slotIndex: item.slotIndex,
+                  orientation: item.orientation,
+                  imageUrl: item.imageUrl,
+                  imageAlt: item.imageAlt,
+                }))}
+              />
             </section>
           ) : null}
         </article>
       </Container>
+      {faqJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      ) : null}
     </main>
   );
 }

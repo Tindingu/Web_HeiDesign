@@ -44,7 +44,7 @@ export default async function BlogCategoryPage({
 
   return (
     <main className="bg-background">
-      <Container className="py-16 space-y-10">
+      <Container className="space-y-10 pb-16 pt-8">
         <Breadcrumb
           items={[
             { label: "Trang chủ", href: "/" },

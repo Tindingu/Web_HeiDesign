@@ -82,7 +82,7 @@ export default async function InteriorConstructionTypePage({
   return (
     <main className="bg-background">
       {latestArticle && (
-        <section className="py-20 bg-background">
+        <section className="bg-background pb-20 pt-8">
           <Container className="space-y-8">
             <Breadcrumb
               items={[
