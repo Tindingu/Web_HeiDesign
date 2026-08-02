@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { useMemo, useState } from "react";
 import type { Project } from "@/lib/strapi";
+import { Http2ServerRequest } from "http2";
 
 type CompletedProjectsProps = {
   projects: Project[];
@@ -120,9 +121,9 @@ export function CompletedProjects({
       <Container className="space-y-6 sm:space-y-8">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h1 className="text-lg font-bold uppercase tracking-[0.12em] text-[#1f4569] sm:text-xl md:text-2xl">
+            <h2 className="text-lg font-bold uppercase tracking-[0.12em] text-[#1f4569] sm:text-xl md:text-2xl">
               Dự Án Hoàn Thiện
-            </h1>
+            </h2>
           </div>
         </div>
 

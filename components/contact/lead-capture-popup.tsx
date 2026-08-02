@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 import { LeadCaptureForm } from "@/components/contact/lead-capture-form";
 
 const POPUP_NEXT_AT_KEY = "HEI_lead_popup_next_at";
-const INITIAL_POPUP_DELAY = 12_000;
+const INITIAL_POPUP_DELAY = 50_000;
 const FIVE_MINUTES = 5 * 60_000;
 
 export function LeadCapturePopup() {
