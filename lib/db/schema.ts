@@ -15,12 +15,20 @@ async function isSchemaReady(client: any) {
         WHERE table_schema = 'public'
           AND table_name = 'project_articles'
           AND column_name = 'renderer_version'
-      ) AS has_renderer_version
+      ) AS has_renderer_version,
+      EXISTS (
+        SELECT 1
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND table_name = 'blog_posts'
+          AND column_name = 'renderer_version'
+      ) AS has_blog_renderer_version
   `);
 
   return Boolean(
     result.rows[0]?.has_project_articles &&
-      result.rows[0]?.has_renderer_version,
+      result.rows[0]?.has_renderer_version &&
+      result.rows[0]?.has_blog_renderer_version,
   );
 }
 
@@ -229,12 +237,14 @@ async function createSchema() {
       category_id INTEGER REFERENCES blog_categories(id),
       content TEXT NOT NULL,
       cover_image_url TEXT NOT NULL DEFAULT '',
+      renderer_version TEXT NOT NULL DEFAULT 'legacy',
       published_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
 
     ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS category_id INTEGER REFERENCES blog_categories(id);
+    ALTER TABLE blog_posts ADD COLUMN IF NOT EXISTS renderer_version TEXT NOT NULL DEFAULT 'legacy';
 
     CREATE TABLE IF NOT EXISTS project_articles (
       id SERIAL PRIMARY KEY,

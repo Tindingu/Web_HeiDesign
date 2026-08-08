@@ -53,26 +53,168 @@ export function MarkdownRenderer({
     }
   };
 
+  const normalizeTableText = (value: string) =>
+    value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const trimTrailingEmptyColumns = (rows: string[][]) => {
+    const next = rows.map((row) => [...row]);
+
+    while (
+      next.length > 0 &&
+      next[0].length > 0 &&
+      next.every((row) => (row[row.length - 1] || "").trim() === "")
+    ) {
+      next.forEach((row) => row.pop());
+    }
+
+    return next;
+  };
+
+  const alignDimensionSubHeaderRow = (rows: string[][]) => {
+    if (rows.length < 2) return rows;
+
+    const dimensionIndex = rows[0].findIndex((cell) =>
+      normalizeTableText(cell).includes("kich thuoc"),
+    );
+    if (dimensionIndex < 1) return rows;
+
+    const secondRow = rows[1].map((cell) => normalizeTableText(cell.trim()));
+    const startsWithDimensionSubHeaders =
+      secondRow[0] === "d" &&
+      (secondRow[1] === "r" || secondRow[1] === "s") &&
+      secondRow[2] === "c";
+
+    if (!startsWithDimensionSubHeaders) return rows;
+
+    const alignedRow = Array.from(
+      { length: Math.max(rows[1].length, dimensionIndex + 3) },
+      () => "",
+    );
+    alignedRow[dimensionIndex] = rows[1][0];
+    alignedRow[dimensionIndex + 1] = rows[1][1];
+    alignedRow[dimensionIndex + 2] = rows[1][2];
+
+    return [rows[0], alignedRow, ...rows.slice(2)];
+  };
+
+  const normalizeTableRows = (rows: string[][]) => {
+    const alignedRows = alignDimensionSubHeaderRow(rows);
+    const columnCount = alignedRows.reduce(
+      (max, row) => Math.max(max, row.length),
+      0,
+    );
+
+    return trimTrailingEmptyColumns(
+      alignedRows.map((row) => [
+        ...row,
+        ...Array.from(
+          { length: Math.max(columnCount - row.length, 0) },
+          () => "",
+        ),
+      ]),
+    );
+  };
+
+  const parseTableCells = (line: string) => {
+    const cleanTableCell = (cell: string) =>
+      cell
+        .replace(/<br\s*\/?>/gi, " ")
+        .replace(/\\+$/g, "")
+        .trim();
+
+    const isDisposableTableArtifact = (cell: string) => {
+      const trimmed = cell.trim();
+      if (!trimmed) return false;
+
+      return (
+        /^\\+$/.test(trimmed) ||
+        /^<br\s*\/?>\s*\\*$/i.test(trimmed) ||
+        /^-{3,}\s*\\*$/.test(trimmed)
+      );
+    };
+
+    const cells = line
+      .split("|")
+      .filter((cell) => !isDisposableTableArtifact(cell))
+      .map((cell) => cleanTableCell(cell));
+
+    if (cells[0] === "") cells.shift();
+    if (cells[cells.length - 1] === "") cells.pop();
+    return cells;
+  };
+
+  const isTableSeparatorRow = (cells: string[]) =>
+    cells.length > 0 &&
+    cells.every((cell) => cell === "" || /^:?-{3,}:?$/.test(cell));
+
+  const getTableHeaderRowCount = (rows: string[][]) => {
+    if (rows.length < 2) return 1;
+
+    const firstRowText = normalizeTableText(rows[0].join(" "));
+    const secondRow = rows[1].map((cell) => normalizeTableText(cell.trim()));
+    const hasDimensionGroup =
+      firstRowText.includes("kích thước") ||
+      firstRowText.includes("kich thuoc");
+    const hasDimensionSubHeaders =
+      secondRow.includes("d") &&
+      (secondRow.includes("r") || secondRow.includes("s")) &&
+      secondRow.includes("c");
+
+    return hasDimensionGroup && hasDimensionSubHeaders ? 2 : 1;
+  };
+
+  const renderTableHeaderCells = (row: string[], rowIndex: number) => {
+    const cells: React.ReactNode[] = [];
+
+    for (let idx = 0; idx < row.length; idx += 1) {
+      const cell = row[idx];
+      let colSpan = 1;
+
+      while (
+        idx + colSpan < row.length &&
+        row[idx + colSpan].trim() === ""
+      ) {
+        colSpan += 1;
+      }
+
+      cells.push(
+        <th
+          key={`${rowIndex}-${idx}`}
+          colSpan={colSpan > 1 ? colSpan : undefined}
+          className="border border-gray-300 px-4 py-2 text-left font-semibold align-middle"
+        >
+          {formatInlineMarkdown(cell)}
+        </th>,
+      );
+
+      idx += colSpan - 1;
+    }
+
+    return cells;
+  };
+
   const flushTable = () => {
     if (tableRows.length > 0) {
       console.log("📊 Flushing table with", tableRows.length, "rows");
+      const normalizedRows = normalizeTableRows(tableRows);
+      const headerRowCount = getTableHeaderRowCount(normalizedRows);
+      const headerRows = normalizedRows.slice(0, headerRowCount);
+      const bodyRows = normalizedRows.slice(headerRowCount);
       elements.push(
         <div key={`table-${elements.length}`} className="overflow-x-auto my-6">
-          <table className="w-full border-collapse border border-gray-300">
+          <table className="w-full min-w-[920px] border-collapse border border-gray-300">
             <thead>
-              <tr className="bg-gray-100">
-                {tableRows[0].map((cell, idx) => (
-                  <th
-                    key={idx}
-                    className="border border-gray-300 px-4 py-2 text-left font-semibold"
-                  >
-                    {formatInlineMarkdown(cell)}
-                  </th>
-                ))}
-              </tr>
+              {headerRows.map((row, rowIndex) => (
+                <tr key={rowIndex} className="bg-gray-100">
+                  {renderTableHeaderCells(row, rowIndex)}
+                </tr>
+              ))}
             </thead>
             <tbody>
-              {tableRows.slice(1).map((row, rowIdx) => (
+              {bodyRows.map((row, rowIdx) => (
                 <tr
                   key={rowIdx}
                   className={rowIdx % 2 === 0 ? "bg-white" : "bg-gray-50"}
@@ -80,7 +222,7 @@ export function MarkdownRenderer({
                   {row.map((cell, cellIdx) => (
                     <td
                       key={cellIdx}
-                      className="border border-gray-300 px-4 py-2"
+                      className="border border-gray-300 px-4 py-2 align-middle"
                     >
                       {formatInlineMarkdown(cell)}
                     </td>
@@ -159,23 +301,20 @@ export function MarkdownRenderer({
 
     // Table detection
     if (line.includes("|")) {
+      const cells = parseTableCells(line);
       console.log("🎯 Table line detected:", line.substring(0, 100));
 
       // Skip separator rows (|---|---|---|)
-      if (line.match(/^\|[\s\-:]+\|[\s\-:|]+$/)) {
+      if (isTableSeparatorRow(cells)) {
         console.log("⏭️ Skipping separator row");
         continue;
       }
 
       tableMode = true;
-      const cells = line
-        .split("|")
-        .map((cell) => cell.trim())
-        .filter((cell) => cell && !cell.match(/^[\s\-:]+$/));
 
       console.log("🎯 Cells parsed:", cells.length, cells.slice(0, 3));
 
-      if (cells.length > 0) {
+      if (cells.some((cell) => cell.length > 0)) {
         tableRows.push(cells);
       }
       continue;

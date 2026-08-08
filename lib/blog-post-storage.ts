@@ -12,6 +12,7 @@ export type BlogPostRecord = {
   category: string;
   content: string;
   coverImage: ImageAsset;
+  rendererVersion?: "legacy" | "v2";
   publishedAt: string;
   createdAt: string;
   updatedAt: string;
@@ -25,6 +26,7 @@ type BlogPostRow = {
   category: string;
   content: string;
   cover_image_url: string;
+  renderer_version: "legacy" | "v2" | null;
   published_at: Date;
   created_at: Date;
   updated_at: Date;
@@ -43,6 +45,7 @@ function mapBlogPostRow(row: BlogPostRow): BlogPostRecord {
       alt: row.title,
       blurDataURL: defaultBlurDataURL,
     },
+    rendererVersion: row.renderer_version === "v2" ? "v2" : "legacy",
     publishedAt: new Date(row.published_at).toISOString(),
     createdAt: new Date(row.created_at).toISOString(),
     updatedAt: new Date(row.updated_at).toISOString(),
@@ -62,6 +65,7 @@ export async function readBlogPosts(): Promise<BlogPostRecord[]> {
         COALESCE(c.name, 'Tin tức') AS category,
         bp.content,
         bp.cover_image_url,
+        COALESCE(bp.renderer_version, 'legacy') AS renderer_version,
         bp.published_at,
         bp.created_at,
         bp.updated_at
@@ -105,11 +109,12 @@ export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
             category_id,
             content,
             cover_image_url,
+            renderer_version,
             published_at,
             created_at,
             updated_at
           )
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
         `,
         [
           post.id,
@@ -119,6 +124,7 @@ export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
           categoryId,
           post.content,
           post.coverImage?.url ?? "",
+          post.rendererVersion ?? "legacy",
           post.publishedAt,
           post.createdAt,
           post.updatedAt,
@@ -151,6 +157,7 @@ export async function getBlogPostById(
         COALESCE(c.name, 'Tin tức') AS category,
         bp.content,
         bp.cover_image_url,
+        COALESCE(bp.renderer_version, 'legacy') AS renderer_version,
         bp.published_at,
         bp.created_at,
         bp.updated_at
@@ -179,6 +186,7 @@ export async function getBlogPostBySlug(
         COALESCE(c.name, 'Tin tức') AS category,
         bp.content,
         bp.cover_image_url,
+        COALESCE(bp.renderer_version, 'legacy') AS renderer_version,
         bp.published_at,
         bp.created_at,
         bp.updated_at
@@ -219,9 +227,10 @@ export async function createBlogPost(
         category_id,
         content,
         cover_image_url,
+        renderer_version,
         published_at
       )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING
         id,
         slug,
@@ -230,6 +239,7 @@ export async function createBlogPost(
         (SELECT name FROM blog_categories WHERE id = blog_posts.category_id) AS category,
         content,
         cover_image_url,
+        COALESCE(renderer_version, 'legacy') AS renderer_version,
         published_at,
         created_at,
         updated_at
@@ -241,6 +251,7 @@ export async function createBlogPost(
       categoryId,
       post.content,
       post.coverImage?.url ?? "",
+      post.rendererVersion ?? "legacy",
       post.publishedAt,
     ],
   )) as { rows: BlogPostRow[] };
@@ -286,7 +297,8 @@ export async function updateBlogPost(
         category_id = $5,
         content = $6,
         cover_image_url = $7,
-        published_at = $8
+        renderer_version = $8,
+        published_at = $9
       WHERE id = $1
       RETURNING
         id,
@@ -296,6 +308,7 @@ export async function updateBlogPost(
         (SELECT name FROM blog_categories WHERE id = blog_posts.category_id) AS category,
         content,
         cover_image_url,
+        COALESCE(renderer_version, 'legacy') AS renderer_version,
         published_at,
         created_at,
         updated_at
@@ -308,6 +321,7 @@ export async function updateBlogPost(
       categoryId,
       merged.content,
       merged.coverImage?.url ?? "",
+      merged.rendererVersion ?? "legacy",
       merged.publishedAt,
     ],
   )) as { rows: BlogPostRow[] };
@@ -331,6 +345,7 @@ export function toPost(record: BlogPostRecord): Post {
     category: record.category,
     content: record.content,
     coverImage: record.coverImage,
+    rendererVersion: record.rendererVersion,
     publishedAt: record.publishedAt,
   };
 }

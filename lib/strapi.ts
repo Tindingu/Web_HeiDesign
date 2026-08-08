@@ -66,6 +66,7 @@ export type Post = {
   category: string;
   content: string;
   coverImage: ImageAsset;
+  rendererVersion?: "legacy" | "v2";
   publishedAt: string;
 };
 

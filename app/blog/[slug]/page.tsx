@@ -2,9 +2,12 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { BlogToc } from "@/components/blog/toc";
 import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
+import { ArticleMarkdownRenderer } from "@/components/shared/article-markdown-renderer";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { buildArticleJsonLd, buildMetadata } from "@/lib/seo";
 import { extractHeadings } from "@/lib/mdx";
+import { extractMarkdownFaqs, buildFaqJsonLd } from "@/lib/markdown-faq";
+import { removeLeadingTitleHeading } from "@/lib/article-rendering";
 import {
   getPostBySlug,
   getPostSlugs,
@@ -56,8 +59,14 @@ export default async function BlogDetailPage({
   const relatedPosts =
     sameCategoryPosts.length > 0 ? sameCategoryPosts : latestPosts;
 
-  const headings = extractHeadings(post.content);
+  const isV2Post = post.rendererVersion === "v2";
+  const parsedV2Post = isV2Post
+    ? extractMarkdownFaqs(removeLeadingTitleHeading(post.content))
+    : null;
+  const contentForToc = parsedV2Post?.content ?? post.content;
+  const headings = extractHeadings(contentForToc);
   const jsonLd = buildArticleJsonLd(post);
+  const faqJsonLd = parsedV2Post ? buildFaqJsonLd(parsedV2Post.faqs) : null;
 
   return (
     <main className="bg-background">
@@ -88,7 +97,15 @@ export default async function BlogDetailPage({
               </h1>
               <p className="text-lg text-muted-foreground">{post.excerpt}</p>
             </header>
-            <MarkdownRenderer content={post.content} />
+            {parsedV2Post ? (
+              <ArticleMarkdownRenderer
+                content={parsedV2Post.content}
+                rendererVersion="v2"
+                faqs={parsedV2Post.faqs}
+              />
+            ) : (
+              <MarkdownRenderer content={post.content} />
+            )}
           </article>
 
           {relatedPosts.length > 0 && (
@@ -105,6 +122,12 @@ export default async function BlogDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      {faqJsonLd ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      ) : null}
     </main>
   );
 }

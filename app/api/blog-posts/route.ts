@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
         alt: data.title,
         blurDataURL: defaultBlurDataURL,
       },
+      rendererVersion: data.rendererVersion === "v2" ? "v2" : "legacy",
       publishedAt: data.publishedAt || new Date().toISOString(),
     });
     revalidateBlogContent(newPost);
@@ -75,6 +76,7 @@ export async function PUT(request: NextRequest) {
         alt: data.title,
         blurDataURL: defaultBlurDataURL,
       },
+      rendererVersion: data.rendererVersion === "v2" ? "v2" : "legacy",
       publishedAt: data.publishedAt,
     });
 
