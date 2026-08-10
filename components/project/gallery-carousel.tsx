@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
+import { SmartImage as Image } from "@/components/shared/smart-image";
 import { Container } from "@/components/shared/container";
 import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react";
 import type { Project } from "@/lib/strapi";

@@ -69,6 +69,32 @@ External link neu can nofollow:
 | `/gioi-thieu` | Gioi thieu HEI Design, profile, video | Khi can tang trust ve thuong hieu |
 | `/blog` | Kinh nghiem hay | Khi dan ve cac bai tu van, kien thuc, xu huong |
 
+## Thong Tin Chuan HEI Design Bat Buoc Dung
+
+Khi sua file `index.md`, neu bai viet co nhac den cong ty, dia chi, hotline, website hoac CTA, phai dung thong tin chuan ben duoi. Khong lay lai thong tin ICEP cu, so dien thoai cu, dia chi cu hoac nam cu trong source goc.
+
+| Truong | Gia tri chuan |
+| --- | --- |
+| Ten thuong hieu | `HEI Design` |
+| Ten day du | `Thiet Ke Thi Cong Noi That - Kien Truc HEI Design` |
+| Website | `https://heidesign.vn` |
+| Hotline hien thi | `0904 465 448` |
+| Hotline link tel | `tel:0904465448` |
+| Email | `heidesigninterior@gmail.com` |
+| Van phong | `17 Duong so 11, KDC Cityland Parkhills, Phuong 10, Go Vap, TP HCM` |
+| Xuong san xuat | `147/10/7 Ly Te Xuyen, Hiep Binh, Thu Duc, TP HCM` |
+| Gio lam viec | `08:00 - 17:30, Thu 2 - Thu 7` |
+| Google Maps | `https://maps.app.goo.gl/yjPd8cWkYVqPC45U6` |
+| Logo | `https://res.cloudinary.com/dfazfoh2l/image/upload/v1785229550/logo_vutskb.webp` |
+
+Quy tac noi dung:
+
+- Nam noi dung nen cap nhat theo hien tai la `2026` neu bai dang viet ve bang gia, xu huong, mau thiet ke, chi phi moi nhat.
+- Khong ghi `ICEP`, `Noi That ICEP`, email/sdt/dia chi ICEP trong cac bai dang moi cua HEI, tru khi dang trich dan lich su va co ngu canh ro rang.
+- Neu co CTA cuoi bai, nen uu tien: `lien he HEI Design`, `nhan bao gia`, `dat lich khao sat`, `xem bang bao gia thi cong noi that`.
+- Neu nhac den khu vuc phuc vu, nen viet tu nhien: TP.HCM, Go Vap, Thu Duc, Binh Thanh, Quan 7, Quan 2/TP Thu Duc, Phu Nhuan, Tan Binh, Binh Duong, Dong Nai khi phu hop voi bai.
+- Khong hua hen cam ket tuyet doi nhu "re nhat", "so 1", "bao hanh tron doi" neu khong co co so trong noi dung.
+
 ## URL Thuong Hieu HEI Design Nen Dung Khi Phu Hop
 
 | Kenh | URL | Muc dich |
@@ -97,7 +123,7 @@ Khong nen link ra cac website noi that doi thu truc tiep neu khong bat buoc.
 
 ## Inventory URL Public Tu DB Hien Tai
 
-Cap nhat luc: 2026-08-05.
+Cap nhat luc: 2026-08-08.
 
 ### Du An Hoan Thien
 
@@ -138,6 +164,25 @@ Cap nhat luc: 2026-08-05.
 | `/blog/toi-uu-hoa-ky-thuat-thi-cong-quy-trinh-kiem-soat-chat-luong-5-buoc-tu-xuong-en-cong-trinh` | Quy trinh kiem soat chat luong tu xuong den cong trinh |
 | `/blog/so-sanh-be-mat-melamine-laminate-va-acrylic-loai-nao-chong-tray-xuoc-va-chiu-va-ap-tot-nhat` | So sanh Melamine, Laminate, Acrylic |
 | `/blog/chia-se-kien-thuc-chon-cot-van-go-cong-nghiep-2026` | Kinh nghiem chon cot van go cong nghiep |
+| `/blog/15-mau-trang-tri-phong-khach-15m2-tien-nghi-va-man-nhan-nhat` | Mau trang tri phong khach 15m2 tien nghi, tham khao khi noi ve can ho nho |
+| `/blog/dich-vu-thiet-ke-thi-cong-noi-that-can-ho-tai-thu-uc-sang-tao-va-oc-ao-tu-noi-that-hei-design` | Dich vu thiet ke thi cong noi that can ho tai Thu Duc |
+| `/blog/can-canh-10-mau-thiet-ke-noi-that-penthouses` | Mau thiet ke noi that penthouse cao cap |
+| `/blog/8-tuyet-chieu-thiet-ke-noi-that-chung-cu-thong-minh` | Meo thiet ke chung cu thong minh, toi uu cong nang |
+| `/blog/7-quy-tac-vang-thiet-ke-noi-that-chung-cu-theo-phong-thuy` | Quy tac phong thuy trong thiet ke noi that chung cu |
+| `/blog/bat-mi-10-mau-thiet-ke-noi-that-chung-cu-mini-25m2-sieu-tien-nghi` | Mau thiet ke chung cu mini 25m2 |
+| `/blog/33-mau-thiet-ke-noi-that-chung-cu-150m2-ep-me-man` | Mau thiet ke chung cu 150m2 |
+| `/blog/9-mau-thiet-ke-noi-that-chung-cu-120m2-ep-kho-cuong` | Mau thiet ke chung cu 120m2 |
+| `/blog/chi-phi-bao-gia-12-mau-thiet-ke-noi-that-chung-cu-60m2-van-nguoi-me` | Chi phi va mau thiet ke chung cu 60m2 |
+| `/blog/12-mau-thiet-ke-noi-that-chung-cu-50m2-cuon-hut-bac-nhat` | Mau thiet ke chung cu 50m2 |
+| `/blog/top-5-mau-thiet-ke-noi-that-chung-cu-45m2-hien-ai-tien-ich-thong-minh` | Mau thiet ke chung cu 45m2 hien dai |
+| `/blog/101-mau-thiet-ke-noi-that-chung-cu-3-phong-ngu-hien-ai-2026` | Mau thiet ke chung cu 3 phong ngu 2026 |
+| `/blog/18-mau-thiet-ke-noi-that-chung-cu-2-phong-ngu-ep-tien-nghi` | Mau thiet ke chung cu 2 phong ngu |
+| `/blog/phong-cach-thiet-ke-noi-that-can-ho-2-phong-ngu` | Phong cach thiet ke can ho 2 phong ngu |
+| `/blog/phong-cach-thiet-ke-noi-that-can-ho-1-phong-ngu` | Phong cach thiet ke can ho 1 phong ngu |
+| `/blog/6-luu-y-quan-trong-khi-thiet-ke-noi-that-can-ho-cao-cap` | Luu y khi thiet ke noi that can ho cao cap |
+| `/blog/co-nen-thue-thiet-ke-noi-that-chung-cu-5-luu-y-danh-cho-ban` | Tu van co nen thue thiet ke noi that chung cu |
+| `/blog/chi-phi-thi-cong-noi-that-can-ho-70m2` | Chi phi thi cong noi that can ho 70m2 |
+| `/blog/bao-gia-chi-phi-lam-bep-chung-cu-moi-nhat-2026` | Bao gia chi phi lam bep chung cu moi nhat 2026 |
 
 ### Trang Dich Vu / Bai SEO Theo Nhom
 
@@ -238,7 +283,96 @@ Neu ban dang can du toan chi phi truoc khi thi cong, co the xem them [bang bao g
 6. Neu can external link, chi chon nguon uy tin va co lien quan truc tiep.
 7. Khong chen link vao tieu de H1/H2/H3 neu khong can thiet.
 8. Khong chen link lien tiep qua day trong cung mot doan.
-9. Sau khi chen link, doc lai de dam bao cau van tu nhien.
+9. Kiem tra lai toan bo thong tin cong ty: ten HEI Design, hotline, website, van phong, xuong san xuat, gio lam viec.
+10. Neu bai co thong tin nam cu nhu 2022/2023/2024 ma ngu canh la bang gia, xu huong, mau dep moi nhat, can cap nhat ve 2026 va doc lai de tranh sai nghia.
+11. Sau khi chen link, doc lai de dam bao cau van tu nhien.
+
+## Quy Tac Rieng Khi Sua Markdown Bai Viet
+
+### Frontmatter
+
+Neu file co frontmatter, can giu cac truong quan trong sau neu da co:
+
+```md
+---
+title: "..."
+slug: "..."
+excerpt: "..."
+coverImage: "https://..."
+category: "..."
+---
+```
+
+- `title` la H1 chinh cua bai.
+- `excerpt` nen la mo ta ngan 140-220 ky tu, khong nhoi keyword.
+- `coverImage` nen la URL Cloudinary day du, khong dung path local.
+- Khong xoa frontmatter khi chi duoc yeu cau sua link/noi dung.
+
+### Hinh anh va caption
+
+Dung dung format sau de renderer hieu caption:
+
+```md
+![Mo ta anh ngan gon](https://res.cloudinary.com/.../image.webp)
+caption:: Noi dung chu thich anh viet thanh cau tu nhien.
+```
+
+Quy tac:
+
+- Chu trong `[]` la alt anh, nen ngan gon va mo ta anh.
+- Dong `caption::` la chu thich hien ben duoi anh.
+- Khong viet caption qua dai thanh mot doan van lon. Neu can dien giai them, tach thanh paragraph rieng sau caption.
+- Khong chen internal link trong alt anh. Neu can link, chen trong caption hoac doan van sau anh.
+
+### FAQ cuoi bai
+
+Neu them FAQ, dat o cuoi bai sau noi dung chinh va truoc CTA cuoi neu can. FAQ phai tra loi dung voi noi dung bai viet, khong noi qua kha nang dich vu.
+
+Mau nen dung:
+
+```md
+## Cau hoi thuong gap
+
+::: faq
+question: Cau hoi 1?
+answer: Cau tra loi ngan gon, ro y va co the co internal link neu that su phu hop.
+:::
+
+::: faq
+question: Cau hoi 2?
+answer: Cau tra loi ngan gon, tu nhien.
+:::
+```
+
+Neu renderer ho tro FAQ schema, cac block FAQ nay se duoc dung de tao FAQPage schema. Khong them FAQ trung lap voi noi dung khong co trong bai.
+
+### Bang Markdown
+
+Bang Markdown phai giu dung so cot tren moi dong. Truoc khi luu, kiem tra:
+
+- Dong header va dong separator co cung so cot.
+- Moi dong du lieu co cung so dau `|`.
+- Khong de ky tu `\|`, `<br>|`, `--- |` lam tach them cot sai.
+- Neu noi dung trong o can xuong dong, doi thanh dau phay, cham phay hoac cau ngan trong cung mot o.
+- Neu o khong co du lieu, de rong giua hai dau `| |`, khong chen `\`, `<br>` hoac text thua.
+
+Vi du bang dung:
+
+```md
+| STT | Hang muc chi tiet | Chat lieu | D | S | C | DVT | KL | SL | Don gia | Thanh tien |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Tu tivi | MDF phu melamine | 1180 | 300 | 770 | cai | 1,00 | 1 | 4.200.000 | 4.200.000 |
+```
+
+### Marker chen component
+
+Neu can chen component du an / kien truc trong bai Markdown, dung marker rieng mot dong:
+
+```md
+<!-- MAIN_CONTENT -->
+```
+
+Khong viet text khac cung dong voi marker. Renderer se dung marker nay de chen khoi noi dung tuong ung neu route ho tro.
 
 ## SQL Cap Nhat Inventory Tu DB
 
@@ -273,4 +407,3 @@ LEFT JOIN article_sections s ON s.id = pa.section_id
 LEFT JOIN article_types t ON t.id = pa.type_id
 ORDER BY pa.updated_at DESC, pa.id DESC;
 ```
-

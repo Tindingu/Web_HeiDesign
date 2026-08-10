@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { SmartImage as Image } from "@/components/shared/smart-image";
 import type { Post } from "@/lib/strapi";
 import { toCategorySlug } from "@/lib/post-category";
 

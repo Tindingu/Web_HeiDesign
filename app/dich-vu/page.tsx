@@ -2,7 +2,7 @@ import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getAllServices } from "@/lib/services";
-import Image from "next/image";
+import { SmartImage as Image } from "@/components/shared/smart-image";
 import { ArrowRight } from "lucide-react";
 import { TrackedLink } from "@/components/tracking/tracked-link";
 

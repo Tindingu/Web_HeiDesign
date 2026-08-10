@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { SmartImage as Image } from "@/components/shared/smart-image";
 import { Container } from "@/components/shared/container";
 import { buildMetadata } from "@/lib/seo";
 import { getPosts } from "@/lib/strapi";

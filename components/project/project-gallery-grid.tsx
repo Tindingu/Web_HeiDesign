@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
+import { SmartImage as Image } from "@/components/shared/smart-image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { ImageAsset } from "@/lib/strapi";
 

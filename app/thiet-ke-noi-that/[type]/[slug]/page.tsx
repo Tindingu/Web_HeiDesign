@@ -20,7 +20,7 @@ import {
   readProjectCategories,
   readProjectStyles,
 } from "@/lib/taxonomy-storage";
-import Image from "next/image";
+import { SmartImage as Image } from "@/components/shared/smart-image";
 
 export const revalidate = 86400;
 
