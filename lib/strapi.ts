@@ -3,6 +3,7 @@ import { defaultBlurDataURL } from "@/lib/constants";
 // @ts-ignore
 import sanitizeHtml from "sanitize-html";
 import { toCategorySlug } from "@/lib/post-category";
+import { cache } from "react";
 
 export type ImageAsset = {
   url: string;
@@ -272,16 +273,19 @@ async function readProjectsFromStorage() {
 }
 
 async function readBlogPostsFromStorage() {
-  const { readBlogPosts, toPost } = await import("@/lib/blog-post-storage");
-  const records = await readBlogPosts();
+  const { readBlogPostSummaries, toPost } = await import(
+    "@/lib/blog-post-storage"
+  );
+  const records = await readBlogPostSummaries();
   return records.map(toPost);
 }
 
 async function getLocalPostBySlug(slug: string): Promise<Post | null> {
-  const { readBlogPosts, toPost } = await import("@/lib/blog-post-storage");
-  const records = await readBlogPosts();
-  const found = records.find((post) => post.slug === slug);
-  return found ? toPost(found) : null;
+  const { getBlogPostBySlug, toPost } = await import(
+    "@/lib/blog-post-storage"
+  );
+  const post = await getBlogPostBySlug(slug);
+  return post ? toPost(post) : null;
 }
 
 export async function getHomeContent() {
@@ -406,18 +410,26 @@ export async function getPortfolioFilters(): Promise<PortfolioFilters> {
   };
 }
 
-export async function getPosts(): Promise<Post[]> {
+async function readPosts(): Promise<Post[]> {
   let localPosts: Post[] = [];
+  let localReadError: unknown;
   try {
     localPosts = await readBlogPostsFromStorage();
-  } catch {
-    localPosts = [];
+  } catch (error) {
+    localReadError = error;
+    console.error("Error reading blog posts from database:", error);
   }
 
   const posts = await fetchStrapi<Array<{ id: number; attributes: any }>>(
     "posts",
     "populate=coverImage",
   );
+
+  // Let ISR keep its previous successful page when the database is temporarily
+  // unavailable. Returning [] here would cache an empty blog for up to 24 hours.
+  if (localReadError && !posts) {
+    throw localReadError;
+  }
 
   const remotePosts = posts ? posts.map(mapPost) : fallbackPosts;
 
@@ -437,12 +449,18 @@ export async function getPosts(): Promise<Post[]> {
   );
 }
 
+// Blog pages often request posts and categories in parallel. React cache
+// deduplicates those reads within the same server render.
+export const getPosts = cache(readPosts);
+
 export async function getPostBySlug(slug: string): Promise<Post | null> {
+  let localReadError: unknown;
   try {
     const local = await getLocalPostBySlug(slug);
     if (local) return local;
-  } catch {
-    // Ignore local read errors and continue to Strapi.
+  } catch (error) {
+    localReadError = error;
+    console.error("Error reading blog post from database:", error);
   }
 
   const posts = await fetchStrapi<Array<{ id: number; attributes: any }>>(
@@ -450,8 +468,10 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     `filters[slug][$eq]=${slug}&populate=coverImage`,
   );
 
-  if (!posts || posts.length === 0)
+  if (!posts || posts.length === 0) {
+    if (localReadError) throw localReadError;
     return fallbackPosts.find((post) => post.slug === slug) ?? null;
+  }
   return mapPost(posts[0]);
 }
 

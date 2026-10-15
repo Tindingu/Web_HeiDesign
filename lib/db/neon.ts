@@ -86,15 +86,36 @@ function createPool(databaseUrl: string) {
         ? { rejectUnauthorized: true }
         : undefined;
 
-  return new Pool({
+  const configuredPoolMax = Number.parseInt(process.env.PG_POOL_MAX ?? "", 10);
+  const poolMax = Number.isFinite(configuredPoolMax) && configuredPoolMax > 0
+    ? configuredPoolMax
+    : 2;
+
+  const pool = new Pool({
     connectionString: conn,
     ssl: sslOption,
-    max: 10,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000,
-    query_timeout: 15000,
-    statement_timeout: 15000,
+    // Every Vercel instance owns a separate pool. Botkeep currently allows only
+    // 30 total connections, so a large per-instance pool exhausts it quickly.
+    max: poolMax,
+    min: 0,
+    idleTimeoutMillis: process.env.VERCEL ? 10000 : 30000,
+    connectionTimeoutMillis: 30000,
+    query_timeout: 30000,
+    statement_timeout: 30000,
+    allowExitOnIdle: true,
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 10000,
+    application_name: process.env.VERCEL ? "hei-design-vercel" : "hei-design-local",
   });
+
+  // An idle connection can be reset when a serverless instance is frozen or
+  // terminated. Handling the event prevents that expected reset from crashing
+  // the process; pg removes the broken client from the pool automatically.
+  pool.on("error", (error: Error) => {
+    console.error("Unexpected PostgreSQL pool error:", error.message);
+  });
+
+  return pool;
 }
 
 export function getDbPool(): any {

@@ -38,6 +38,9 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react"],
+    // Static generation reads from PostgreSQL. Keeping the worker count low
+    // prevents parallel build workers from exhausting Botkeep connections.
+    cpus: 2,
   },
   async headers() {
     return [

@@ -77,6 +77,31 @@ export async function readBlogPosts(): Promise<BlogPostRecord[]> {
   return result.rows.map(mapBlogPostRow);
 }
 
+export async function readBlogPostSummaries(): Promise<BlogPostRecord[]> {
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const result = (await pool.query(
+    `
+      SELECT
+        bp.id,
+        bp.slug,
+        bp.title,
+        bp.excerpt,
+        COALESCE(c.name, 'Tin tức') AS category,
+        ''::text AS content,
+        bp.cover_image_url,
+        COALESCE(bp.renderer_version, 'legacy') AS renderer_version,
+        bp.published_at,
+        bp.created_at,
+        bp.updated_at
+      FROM blog_posts bp
+      LEFT JOIN blog_categories c ON c.id = bp.category_id
+      ORDER BY published_at DESC, bp.id DESC
+    `,
+  )) as { rows: BlogPostRow[] };
+  return result.rows.map(mapBlogPostRow);
+}
+
 export async function writeBlogPosts(posts: BlogPostRecord[]): Promise<void> {
   await ensureDbSchema();
   const pool = getDbPool();
