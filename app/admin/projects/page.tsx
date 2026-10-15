@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { readProjects } from "@/lib/project-storage";
+import { readProjectSummaries } from "@/lib/project-storage";
 import Image from "next/image";
 import { StatsPanel } from "@/components/admin/stats-panel";
 
 export const revalidate = 0; // Always fresh
 
 async function ProjectsListPage() {
-  const projects = await readProjects();
+  const projects = await readProjectSummaries();
   const featuredCount = projects.filter((project) => project.featured).length;
 
   const categoryMap = projects.reduce<Map<string, number>>((acc, project) => {

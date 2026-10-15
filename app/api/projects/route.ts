@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
-  readProjects,
+  readProjectSummaries,
   getProjectById,
   createProject,
   updateProject,
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(project);
     }
 
-    const projects = await readProjects();
+    const projects = await readProjectSummaries();
     return NextResponse.json(projects);
   } catch (error) {
     console.error("GET /api/projects error:", error);

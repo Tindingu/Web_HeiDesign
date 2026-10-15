@@ -268,8 +268,13 @@ async function fetchStrapi<T>(path: string, query?: string): Promise<T | null> {
 }
 
 async function readProjectsFromStorage() {
-  const { readProjects } = await import("@/lib/project-storage");
-  return readProjects();
+  const { readProjectSummaries } = await import("@/lib/project-storage");
+  return readProjectSummaries();
+}
+
+async function getLocalProjectBySlug(slug: string): Promise<Project | null> {
+  const { getProjectBySlug } = await import("@/lib/project-storage");
+  return getProjectBySlug(slug);
 }
 
 async function readBlogPostsFromStorage() {
@@ -354,12 +359,14 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   return projects.map(mapProject);
 }
 
-export async function getProjects(): Promise<Project[]> {
+async function readPublicProjects(): Promise<Project[]> {
+  let storageError: unknown;
   // Try project storage first
   try {
     const storageProjects = await readProjectsFromStorage();
     if (storageProjects.length > 0) return storageProjects;
   } catch (error) {
+    storageError = error;
     console.error("Error reading from project storage:", error);
   }
 
@@ -369,17 +376,21 @@ export async function getProjects(): Promise<Project[]> {
     "populate=coverImage,gallery",
   );
 
+  if (storageError && !projects) throw storageError;
   if (!projects) return fallbackProjects;
   return projects.map(mapProject);
 }
 
+export const getProjects = cache(readPublicProjects);
+
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  let storageError: unknown;
   // Try project storage first
   try {
-    const storageProjects = await readProjectsFromStorage();
-    const found = storageProjects.find((p) => p.slug === slug);
+    const found = await getLocalProjectBySlug(slug);
     if (found) return found;
   } catch (error) {
+    storageError = error;
     console.error("Error reading from project storage:", error);
   }
 
@@ -389,8 +400,10 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     `filters[slug][$eq]=${slug}&populate=coverImage,gallery`,
   );
 
-  if (!project || project.length === 0)
+  if (!project || project.length === 0) {
+    if (storageError) throw storageError;
     return fallbackProjects.find((item) => item.slug === slug) ?? null;
+  }
   return mapProject(project[0]);
 }
 

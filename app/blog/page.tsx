@@ -36,10 +36,10 @@ export default async function BlogPage() {
           <h1 className="text-4xl font-semibold md:text-5xl">
             Kinh nghiệm hay
           </h1>
-          <p className="max-w-2xl text-lg text-muted-foreground">
+          {/* <p className="max-w-2xl text-lg text-muted-foreground">
             Kho kiến thức nội thất theo chuyên mục để người dùng và Google dễ
             dàng tìm đúng nội dung.
-          </p>
+          </p> */}
         </div>
 
         {categories.length > 0 && (

@@ -268,6 +268,23 @@ async function loadProjectRelations(projectIds: number[]) {
   };
 }
 
+async function loadProjectImages(projectIds: number[]) {
+  if (projectIds.length === 0) return [] as ProjectImageRow[];
+
+  const pool = getDbPool();
+  const result = (await pool.query(
+    `
+      SELECT project_id, url, alt, blur_data_url, position
+      FROM project_images
+      WHERE project_id = ANY($1::int[])
+      ORDER BY project_id ASC, position ASC, id ASC
+    `,
+    [projectIds],
+  )) as { rows: ProjectImageRow[] };
+
+  return result.rows;
+}
+
 async function resolveProjectCategoryId(name: string): Promise<number> {
   const pool = getDbPool();
   const normalized = getCategoryFallback(name);
@@ -427,6 +444,39 @@ export async function readProjects(): Promise<Project[]> {
     relations.attributes,
     relations.sections,
   );
+}
+
+export async function readProjectSummaries(): Promise<Project[]> {
+  await ensureDbSchema();
+  const pool = getDbPool();
+  const projectsResult = (await pool.query(
+    `
+      SELECT
+        p.id,
+        p.slug,
+        p.title,
+        p.summary,
+        p.description,
+        COALESCE(pc.name, 'Chưa phân loại') AS category,
+        COALESCE(ps.name, p.style) AS style,
+        p.budget,
+        p.cover_image_url,
+        p.cover_image_alt,
+        p.cover_image_blur_data_url,
+        NULL::text AS word_content,
+        p.featured,
+        p.created_at,
+        p.updated_at
+      FROM projects p
+      LEFT JOIN project_categories pc ON pc.id = p.category_id
+      LEFT JOIN project_styles ps ON ps.id = p.style_id
+      ORDER BY p.updated_at DESC, p.id DESC
+    `,
+  )) as { rows: ProjectRow[] };
+
+  const ids = projectsResult.rows.map((row) => Number(row.id));
+  const images = await loadProjectImages(ids);
+  return mapProjectRows(projectsResult.rows, images, [], [], []);
 }
 
 export async function writeProjects(projects: Project[]): Promise<void> {
