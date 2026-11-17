@@ -89,15 +89,15 @@ const defaultConstructionSubmenu = [
     href: "/thi-cong-noi-that/biet-thu",
   },
   {
-    label: "Thị công nội thất chung cư",
+    label: "Thi công nội thất chung cư",
     href: "/thi-cong-noi-that/chung-cu",
   },
   {
-    label: "Thị công nội thất nhà phố",
+    label: "Thi công nội thất nhà phố",
     href: "/thi-cong-noi-that/nha-pho",
   },
   {
-    label: "Thị công nội thất văn phòng",
+    label: "Thi công nội thất văn phòng",
     href: "/thi-cong-noi-that/van-phong",
   },
 ];
@@ -145,7 +145,7 @@ const baseMenuItems: MenuItem[] = [
     submenu: defaultInteriorSubmenu,
   },
   {
-    label: "Thị Công Nội Thất",
+    label: "Thi công nội thất",
     href: "/thi-cong-noi-that",
     submenu: defaultConstructionSubmenu,
   },
